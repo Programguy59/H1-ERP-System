@@ -1,19 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>H1_ERP_System</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>H1_ERP_System</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="TECHCOOL" Version="1.3.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="TECHCOOL" Version="1.3.2"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="test" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="test"/>
+    </ItemGroup>
 
 </Project>

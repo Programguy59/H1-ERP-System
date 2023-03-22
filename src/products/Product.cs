@@ -2,49 +2,65 @@
 
 public class Product
 {
-    public int Id { get; set; }
+	
+	public int Id { get; set; }
 
-    public string Name { get; set; }
-    public string Description { get; set; }
+	public string Name { get; set; }
+	public string Description { get; set; }
 
-    public double SalesPrice { get; set; }
-    public double PurchasePrice { get; set; }
+	public double SalesPrice { get; set; }
+	public double PurchasePrice { get; set; }
 
-    public string Location { get; set; }
-    public double AmountInStock { get; set; }
+	public string Location { get; set; }
+	public int Stock { get; set; }
+	
+	public Unit Unit { get; set; }
+	
+	public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, int stock,
+		Unit unit)
+	{
+		Id = id;
 
-    public Unit Unit { get; set; }
+		Name = name;
+		Description = description;
 
-    public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, double amountInStock, Unit unit)
-    {
-        Id = id;
+		SalesPrice = salesPrice;
+		PurchasePrice = purchasePrice;
 
-        Name = name;
-        Description = description;
+		Location = location;
+		Stock = stock;
 
-        SalesPrice = salesPrice;
-        PurchasePrice = purchasePrice;
+		Unit = unit;
+	}
+	
+	public double GetEarnings()
+	{
+		return SalesPrice - PurchasePrice;
+	}
 
-        Location = location;
-        AmountInStock = amountInStock;
-
-        Unit = unit;
-    }
-    
-    public double GetEarnings()
-    {
-        return SalesPrice - PurchasePrice;
-    }
-    
-    public double GetProfitMargin()
-    {
-        return (SalesPrice - PurchasePrice) / PurchasePrice * 100;
-    }
+	public double GetProfitMargin()
+	{
+		return (SalesPrice - PurchasePrice) / PurchasePrice * 100;
+	}
 }
 
 public enum Unit
 {
-    Piece,
-    Hours,
-    Meters
+	Piece,
+	Hours,
+	Meters
+}
+
+public static class UnitExtensions
+{
+	public static Unit Of(this string unit)
+	{
+		return unit switch
+		{
+			"Piece" => Unit.Piece,
+			"Hours" => Unit.Hours,
+			"Meters" => Unit.Meters,
+			_ => throw new ArgumentException("Invalid unit!")
+		};
+	}
 }
