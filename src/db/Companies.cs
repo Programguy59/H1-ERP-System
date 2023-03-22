@@ -8,7 +8,7 @@ public partial class Database
 	private static int _nextCompanyId = 1;
 	
 	public static Company GetCompanyById(int id)
-	{
+	{	
 		return Companies.FirstOrDefault(company => company.Id == id)!;
 	}
 

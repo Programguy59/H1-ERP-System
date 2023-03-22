@@ -1,4 +1,4 @@
-﻿using H1_ERP_System.Products;
+﻿using H1_ERP_System.products;
 
 namespace H1_ERP_System.sales;
 
