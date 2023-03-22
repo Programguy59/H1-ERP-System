@@ -6,7 +6,7 @@ public static class Program
 {
     private static void Main(string[] args)
     {
-        MyFirstScreen firstScreen = new MyFirstScreen();
-        Screen.Display(firstScreen);
+        CompanySetup firstScreen = new CompanySetup();
+        Screen.Display( new CompanySetup() );
     }
 }

@@ -1,12 +1,20 @@
-﻿namespace H1_ERP_System.ui;
+﻿using H1_ERP_System.company;
+using H1_ERP_System.util;
+
+namespace H1_ERP_System.ui;
 
 using TECHCOOL.UI;
-public class MyFirstScreen : Screen
+public class CompanySetup : Screen
 {
-    public override string Title { get; set; } = "My first screen";
+    public override string Title { get; set; } = "company stuff";
     protected override void Draw()
     {
         Clear(this);
-        Console.WriteLine("My first screen!");
+        ListPage<Company> listPage = new ListPage<Company>();
+        listPage.Add(new Company(1, "e", new Address("fds","testStr", "testZip", "okCi","okCo"), "dkk"));
+        listPage.AddColumn("", "");
+
+
+        listPage.Draw();
     }
 }
