@@ -51,4 +51,9 @@ public partial class Database
 		
 		return true;
 	}
+	
+	public static void ClearCompanies()
+	{
+		Companies.Clear();
+	}
 }
