@@ -1,4 +1,4 @@
-﻿namespace H1_ERP_System.Products;
+﻿namespace H1_ERP_System.products;
 
 public class Product
 {
