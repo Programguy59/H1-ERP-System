@@ -31,7 +31,7 @@ public class Product
         Unit = unit;
     }
     
-    public double GetEaring()
+    public double GetEarnings()
     {
         return SalesPrice - PurchasePrice;
     }

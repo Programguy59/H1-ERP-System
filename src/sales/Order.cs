@@ -1,4 +1,6 @@
-﻿namespace H1_ERP_System.sales;
+﻿using H1_ERP_System.Products;
+
+namespace H1_ERP_System.sales;
 
 public class Order
 {
@@ -11,10 +13,10 @@ public class Order
 	
 	public Status Status { get; set; }
 	
-	public List<Order> OrderLine { get; set; } // TODO: Change to Product list.
+	public List<Product> OrderLine { get; set; }
 	public double TotalPrice { get; set; }
 	
-	public Order(int id, string createdAt, string completedAt, string customerId, Status status, List<Order> orderLine, double totalPrice)
+	public Order(int id, string createdAt, string completedAt, string customerId, Status status, List<Product> orderLine, double totalPrice)
 	{
 		Id = id;
 		
