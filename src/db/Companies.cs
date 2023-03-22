@@ -1,4 +1,6 @@
-﻿namespace H1_ERP_System;
+﻿using H1_ERP_System.company;
+
+namespace H1_ERP_System.db;
 
 public partial class Database
 {
