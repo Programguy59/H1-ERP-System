@@ -1,4 +1,6 @@
-﻿namespace H1_ERP_System.src.customer;
+﻿using H1_ERP_System.util;
+
+namespace H1_ERP_System.customer;
 
 public class Person
 {
@@ -8,10 +10,7 @@ public class Person
     private string PersonFullName { get; }
     private string Email { get; }
     private string PhoneNumber { get; }
-
-
-
-
+    
     private Address Address { get; }
 
     public Person(int id, string personFirstName, string personLastName, Address address, string email, string phoneNumber)

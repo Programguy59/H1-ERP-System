@@ -1,53 +1,50 @@
-﻿namespace H1_ERP_System
+﻿namespace H1_ERP_System.Products;
+
+public class Product
 {
-    public class Product
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+    public string Description { get; set; }
+
+    public double SalesPrice { get; set; }
+    public double PurchasePrice { get; set; }
+
+    public string Location { get; set; }
+    public double AmountInStock { get; set; }
+
+    public Unit Unit { get; set; }
+
+    public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, double amountInStock, Unit unit)
     {
-        public int Id { get; set; }
+        Id = id;
 
-        public string Name { get; set; }
-        public string Description { get; set; }
+        Name = name;
+        Description = description;
 
-        public double SalesPrice { get; set; }
-        public double PurchasePrice { get; set; }
+        SalesPrice = salesPrice;
+        PurchasePrice = purchasePrice;
 
-        public string Location { get; set; }
-        public double AmountInStock { get; set; }
+        Location = location;
+        AmountInStock = amountInStock;
 
-        public Unit Unit { get; set; }
-
-        public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, double amountInStock, Unit unit)
-        {
-            Id = id;
-
-            Name = name;
-            Description = description;
-
-            SalesPrice = salesPrice;
-            PurchasePrice = purchasePrice;
-
-            Location = location;
-            AmountInStock = amountInStock;
-
-            Unit = unit;
-        }
-
-
-        public double GetEaring()
-        {
-            return SalesPrice - PurchasePrice;
-        }
-
-        public double GetProfitMargin()
-        {
-            return (SalesPrice - PurchasePrice) / PurchasePrice * 100;
-        }
+        Unit = unit;
+    }
+    
+    public double GetEaring()
+    {
+        return SalesPrice - PurchasePrice;
     }
 
-    public enum Unit
+    public double GetProfitMargin()
     {
-        Piece,
-        Hours,
-        Meters
+        return (SalesPrice - PurchasePrice) / PurchasePrice * 100;
     }
 }
 
+public enum Unit
+{
+    Piece,
+    Hours,
+    Meters
+}
