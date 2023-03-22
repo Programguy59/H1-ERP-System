@@ -32,7 +32,7 @@
         }
 
 
-        public double GetEaring()
+        public double GetEarning()
         {
             return SalesPrice - PurchasePrice;
         }
