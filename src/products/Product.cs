@@ -35,7 +35,7 @@ public class Product
     {
         return SalesPrice - PurchasePrice;
     }
-
+    
     public double GetProfitMargin()
     {
         return (SalesPrice - PurchasePrice) / PurchasePrice * 100;

@@ -19,4 +19,14 @@ public class DatabaseServer
 		
 		return connection;
 	}
+	
+	public static void OpenConnection(SqlConnection connection)
+	{
+		connection.Open();
+	}
+	
+	public static void CloseConnection(SqlConnection connection)
+	{
+		connection.Close();
+	}
 }
