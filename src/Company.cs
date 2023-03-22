@@ -2,12 +2,11 @@
 
 public class Company
 {
-	private int Id { get; }
-	private string CompanyName { get; }
+	public int Id { get; set; }
+	public string CompanyName { get; set; }
+	public Address Address { get; set; }
 	
-	private Address Address { get; }
-	
-	private string Currency { get; }
+	public string Currency { get; set; }
 
 	public Company(int id, string companyName, Address address, string currency)
 	{
