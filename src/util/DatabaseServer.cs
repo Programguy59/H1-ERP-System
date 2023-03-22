@@ -4,7 +4,7 @@ namespace H1_ERP_System.util;
 
 public class DatabaseServer
 {
-	public static SqlConnection getConnection()
+	public static SqlConnection GetConnection()
 	{
 		SqlConnectionStringBuilder sb = new()
 		{
