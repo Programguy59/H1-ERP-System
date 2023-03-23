@@ -12,11 +12,11 @@ public class Product
 	public double PurchasePrice { get; set; }
 
 	public string Location { get; set; }
-	public int Stock { get; set; }
+	public double Stock { get; set; }
 	
 	public Unit Unit { get; set; }
 	
-	public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, int stock,
+	public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, double stock,
 		Unit unit)
 	{
 		Id = id;

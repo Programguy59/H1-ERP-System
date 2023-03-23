@@ -87,7 +87,7 @@ public class DatabaseServer
 			var purchasePrice = reader.GetDouble(4);
 			
 			var location = reader.GetString(5);
-			var stock = reader.GetInt32(6);
+			var stock = reader.GetDouble(6);
 			
 			var unit = UnitExtensions.Of(reader.GetString(7));
 			

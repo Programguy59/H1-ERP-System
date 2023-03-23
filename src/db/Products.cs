@@ -38,7 +38,7 @@ namespace H1_ERP_System.db
             existingProduct.SalesPrice = product.SalesPrice;
             existingProduct.PurchasePrice = product.PurchasePrice;
             existingProduct.Location = product.Location;
-            existingProduct.AmountInStock = product.AmountInStock;
+            existingProduct.Stock = product.Stock;
             existingProduct.Unit = product.Unit;
 
             return true;

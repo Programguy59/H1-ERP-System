@@ -11,7 +11,7 @@ CREATE TABLE Products (
     PurchasePrice DECIMAL(10,2) NOT NULL,
     
     Location VARCHAR(50) NOT NULL,
-    Stock INT NOT NULL,
+    Stock DECIMAL(10,2) NOT NULL,
     
     Unit VARCHAR(10) NOT NULL,
     
