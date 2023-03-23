@@ -83,13 +83,14 @@ public class DatabaseServer
 			var name = reader.GetString(1);
 			var description = reader.GetString(2);
 			
-			var salesPrice = reader.GetDouble(3);
-			var purchasePrice = reader.GetDouble(4);
-			
-			var location = reader.GetString(5);
-			var stock = reader.GetDouble(6);
-			
-			var unit = UnitExtensions.Of(reader.GetString(7));
+			var salesPrice = reader.GetSqlDecimal(3).ToDouble();
+            var purchasePrice = reader.GetSqlDecimal(4).ToDouble();
+
+            var location = reader.GetString(5);
+			var stock = reader.GetSqlDecimal(6).ToDouble();
+
+
+            var unit = UnitExtensions.Of(reader.GetString(7));
 			
 			var product = new Product(id, name, description, salesPrice, purchasePrice, location, stock, unit);
 
