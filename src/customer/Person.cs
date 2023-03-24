@@ -2,7 +2,7 @@
 
 namespace H1_ERP_System.customer;
 
-public class Person
+public abstract class Person
 {
 	public Person(int id, string personFirstName, string personLastName, Address address, string email, string phoneNumber)
 	{
@@ -33,14 +33,14 @@ public class Person
 
 	}
 
-	private int Id { get; }
-	private string PersonFirstName { get; }
-	private string PersonLastName { get; }
-	private string PersonFullName { get; }
-	private string Email { get; }
-	private string PhoneNumber { get; }
+	public int Id { get; set; }
+    public string PersonFirstName { get; set; }
+    public string PersonLastName { get; set; }
+    public string PersonFullName { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
 
-	private Address Address { get; }
+	public Address Address { get; set; }
 
 	public override string ToString()
 	{
