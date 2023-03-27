@@ -4,7 +4,7 @@ namespace H1_ERP_System.ui;
 
 public class CompanyScreen : Screen
 {
-    public override string Title { get; set; } = "company stuff";
+    public override string Title { get; set; } = "company info";
 
     protected override void Draw()
     {
@@ -13,8 +13,8 @@ public class CompanyScreen : Screen
         listPage.Add(new CompanyScreenList("company test1", "country test", "street test", "zipcode test", "city test",
             "currency test", 1));
         
-        listPage.Add(new CompanyScreenList("company test2", "country test", "street test", "zipcode test", "city test",
-            "currency test", 1));
+        //listPage.Add(new CompanyScreenList("company test2", "country test", "street test", "zipcode test", "city test",
+            //"currency test", 1));
         
         listPage.AddColumn("Company", "CompanyName");
         listPage.AddColumn("Country", "CompanyCountry");
@@ -24,8 +24,12 @@ public class CompanyScreen : Screen
         listPage.AddColumn("Currency", "CompanyCurrency");
 
         CompanyScreenList selected = listPage.Select();
+        
+        Console.Clear();
 
-        Console.WriteLine("You selected: " + selected.CompanyName);
+      
+        
+        Quit();
 
 
 
