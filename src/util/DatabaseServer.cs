@@ -6,7 +6,7 @@ namespace H1_ERP_System.util;
 
 public class DatabaseServer
 {
-	private static SqlConnection _connection;
+	private static SqlConnection? _connection;
 
 	public static SqlConnection GetConnection()
 	{
