@@ -1,4 +1,5 @@
-﻿using TECHCOOL.UI;
+﻿using H1_ERP_System.src.ui.Company;
+using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui;
 
