@@ -38,7 +38,7 @@ public partial class Database
 
 		existingOrder.CustomerId = order.CustomerId;
 
-		existingOrder.Status = order.Status;
+		existingOrder.OrderStatus = order.OrderStatus;
 
 		existingOrder.OrderLine = order.OrderLine;
 		existingOrder.TotalPrice = order.TotalPrice;

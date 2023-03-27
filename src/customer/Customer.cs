@@ -12,6 +12,7 @@ namespace H1_ERP_System.src.customer
     {
         private string CustomerId { get; }
         private string DateSinceLastPurchase { get; }
+        
         public Customer(string customerId, string date, int id, string personFirstName, string personLastName, Address address, string email, string phoneNumber) 
             : base( id, personFirstName, personLastName, address, email, phoneNumber)
         {
