@@ -3,16 +3,20 @@ using H1_ERP_System.util;
 
 namespace H1_ERP_System.src.ui.Company;
 
+using System.CodeDom.Compiler;
 using TECHCOOL.UI;
 public class CompanySetupScreen : Screen
 {
     public override string Title { get; set; } = "company setup";
+
+    public static string selectedCompanyName;
+    
+
     protected override void Draw()
     {
+       
         Clear(this);
-        ListPage<CompanySetupList> listPage = new ListPage<CompanySetupList>();
-        listPage.Add(new CompanySetupList("techcollege", "Denmark", "DKK", 1));
-        listPage.Add(new CompanySetupList("techcollege", "Denmark", "DKK", 1));
+        ListPage<CompanySetupList> listPage = CompanySetupList.GetPageList();
 
         listPage.AddColumn("Company", "CompanyName");
         listPage.AddColumn("Country", "Country");
@@ -21,6 +25,7 @@ public class CompanySetupScreen : Screen
 
         CompanySetupList selected = listPage.Select();
 
+        selectedCompanyName = selected.CompanyName;
         Console.WriteLine("You selected: " + selected.CompanyName);
         Console.Clear();
 

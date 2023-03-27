@@ -1,4 +1,8 @@
-﻿namespace H1_ERP_System.src.ui.Company;
+﻿using H1_ERP_System.util;
+using Org.BouncyCastle.Crypto.Prng;
+using TECHCOOL.UI;
+
+namespace H1_ERP_System.src.ui.Company;
 
 public class CompanyScreenList
 {
@@ -19,7 +23,7 @@ public class CompanyScreenList
 
     public CompanyScreen State { get; set; }
 
-    public CompanyScreenList(string companyName, string companyCountry, string companyStreet, string companyZipCode, string companyCity, string companyCurrency, int priority = 1)
+    public CompanyScreenList(string companyName, string companyCountry, string companyStreet, string companyZipCode, string companyCity, string companyCurrency, int priority)
     {
         CompanyName = companyName;
         CompanyCountry = companyCountry;
@@ -30,11 +34,19 @@ public class CompanyScreenList
         Priority = priority;
 
     }
-    public CompanyScreenList(string companyName, string country, string currency, int priority = 1)
+
+    public static ListPage<CompanyScreenList> GetPageListFromName(string CompanyName)
     {
-        CompanyName = companyName;
-        CompanyCountry = country;
-        CompanyCurrency = currency;
-        Priority = priority;
+        ListPage<CompanyScreenList> listPage = new ListPage<CompanyScreenList>();
+        var Companies = DatabaseServer.FetchCompanies();
+        for (int i = 0; i < Companies.Count; i++)
+        {
+            if (Companies[i].CompanyName == CompanyName) {
+                listPage.Add(new CompanyScreenList(Companies[i].CompanyName, Companies[i].Address.Country, Companies[i].Address.StreetName, Companies[i].Address.ZipCode, Companies[i].Address.City,
+              Companies[i].Currency, 1));
+            }
+        }
+        return listPage;
     }
 }
+

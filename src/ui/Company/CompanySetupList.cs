@@ -1,4 +1,7 @@
-﻿namespace H1_ERP_System.src.ui.Company;
+﻿using H1_ERP_System.util;
+using TECHCOOL.UI;
+
+namespace H1_ERP_System.src.ui.Company;
 
 
 public class CompanySetupList
@@ -17,5 +20,16 @@ public class CompanySetupList
         Country = country;
         Currency = currency;
         Priority = priority;
+    }
+
+    public static ListPage<CompanySetupList> GetPageList()
+    {
+        ListPage<CompanySetupList> listPage = new ListPage<CompanySetupList>();
+        var Companies = DatabaseServer.FetchCompanies();
+        for (int i = 0; i < Companies.Count; i++)
+        {
+            listPage.Add(new CompanySetupList(Companies[i].CompanyName, Companies[i].Address.Country,Companies[i].Currency,1));
+        }
+        return listPage;
     }
 }
