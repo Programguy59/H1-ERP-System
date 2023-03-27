@@ -1,6 +1,8 @@
 ﻿using System.Data.SqlClient;
 using H1_ERP_System.company;
+using H1_ERP_System.db;
 using H1_ERP_System.products;
+using H1_ERP_System.src.customer;
 
 namespace H1_ERP_System.util;
 
@@ -8,13 +10,21 @@ public class DatabaseServer
 {
 	private static SqlConnection? _connection;
 
+	public static void Initialize()
+	{
+		// Fetch data from database.
+		var companies = FetchCompanies();
+		var products = FetchProducts();
+		var customers = FetchCustomers();
+
+		// Insert data into local database.
+		companies.ForEach(Database.InsertCompany);
+		products.ForEach(Database.InsertProduct);
+		customers.ForEach(Database.InsertCustomer);
+	}
+	
 	public static SqlConnection GetConnection()
 	{
-		if (_connection != null)
-		{
-			return _connection;
-		}
-
 		SqlConnectionStringBuilder sb = new()
 		{
 			DataSource = "docker.data.techcollege.dk",
@@ -24,21 +34,21 @@ public class DatabaseServer
 		};
 
 		var connectionString = sb.ToString();
+		
 		_connection = new SqlConnection(connectionString);
-
+		_connection.Open();
+		
 		return _connection;
 	}
-
+	
 	public static List<Company> FetchCompanies()
 	{
 		var companies = new List<Company>();
 
 		const string query = "SELECT * FROM Companies";
-
+		
 		using var connection = GetConnection();
-
-		connection.Open();
-
+		
 		using var command = new SqlCommand(query, connection);
 		using var reader = command.ExecuteReader();
 
@@ -70,9 +80,7 @@ public class DatabaseServer
 		const string query = "SELECT * FROM Products";
 		
 		using var connection = GetConnection();
-
-		connection.Open();
-
+		
 		using var command = new SqlCommand(query, connection);
 		using var reader = command.ExecuteReader();
 
@@ -89,8 +97,7 @@ public class DatabaseServer
             var location = reader.GetString(5);
 			var stock = reader.GetSqlDecimal(6).ToDouble();
 
-
-            var unit = UnitExtensions.Of(reader.GetString(7));
+			var unit = UnitExtensions.Of(reader.GetString(7));
 			
 			var product = new Product(id, name, description, salesPrice, purchasePrice, location, stock, unit);
 
@@ -98,5 +105,35 @@ public class DatabaseServer
 		}
 
 		return products;
+	}
+
+	public static List<Customer> FetchCustomers()
+	{
+		var customers = new List<Customer>();
+		
+		const string query = "SELECT * FROM Persons " + 
+		                     "JOIN Customers ON Persons.Id = Customers.PersonID";
+		
+		using var connection = GetConnection();
+
+		using var command = new SqlCommand(query, connection);
+		using var reader = command.ExecuteReader();
+
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
+			
+			var firstName = reader.GetString(1);
+			var lastName = reader.GetString(2);
+			var email = reader.GetString(3);
+			var phoneNumber = reader.GetString(4);
+			
+			var address = new Address(reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetString(8), reader.GetString(9));
+			var customer = new Customer(reader.GetInt32(10).ToString(), reader.GetDateTime(12).ToShortDateString(), id, firstName, lastName, address, email, phoneNumber);
+			
+			customers.Add(customer);
+		}
+		
+		return customers;
 	}
 }
