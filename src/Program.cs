@@ -1,10 +1,6 @@
-﻿using H1_ERP_System.db;
-using H1_ERP_System.products;
-using H1_ERP_System.sales;
-using H1_ERP_System.ui;
-using H1_ERP_System.ui.customer;
-using H1_ERP_System.util;
+﻿using H1_ERP_System.util;
 using TECHCOOL.UI;
+
 using Menu = H1_ERP_System.ui.Menu;
 
 namespace H1_ERP_System;
