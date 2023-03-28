@@ -7,9 +7,9 @@ public partial class Database
 	private static readonly List<Order> Orders = new();
 	private static int _nextOrderId = 1;
 
-	public static Order GetOrderById(int id)
+	public static Order? GetOrderById(int id)
 	{
-		return Orders.FirstOrDefault(order => order.Id == id)!;
+		return Orders.FirstOrDefault(order => order.Id == id);
 	}
 
 	public static List<Order> GetAllOrders()

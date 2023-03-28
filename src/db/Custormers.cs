@@ -1,5 +1,4 @@
-﻿using H1_ERP_System.customer;
-using H1_ERP_System.src.customer;
+﻿using H1_ERP_System.src.customer;
 
 namespace H1_ERP_System.db;
 
@@ -8,9 +7,9 @@ public partial class Database
     private static readonly List<Customer> Customers = new();
     private static int _nextCustomerId = 1;
 
-    public static Customer GetCustomerById(int id)
+    public static Customer? GetCustomerById(int id)
     {
-        return Customers.FirstOrDefault(customer => customer.Id == id)!;
+        return Customers.FirstOrDefault(customer => customer.Id == id);
     }
 
     public static List<Customer> GetAllCustomers()

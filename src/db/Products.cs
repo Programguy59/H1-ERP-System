@@ -7,9 +7,9 @@ namespace H1_ERP_System.db
         private static readonly List<Product> products = new();
         private static int _nextProductId = 1;
 
-        public static Product GetProductById(int id)
+        public static Product? GetProductById(int id)
         {
-            return products.FirstOrDefault(product => product.Id == id)!;
+            return products.FirstOrDefault(product => product.Id == id);
         }
 
         public static List<Product> GetAllProducts()

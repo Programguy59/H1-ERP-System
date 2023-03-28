@@ -6,7 +6,7 @@ using H1_ERP_System.src.customer;
 
 namespace H1_ERP_System.util;
 
-public class DatabaseServer
+public static class DatabaseServer
 {
 	private static SqlConnection? _connection;
 
