@@ -9,8 +9,8 @@ CREATE TABLE Products
 
     SalesPrice    DECIMAL(10, 2) NOT NULL,
     PurchasePrice DECIMAL(10, 2) NOT NULL,
-
-    Location      VARCHAR(50)    NOT NULL,
+    
+    Location      CHAR(4)        NOT NULL,
     Stock         DECIMAL(10, 2) NOT NULL,
 
     Unit          VARCHAR(10)    NOT NULL,

@@ -84,7 +84,7 @@ public static class DatabaseServer
 		var customers = new List<Customer>();
 		
 		const string query = "SELECT * FROM Persons " + 
-		                     "JOIN Customers ON Persons.Id = Customers.PersonID";
+		                     "JOIN Customers ON Persons.Id = Customers.PersonId";
 		
 		using var connection = GetConnection();
 
