@@ -15,6 +15,7 @@ public class Menu
             
             menu.Add(new CompanySetupScreen());
             menu.Add(new CustomerScreen());
+            menu.Add(new ProductSetupScreen());
             menu.Start(this);
         }
     }
