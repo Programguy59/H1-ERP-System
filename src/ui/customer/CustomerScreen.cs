@@ -1,12 +1,11 @@
 ﻿using TECHCOOL.UI;
 using H1_ERP_System.db;
-using H1_ERP_System.sales;
 
 namespace H1_ERP_System.ui.customer;
 
 public class CustomerScreen : Screen
 {
-	public override string Title { get; set; }
+	public override string Title { get; set; } = "Kunder";
 	
 	protected override void Draw()
 	{
@@ -17,32 +16,51 @@ public class CustomerScreen : Screen
 		
 		foreach (var customer in Database.GetAllCustomers())
 		{
-			var lastOrder = Database.GetAllOrders().Find(order => order.CustomerId == customer.Id.ToString());
+			var lastOrder = Database.GetAllOrders().Find(o => o.CustomerId == customer.Id.ToString());
 			
-			listPage.Add(new CustomerList(customer.Id, customer.PersonFirstName, customer.PersonLastName, customer.PhoneNumber, customer.Email, lastOrder!));
+			var customerList = new CustomerList(
+				
+				customer.Id, 
+				
+				customer.PersonFirstName, 
+				customer.PersonLastName, 
+				
+				customer.PhoneNumber, 
+				customer.Email, 
+				
+				lastOrder, 
+				customer.Address
+			);
+			
+			listPage.Add(customerList);
 		}
+
+		listPage.AddColumn("ID", "Id");
 		
-		listPage.AddColumn("Id", "Id");
-		
-		listPage.AddColumn("Fulde navn", "FullName");
+		listPage.AddColumn("Fulde Navn", "FormattedName");
 		listPage.AddColumn("Telefon", "Phone");
 		listPage.AddColumn("Email", "Email");
 		
 		var selected = listPage.Select();
-
+		
 		Console.Clear();
 		
 		// Display customer details.
 		listPage = new ListPage<CustomerList>();
 		
 		listPage.Add(selected);
+
+		listPage.AddColumn("ID", "Id");
 		
-		listPage.AddColumn("Fulde navn", "FullName");
-		listPage.AddColumn("Adresse", "Address");
-		listPage.AddColumn("Dato for sidste ordre", "LastOrderDate");
+		listPage.AddColumn("Fulde Navn", "FormattedName");
+		listPage.AddColumn("Adresse", "FormattedAddress");
+		listPage.AddColumn("Seneste Ordre", "FormattedLastOrderDate");
 		
 		listPage.Select();
 		
+		Console.Clear();
+		
+		// Return to main menu.
 		Quit();
 	}
 }

@@ -2,26 +2,32 @@
 using H1_ERP_System.company;
 using H1_ERP_System.db;
 using H1_ERP_System.products;
+using H1_ERP_System.sales;
 using H1_ERP_System.src.customer;
 using H1_ERP_System.src.ui.Company;
 
 namespace H1_ERP_System.util;
 
-public class DatabaseServer
+public static class DatabaseServer
 {
 	private static SqlConnection? _connection;
 
 	public static void Initialize()
 	{
-		// Fetch data from database.
 		var companies = FetchCompanies();
-		var products = FetchProducts();
-		var customers = FetchCustomers();
-
-		// Insert data into local database.
 		companies.ForEach(Database.InsertCompany);
-		products.ForEach(Database.InsertProduct);
+		
+		var customers = FetchCustomers();
 		customers.ForEach(Database.InsertCustomer);
+		
+		var products = FetchProducts();
+		products.ForEach(Database.InsertProduct);
+		
+		var orderLines = FetchOrderLines();
+		orderLines.ForEach(Database.InsertOrderLine);
+		
+		var orders = FetchOrders();
+		orders.ForEach(Database.InsertOrder);
 	}
 
 	public static SqlConnection GetConnection()
@@ -74,6 +80,37 @@ public class DatabaseServer
 		return companies;
 	}
 
+	
+	public static List<Customer> FetchCustomers()
+	{
+		var customers = new List<Customer>();
+		
+		const string query = "SELECT * FROM Persons " + 
+		                     "JOIN Customers ON Persons.Id = Customers.PersonId";
+		
+		using var connection = GetConnection();
+
+		using var command = new SqlCommand(query, connection);
+		using var reader = command.ExecuteReader();
+
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
+			
+			var firstName = reader.GetString(1);
+			var lastName = reader.GetString(2);
+			var email = reader.GetString(3);
+			var phoneNumber = reader.GetString(4);
+			
+			var address = new Address(reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetString(8), reader.GetString(9));
+			var customer = new Customer(reader.GetInt32(10).ToString(), reader.GetDateTime(12).ToShortDateString(), id, firstName, lastName, address, email, phoneNumber);
+			
+			customers.Add(customer);
+		}
+		
+		return customers;
+	}
+	
 	public static List<Product> FetchProducts()
 	{
 		var products = new List<Product>();
@@ -107,35 +144,75 @@ public class DatabaseServer
 
 		return products;
 	}
-
-	public static List<Customer> FetchCustomers()
+	
+	public static List<OrderLine> FetchOrderLines()
 	{
-		var customers = new List<Customer>();
-
-		const string query = "SELECT * FROM Persons " +
-							 "JOIN Customers ON Persons.Id = Customers.PersonID";
-
+		var orderLines = new List<OrderLine>();
+		
+		const string query = "SELECT * FROM OrderLines";
+		
 		using var connection = GetConnection();
-
+		using var command = new SqlCommand(query, connection);
+		using var reader = command.ExecuteReader();
+		
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
+			
+			var productId = reader.GetInt32(1);
+			var quantity = reader.GetInt32(2);
+			
+			var orderLine = new OrderLine(id, productId, quantity);
+			
+			orderLines.Add(orderLine);
+		}
+		
+		return orderLines;
+	}
+	
+	public static List<Order> FetchOrders() 
+	{
+		var orders = new List<Order>();
+		
+		const string query = "SELECT * FROM Orders o " + 
+		                     "JOIN OrderLines ol ON o.OrderLineId = ol.Id " + 
+		                     "JOIN Products p ON ol.ProductId = p.Id";
+		
+		using var connection = GetConnection();
 		using var command = new SqlCommand(query, connection);
 		using var reader = command.ExecuteReader();
 
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
-
-			var firstName = reader.GetString(1);
-			var lastName = reader.GetString(2);
-			var email = reader.GetString(3);
-			var phoneNumber = reader.GetString(4);
-
-			var address = new Address(reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetString(8), reader.GetString(9));
-			var customer = new Customer(reader.GetInt32(10).ToString(), reader.GetDateTime(12).ToShortDateString(), id, firstName, lastName, address, email, phoneNumber);
-
-			customers.Add(customer);
+			
+			var createdAt = reader.GetDateTime(1).ToShortDateString();
+			var completedAt = reader.IsDBNull(2) ? "N/A" : reader.GetDateTime(2).ToShortDateString();
+			
+			var customerId = reader.GetInt32(3).ToString();
+			
+			var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
+			
+			var orderLineId = reader.GetInt32(5);
+			
+			var orderLine = Database.GetOrderLineById(orderLineId);
+			if (orderLine == null)
+			{
+				continue;
+			}
+			
+			var product = Database.GetProductById(orderLine.ProductId);
+			if (product == null)
+			{
+				continue;
+			}
+			
+			var order = new Order(id, createdAt, completedAt, customerId, orderStatus);
+			
+			orders.Add(order);
 		}
-
-		return customers;
+		
+		return orders;
 	}
 
 	public static void InsertCompany(CompanyScreenList CompanyData)

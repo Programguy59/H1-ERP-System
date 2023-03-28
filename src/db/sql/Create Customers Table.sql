@@ -1,13 +1,12 @@
 USE H1PD021123_Gruppe3;
-DROP TABLE Customers;
-GO
-CREATE TABLE Customers (
+
+CREATE TABLE Customers
+(
+    Id                    INT NOT NULL IDENTITY(1,1),
+    PersonId              INT NOT NULL,
     
-    CustomerId INT NOT NULL,
-	PersonID INT FOREIGN KEY REFERENCES Persons(Id) NOT NULL,
-
-	DateSinceLastPurchase Date NOT NULL,
-
-    PRIMARY KEY (CustomerId)
-	
+    DateSinceLastPurchase DATE NOT NULL,
+    
+    PRIMARY KEY (Id),
+    FOREIGN KEY (PersonId) REFERENCES Persons(Id)
 );

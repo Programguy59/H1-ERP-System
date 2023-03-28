@@ -10,7 +10,6 @@ public class CompanySetupScreen : Screen
     public override string Title { get; set; } = "company setup";
     public static string selectedCompanyName;
     
-
     protected override void Draw()
     {
        

@@ -10,8 +10,9 @@ public class Product
 
 	public double SalesPrice { get; set; }
 	public double PurchasePrice { get; set; }
-
-	public string Location { get; set; }
+    public double Earnings { get; set; }
+    public double ProfitMargin { get; set; }
+    public string Location { get; set; }
 	public double Stock { get; set; }
 	
 	public Unit Unit { get; set; }
@@ -31,7 +32,13 @@ public class Product
 		Stock = stock;
 
 		Unit = unit;
-	}
+
+        Earnings = GetEarnings();
+        ProfitMargin = GetProfitMargin();
+
+
+
+    }
 	
 	public double GetEarnings()
 	{

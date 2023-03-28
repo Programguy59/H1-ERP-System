@@ -7,9 +7,9 @@ public partial class Database
 	private static readonly List<Company> Companies = new();
 	private static int _nextCompanyId = 1;
 
-	public static Company GetCompanyById(int id)
+	public static Company? GetCompanyById(int id)
 	{
-		return Companies.FirstOrDefault(company => company.Id == id)!;
+		return Companies.FirstOrDefault(company => company.Id == id);
 	}
 
 	public static List<Company> GetAllCompanies()
