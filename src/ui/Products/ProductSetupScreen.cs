@@ -7,7 +7,7 @@ using H1_ERP_System.products;
 using TECHCOOL.UI;
 public class ProductSetupScreen : Screen
 {
-    public override string Title { get; set; } = "product setup";
+    public override string Title { get; set; } = "product";
     public Product product = new Product(88, "CoolProduct", "It is cool", 25, 30, "Bag dig", 3, Unit.Meters);
     public Product product2 = new Product(44, "unCoolProduct", "It is  not cool", 35, 30, "foran dig", -3, Unit.Meters);
 

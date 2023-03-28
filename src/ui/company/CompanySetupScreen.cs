@@ -7,7 +7,7 @@ using System.CodeDom.Compiler;
 using TECHCOOL.UI;
 public class CompanySetupScreen : Screen
 {
-    public override string Title { get; set; } = "company setup";
+    public override string Title { get; set; } = "company";
     public static string selectedCompanyName;
     
     protected override void Draw()
