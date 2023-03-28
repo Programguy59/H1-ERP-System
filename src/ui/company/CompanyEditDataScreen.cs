@@ -5,8 +5,6 @@ namespace H1_ERP_System.ui.company;
 
 public class CompanyEditDataScreen : Screen
 {
-
-
     public override string Title { get; set; } = "Edit Company";
     protected override void Draw()
     {

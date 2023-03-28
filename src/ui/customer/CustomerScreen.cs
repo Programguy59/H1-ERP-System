@@ -14,12 +14,27 @@ public class CustomerScreen : Screen
 		// Display list of customers.
 		var listPage = new ListPage<CustomerList>();
 		
-		foreach (var customerList in from customer in Database.GetAllCustomers() let lastOrder = Database.GetAllOrders().Find(order => order.CustomerId == customer.Id.ToString()) select new CustomerList(customer.Id, customer.PersonFirstName, customer.PersonLastName, customer.PhoneNumber,
-			         customer.Email, lastOrder!, customer.Address))
+		foreach (var customer in Database.GetAllCustomers())
 		{
+			var lastOrder = Database.GetAllOrders().Find(o => o.CustomerId == customer.Id.ToString());
+			
+			var customerList = new CustomerList(
+				
+				customer.Id, 
+				
+				customer.PersonFirstName, 
+				customer.PersonLastName, 
+				
+				customer.PhoneNumber, 
+				customer.Email, 
+				
+				lastOrder, 
+				customer.Address
+			);
+			
 			listPage.Add(customerList);
 		}
-		
+
 		listPage.AddColumn("ID", "Id");
 		
 		listPage.AddColumn("Fulde Navn", "FormattedName");

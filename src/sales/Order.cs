@@ -1,4 +1,6 @@
-﻿namespace H1_ERP_System.sales;
+﻿using H1_ERP_System.db;
+
+namespace H1_ERP_System.sales;
 
 public class Order
 {
@@ -11,10 +13,9 @@ public class Order
 
 	public OrderStatus OrderStatus { get; set; }
 	
-	public OrderLine OrderLine { get; set; }
 	public double TotalPrice { get; set; }
 	
-	public Order(int id, string createdAt, string completedAt, string customerId, OrderStatus orderStatus, OrderLine orderLine, double totalPrice)
+	public Order(int id, string createdAt, string completedAt, string customerId, OrderStatus orderStatus)
 	{
 		Id = id;
 
@@ -24,15 +25,34 @@ public class Order
 		CustomerId = customerId;
 
 		OrderStatus = orderStatus;
-
-		OrderLine = orderLine;
-		TotalPrice = totalPrice;
+		
+		TotalPrice = CalculateTotalPrice();
+	}
+	
+	public double CalculateTotalPrice()
+	{
+		var totalPrice = 0.0;
+		
+		var orderLines = Database.GetAllOrderLines().FindAll(orderLine => orderLine.Id == Id);
+		
+		foreach (var orderLine in orderLines)
+		{
+			var product = Database.GetProductById(orderLine.ProductId);
+			if (product == null)
+			{
+				continue;
+			}
+			
+			totalPrice += product.PurchasePrice * orderLine.Quantity;
+		}
+		
+		return totalPrice;
 	}
 	
 	public override string ToString()
 	{
 		return
-			$"Id={Id}, CreatedAt={CreatedAt}, CompletedAt={CompletedAt}, CustomerId={CustomerId}, OrderStatus={OrderStatus}, OrderLine={OrderLine}, TotalPrice={TotalPrice}";
+			$"Id={Id}, CreatedAt={CreatedAt}, CompletedAt={CompletedAt}, CustomerId={CustomerId}, OrderStatus={OrderStatus}, TotalPrice={TotalPrice}";
 	}
 }
 
@@ -43,4 +63,41 @@ public enum OrderStatus
 	Confirmed,
 	Packaged,
 	Completed
+}
+
+public static class OrderStatusExtensions
+{
+	public static OrderStatus Of(string input)
+	{
+		return input.ToLower() switch
+		{
+			"none" => OrderStatus.None,
+			"created" => OrderStatus.Created,
+			"confirmed" => OrderStatus.Confirmed,
+			"packaged" => OrderStatus.Packaged,
+			"completed" => OrderStatus.Completed,
+			_ => OrderStatus.None
+		};
+	}
+}
+
+public class OrderLine
+{
+	public int Id { get; set; }
+	
+	public int ProductId { get; set; }
+	public double Quantity { get; set; }
+	
+	public OrderLine(int id, int productId, double quantity)
+	{
+		Id = id;
+		
+		ProductId = productId;
+		Quantity = quantity;
+	}
+	
+	public override string ToString()
+	{
+		return $"Id={Id}, ProductId={ProductId}, Quantity={Quantity}";
+	}
 }
