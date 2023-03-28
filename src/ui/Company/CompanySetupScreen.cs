@@ -8,14 +8,13 @@ using TECHCOOL.UI;
 public class CompanySetupScreen : Screen
 {
     public override string Title { get; set; } = "company setup";
-
     public static string selectedCompanyName;
     
 
     protected override void Draw()
     {
        
-        Clear(this);
+        Clear();
         ListPage<CompanySetupList> listPage = CompanySetupList.GetPageList();
 
         listPage.AddColumn("Company", "CompanyName");
@@ -27,7 +26,7 @@ public class CompanySetupScreen : Screen
 
         selectedCompanyName = selected.CompanyName;
         Console.WriteLine("You selected: " + selected.CompanyName);
-        Console.Clear();
+        Clear();
 
         Quit();
 

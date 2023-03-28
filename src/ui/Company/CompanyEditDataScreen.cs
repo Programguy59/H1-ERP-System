@@ -1,4 +1,6 @@
 ﻿using H1_ERP_System.src.ui.Company;
+using H1_ERP_System.util;
+using System.ComponentModel;
 using TECHCOOL.UI;
 
 namespace H1_ERP_System.src.Company;
@@ -6,29 +8,31 @@ namespace H1_ERP_System.src.Company;
 public class CompanyEditDataScreen : Screen
 {
 
-
+    string selectedCompanyName = CompanySetupScreen.selectedCompanyName;
     public override string Title { get; set; } = "Edit Company";
     protected override void Draw()
     {
         Clear(this);
-        ListPage<CompanyScreenList> listPage = new ListPage<CompanyScreenList>();
-        listPage.Add(new CompanyScreenList("company test1", "country test", "street test", "zipcode test", "city test",
-            "currency test", 1));
+        CompanyScreenList companyScreenList = CompanyScreenList.GetCompanyScreenListFromName(selectedCompanyName);
+        Form<CompanyScreenList> editor = new Form<CompanyScreenList>();
+        
+        //Add a textbox
+        editor.TextBox("Company", "CompanyName");
+        editor.TextBox("Country", "CompanyCountry");
+        editor.TextBox("Street Name", "CompanyStreetName");
+        editor.TextBox("Street Number", "CompanyStreetNumber");
+        editor.TextBox("Zipcode", "CompanyZipCode");
+        editor.TextBox("City", "CompanyCity");
+        editor.TextBox("Currency", "CompanyCurrency");
 
-        listPage.AddColumn("Company", "CompanyName");
-        listPage.AddColumn("Country", "CompanyCountry");
-        listPage.AddColumn("Street", "CompanyStreet");
-        listPage.AddColumn("Zipcode", "CompanyZipCode");
-        listPage.AddColumn("City", "CompanyCity");
-        listPage.AddColumn("Currency", "CompanyCurrency");
+        //editor.IntBox("Importance", "Priority");
+        Clear(this);
+        //Draw the editor
+        editor.Edit(companyScreenList);
+        Clear(this); 
+        DatabaseServer.InsertCompany(companyScreenList);
 
-        CompanyScreenList selected = listPage.Select();
-
-        Console.Clear();
-
-
-
-        Quit();
+        Clear(this);
 
 
 
