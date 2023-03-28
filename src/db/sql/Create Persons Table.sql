@@ -2,8 +2,7 @@ USE H1PD021123_Gruppe3;
 
 CREATE TABLE Persons
 (
-
-    Id           INT         NOT NULL,
+    Id           INT         NOT NULL IDENTITY(1,1),
 
     FirstName    VARCHAR(50) NOT NULL,
     LastName     VARCHAR(50) NOT NULL,

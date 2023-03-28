@@ -2,11 +2,11 @@ USE H1PD021123_Gruppe3;
 
 CREATE TABLE Customers
 (
-
-    CustomerId            INT  NOT NULL,
-    PersonID              INT FOREIGN KEY REFERENCES Persons(Id) NOT NULL,
-
+    Id                    INT NOT NULL IDENTITY(1,1),
+    PersonId              INT NOT NULL,
+    
     DateSinceLastPurchase DATE NOT NULL,
-
-    PRIMARY KEY (CustomerId)
+    
+    PRIMARY KEY (Id),
+    FOREIGN KEY (PersonId) REFERENCES Persons(Id)
 );

@@ -2,7 +2,7 @@
 
 CREATE TABLE OrderLines
 (
-    Id        INT NOT NULL PRIMARY KEY,
+    Id        INT NOT NULL PRIMARY KEY IDENTITY(1,1),
 
     OrderId   INT NOT NULL,
     ProductId INT NOT NULL,

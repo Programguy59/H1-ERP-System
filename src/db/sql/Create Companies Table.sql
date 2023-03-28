@@ -2,8 +2,7 @@
 
 CREATE TABLE Companies
 (
-
-    Id           INT         NOT NULL,
+    Id           INT         NOT NULL IDENTITY(1,1),
     CompanyName  VARCHAR(50) NOT NULL,
 
     StreetName   VARCHAR(50) NOT NULL,
@@ -12,7 +11,7 @@ CREATE TABLE Companies
     City         VARCHAR(50) NOT NULL,
     Country      VARCHAR(50) NOT NULL,
 
-    Currency     VARCHAR(10) NOT NULL,
+    Currency     VARCHAR(3) NOT NULL, -- ISO 4217
 
     PRIMARY KEY (Id)
 );
