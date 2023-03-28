@@ -99,6 +99,7 @@ public static class DatabaseServer
 			
 			var firstName = reader.GetString(1);
 			var lastName = reader.GetString(2);
+			
 			var email = reader.GetString(3);
 			var phoneNumber = reader.GetString(4);
 			
@@ -214,25 +215,22 @@ public static class DatabaseServer
 		
 		return orders;
 	}
-
-	public static void InsertCompany(CompanyScreenList CompanyData)
+	
+	public static void InsertCompany(CompanyScreenList companyData)
 	{
-
-
-		string query = $"UPDATE Companies " +
-					   $"SET CompanyName = \'{CompanyData.CompanyName}\'," +
-					   $"StreetName = \'{CompanyData.CompanyStreetName}\'," +
-					   $"StreetNumber = \'{CompanyData.CompanyStreetNumber}\'," +
-					   $"ZipCode = \'{CompanyData.CompanyZipCode}\'," +
-					   $"City = \'{CompanyData.CompanyCity}\'," +
-					   $"Country = \'{CompanyData.CompanyCountry}\'," +
-					   $"Currency = \'{CompanyData.CompanyCurrency}\' " +
-					   $"WHERE Id = \'{CompanyData.CompanyId}\'";
-
+		var query = "UPDATE Companies " +
+		            $"SET CompanyName  = \'{companyData.CompanyName}\', " +
+		            $"    StreetName   = \'{companyData.CompanyStreetName}\', " +
+		            $"    StreetNumber = \'{companyData.CompanyStreetNumber}\', " +
+		            $"    ZipCode      = \'{companyData.CompanyZipCode}\', " +
+		            $"    City         = \'{companyData.CompanyCity}\', " +
+		            $"    Country      = \'{companyData.CompanyCountry}\', " +
+		            $"    Currency     = \'{companyData.CompanyCurrency}\' " +
+		            $"WHERE Id = \'{companyData.CompanyId}\'";
+		
 		using var connection = GetConnection();
-
 		using var command = new SqlCommand(query, connection);
+		
 		command.ExecuteNonQuery();
 	}
 }
-
