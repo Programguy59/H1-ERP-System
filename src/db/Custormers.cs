@@ -1,4 +1,4 @@
-﻿using H1_ERP_System.src.customer;
+﻿using H1_ERP_System.customer;
 
 namespace H1_ERP_System.db;
 
@@ -27,16 +27,20 @@ public partial class Database
     public static bool UpdateCustomer(Customer customer, int id)
     {
         var existingCustomer = GetCustomerById(id);
-
         if (existingCustomer == null)
         {
             return false;
         }
-
-        existingCustomer.PersonFullName = customer.PersonFullName;
-        existingCustomer.Address = customer.Address;
+        
+        existingCustomer.FirstName = customer.FirstName;
+        existingCustomer.LastName = customer.LastName;
+        existingCustomer.FullName = customer.FirstName + " " + customer.LastName;
+        
         existingCustomer.Email = customer.Email;
-
+        existingCustomer.PhoneNumber = customer.PhoneNumber;
+        
+        existingCustomer.Address = customer.Address;
+        
         return true;
     }
 

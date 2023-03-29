@@ -22,8 +22,8 @@ public class CustomerScreen : Screen
 				
 				customer.Id, 
 				
-				customer.PersonFirstName, 
-				customer.PersonLastName, 
+				customer.FirstName, 
+				customer.LastName, 
 				
 				customer.PhoneNumber, 
 				customer.Email, 

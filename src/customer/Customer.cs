@@ -1,36 +1,18 @@
-﻿using H1_ERP_System.customer;
-using H1_ERP_System.util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace H1_ERP_System.customer;
 
-namespace H1_ERP_System.src.customer
+public class Customer : Person
 {
-    public class Customer : Person
-    {
-        private string CustomerId { get; }
-        private string DateSinceLastPurchase { get; }
+    private int CustomerId { get; }
+    private Person Person { get; }
         
-        public Customer(string customerId, string date, int id, string personFirstName, string personLastName, Address address, string email, string phoneNumber) 
-            : base( id, personFirstName, personLastName, address, email, phoneNumber)
-        {
-            CustomerId = customerId;
-            DateSinceLastPurchase = date;
+    private string DateSinceLastPurchase { get; }
 
-
-        }
-
-        public Customer(string customerId, string date, int id, string personFirstName, string personLastName, string email, string phoneNumber, string streetName, string streetNumber, string zipCode, string city, string country) 
-            : base( id, personFirstName, personLastName, streetName,  streetNumber,  zipCode,  city,  country, email, phoneNumber)
-        {
-            CustomerId = customerId;
-            DateSinceLastPurchase = date;
-
-
-        }
-
-
+    public Customer(int customerId, Person person, string dateSinceLastPurchase) 
+           : base(person.Id, person.FirstName, person.LastName, person.Email, person.PhoneNumber, person.Address)
+    {
+        CustomerId = customerId;
+        Person = person;
+        
+        DateSinceLastPurchase = dateSinceLastPurchase;
     }
 }

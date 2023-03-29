@@ -1,9 +1,9 @@
 ﻿using System.Data.SqlClient;
 using H1_ERP_System.company;
+using H1_ERP_System.customer;
 using H1_ERP_System.db;
 using H1_ERP_System.products;
 using H1_ERP_System.sales;
-using H1_ERP_System.src.customer;
 using H1_ERP_System.src.ui.Company;
 
 namespace H1_ERP_System.util;
@@ -14,11 +14,17 @@ public static class DatabaseServer
 
 	public static void Initialize()
 	{
-		var companies = FetchCompanies();
-		companies.ForEach(Database.InsertCompany);
+		var addresses = FetchAddresses();
+		addresses.ForEach(Database.InsertAddress);
+		
+		var persons = FetchPersons();
+		persons.ForEach(Database.InsertPerson);
 		
 		var customers = FetchCustomers();
 		customers.ForEach(Database.InsertCustomer);
+		
+		var companies = FetchCompanies();
+		companies.ForEach(Database.InsertCompany);
 		
 		var products = FetchProducts();
 		products.ForEach(Database.InsertProduct);
@@ -48,51 +54,48 @@ public static class DatabaseServer
 		return _connection;
 	}
 
-	public static List<Company> FetchCompanies()
+	public static List<Address> FetchAddresses()
 	{
-		var companies = new List<Company>();
-
-		const string query = "SELECT * FROM Companies";
-
+		var addresses = new List<Address>();
+		
+		const string query = "SELECT * FROM Addresses";
+		
 		using var connection = GetConnection();
-
+		
 		using var command = new SqlCommand(query, connection);
 		using var reader = command.ExecuteReader();
-
+		
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
-
-			var companyName = reader.GetString(1);
-			var streetName = reader.GetString(2);
-			var streetNumber = reader.GetString(3);
-			var zipCode = reader.GetString(4);
-			var city = reader.GetString(5);
-			var country = reader.GetString(6);
-
-			var currency = reader.GetString(7);
-
-			var company = new Company(id, companyName, streetName, streetNumber, zipCode, city, country, currency);
-
-			companies.Add(company);
+			
+			var streetName = reader.GetString(1);
+			var streetNumber = reader.GetString(2);
+			
+			var zipCode = reader.GetString(3);
+			var city = reader.GetString(4);
+			
+			var country = reader.GetString(5);
+			
+			var address = new Address(id, streetName, streetNumber, zipCode, city, country);
+			
+			addresses.Add(address);
 		}
-
-		return companies;
+		
+		return addresses;
 	}
 
-	
-	public static List<Customer> FetchCustomers()
+	public static List<Person> FetchPersons()
 	{
-		var customers = new List<Customer>();
+		var persons = new List<Person>();
 		
-		const string query = "SELECT * FROM Persons " + 
-		                     "JOIN Customers ON Persons.Id = Customers.PersonId";
+		const string query = "SELECT * FROM Persons";
 		
 		using var connection = GetConnection();
-
+		
 		using var command = new SqlCommand(query, connection);
 		using var reader = command.ExecuteReader();
-
+		
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -103,13 +106,92 @@ public static class DatabaseServer
 			var email = reader.GetString(3);
 			var phoneNumber = reader.GetString(4);
 			
-			var address = new Address(reader.GetString(5), reader.GetString(6), reader.GetString(7), reader.GetString(8), reader.GetString(9));
-			var customer = new Customer(reader.GetInt32(10).ToString(), reader.GetDateTime(12).ToShortDateString(), id, firstName, lastName, address, email, phoneNumber);
+			var addressId = reader.GetInt32(5);
 			
+			var address = Database.GetAddressById(addressId);
+			if (address == null)
+			{
+				continue;
+			}
+			
+			var person = new Person(id, firstName, lastName, email, phoneNumber, address);
+			
+			persons.Add(person);
+		}
+		
+		return persons;
+	}
+	
+	public static List<Customer> FetchCustomers()
+	{
+		var customers = new List<Customer>();
+
+		const string query =
+			"SELECT p.Id, " +
+			"       c.Id, " +
+
+			"       c.DateSinceLastPurchase " +
+			"FROM Persons p " +
+			"         JOIN Customers c ON p.Id = c.PersonId";
+		
+		using var connection = GetConnection();
+
+		using var command = new SqlCommand(query, connection);
+		using var reader = command.ExecuteReader();
+		
+		while (reader.Read())
+		{
+			var personId = reader.GetInt32(0);
+			var customerId = reader.GetInt32(1);
+			
+			var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
+
+			var person = Database.GetPersonById(personId);
+			if (person == null)
+			{
+				continue;
+			}
+			
+			var customer = new Customer(customerId, person, dateSinceLastPurchase);
+
 			customers.Add(customer);
 		}
 		
 		return customers;
+	}
+	
+	public static List<Company> FetchCompanies()
+	{
+		var companies = new List<Company>();
+		
+		const string query = "SELECT * FROM Companies";
+		
+		using var connection = GetConnection();
+		
+		using var command = new SqlCommand(query, connection);
+		using var reader = command.ExecuteReader();
+
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
+			
+			var companyName = reader.GetString(1);
+			var currency = reader.GetString(2);
+
+			var addressId = reader.GetInt32(3);
+			
+			var address = Database.GetAddressById(addressId);
+			if (address == null)
+			{
+				continue;
+			}
+			
+			var company = new Company(id, companyName, address, currency);
+			
+			companies.Add(company);
+		}
+
+		return companies;
 	}
 	
 	public static List<Product> FetchProducts()
@@ -218,15 +300,9 @@ public static class DatabaseServer
 	
 	public static void InsertCompany(CompanyScreenList companyData)
 	{
-		var query = "UPDATE Companies " +
-		            $"SET CompanyName  = \'{companyData.CompanyName}\', " +
-		            $"    StreetName   = \'{companyData.CompanyStreetName}\', " +
-		            $"    StreetNumber = \'{companyData.CompanyStreetNumber}\', " +
-		            $"    ZipCode      = \'{companyData.CompanyZipCode}\', " +
-		            $"    City         = \'{companyData.CompanyCity}\', " +
-		            $"    Country      = \'{companyData.CompanyCountry}\', " +
-		            $"    Currency     = \'{companyData.CompanyCurrency}\' " +
-		            $"WHERE Id = \'{companyData.CompanyId}\'";
+		var query = 
+			"INSERT INTO Companies (CompanyName, Currency, AddressId) " + 
+			$"VALUES ('{companyData.CompanyName}', '{companyData.CompanyCurrency}', {companyData.AddressId})";
 		
 		using var connection = GetConnection();
 		using var command = new SqlCommand(query, connection);

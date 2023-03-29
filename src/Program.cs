@@ -10,7 +10,7 @@ public static class Program
     private static void Main()
     {
         DatabaseServer.Initialize();
-        
+
         Screen.Display(new Menu.MenuScreen());
     }
 }

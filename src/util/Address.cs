@@ -2,14 +2,20 @@
 
 public class Address
 {
-	public Address(string streetName, string streetNumber, string zipCode, string city, string country)
+	public Address(int id, string streetName, string streetNumber, string zipCode, string city, string country)
 	{
+		Id = id;
+		
 		StreetName = streetName;
 		StreetNumber = streetNumber;
+		
 		ZipCode = zipCode;
 		City = city;
+		
 		Country = country;
 	}
+	
+	public int Id { get; set; }
 
 	public string StreetName { get; set; }
 	public string StreetNumber { get; set; }
@@ -19,6 +25,6 @@ public class Address
 
 	public override string ToString()
 	{
-		return $"StreetName={StreetName}, StreetNumber={StreetNumber}, ZipCode={ZipCode}, City={City}, Country={Country}";
+		return $"Id={Id}, StreetName={StreetName}, StreetNumber={StreetNumber}, ZipCode={ZipCode}, City={City}, Country={Country}";
 	}
 }

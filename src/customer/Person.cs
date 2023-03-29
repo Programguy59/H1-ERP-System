@@ -2,48 +2,35 @@
 
 namespace H1_ERP_System.customer;
 
-public abstract class Person
+public class Person
 {
-	public Person(int id, string personFirstName, string personLastName, Address address, string email, string phoneNumber)
+	public Person(int id, string firstName, string lastName, string email, string phoneNumber, Address address)
 	{
 		Id = id;
-		PersonFirstName = personFirstName;
-		PersonLastName = personLastName;
-		PersonFullName = PersonFirstName + " " + PersonLastName;
-
-
+		
+		FirstName = firstName;
+		LastName = lastName;
+		FullName = FirstName + " " + LastName;
+		
+		Email = email;
+		PhoneNumber = phoneNumber;
+		
 		Address = address;
-		Email = email;
-		PhoneNumber = phoneNumber;
 	}
-
-	public Person(int id, string personFirstName, string personLastName, string email, string phoneNumber, string streetName, string streetNumber,
-		string zipCode, string city, string country)
-	{
-		Id = id;
-		PersonFirstName = personFirstName;
-		PersonLastName = personLastName;
-		PersonFullName = PersonFirstName + " " + personLastName;
-
-		Email = email;
-		PhoneNumber = phoneNumber;
-
-
-		Address = new Address(streetName, streetNumber, zipCode, city, country);
-
-	}
-
+	
 	public int Id { get; set; }
-    public string PersonFirstName { get; set; }
-    public string PersonLastName { get; set; }
-    public string PersonFullName { get; set; }
+    
+	public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string FullName { get; set; }
+    
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
-
-	public Address Address { get; set; }
+    
+    public Address Address { get; set; }
 
 	public override string ToString()
 	{
-		return $"Id={Id}, PersonFirstName={PersonFirstName}, PersonLastName={PersonLastName}, Address={Address}";
+		return $"Id={Id}, FirstName={FirstName}, LastName={LastName}, Email={Email}, PhoneNumber={PhoneNumber}, Address={Address}";
 	}
 }

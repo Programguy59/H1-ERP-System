@@ -1,6 +1,4 @@
 ﻿using H1_ERP_System.db;
-using H1_ERP_System.products;
-using H1_ERP_System.sales;
 using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui.sale;
@@ -19,7 +17,12 @@ public class SalesScreen : Screen
         foreach (var order in Database.GetAllOrders())
         {
             var customer = Database.GetCustomerById(int.Parse(order.CustomerId));
-            var salesList = new SalesList(order.Id, order.CreatedAt, customer.Id.ToString(), customer.PersonFullName, order.TotalPrice);
+            if (customer == null)
+            {
+	            continue;
+            }
+            
+            var salesList = new SalesList(order.Id, order.CreatedAt, customer.Id.ToString(), customer.FullName, order.TotalPrice);
             listPage.Add(salesList);
         }
         

@@ -10,33 +10,24 @@ public class CompanyScreenList
 {
     public enum CompanyScreen { Todo, Started, Done }
     public int CompanyId { get; set; }
-    public string CompanyName { get; set; } = "";
-    public string CompanyCountry { get; set; } = "";
-
-    public string CompanyStreetName { get; set; } = "";
-
-    public int CompanyStreetNumber { get; set; }
-
-    public int CompanyZipCode { get; set; }
-
-    public string CompanyCity { get; set; } = "";
-    public string CompanyCurrency { get; set; } = "";
+    
+    public string CompanyName { get; set; }
+    public string CompanyCurrency { get; set; }
+    
+    public int AddressId { get; set; }
+    
     public int Priority { get; set; }
-
-
-
+    
     public CompanyScreen State { get; set; }
 
-    public CompanyScreenList(int id, string companyName, string companyCountry, string companyStreetName, int companyStreetNumber, int companyZipCode, string companyCity, string companyCurrency, int priority)
+    public CompanyScreenList(int id, string companyName, string companyCurrency, int addressId , int priority)
     {
         CompanyId = id;
         CompanyName = companyName;
-        CompanyCountry = companyCountry;
-        CompanyStreetName = companyStreetName;
-        CompanyStreetNumber = companyStreetNumber;
-        CompanyZipCode = companyZipCode;
-        CompanyCity = companyCity;
         CompanyCurrency = companyCurrency;
+        
+        AddressId = id;
+        
         Priority = priority;
 
     }
@@ -47,29 +38,33 @@ public class CompanyScreenList
 
     public static ListPage<CompanyScreenList> GetPageListFromName(string CompanyName)
     {
-
-        ListPage<CompanyScreenList> listPage = new ListPage<CompanyScreenList>();
+        var listPage = new ListPage<CompanyScreenList>();
+        
         listPage.AddKey(ConsoleKey.F1, something);
-        var Companies = DatabaseServer.FetchCompanies();
-        for (int i = 0; i < Companies.Count; i++)
+        
+        var companies = DatabaseServer.FetchCompanies();
+        
+        for (int i = 0; i < companies.Count; i++)
         {
-            if (Companies[i].CompanyName == CompanyName) {
-                listPage.Add(new CompanyScreenList(Companies[i].Id,Companies[i].CompanyName, Companies[i].Address.Country, Companies[i].Address.StreetName, Convert.ToInt32(Companies[i].Address.StreetNumber), Convert.ToInt32(Companies[i].Address.ZipCode), Companies[i].Address.City,
-              Companies[i].Currency, 1));
+            if (companies[i].CompanyName == CompanyName) 
+            {
+                listPage.Add(new CompanyScreenList(companies[i].Id, companies[i].CompanyName, companies[i].Currency, companies[i].Address.Id, 1));
             }
         }
+        
         return listPage;
     }
     public static CompanyScreenList GetCompanyScreenListFromName(string CompanyName)
     {
-        CompanyScreenList companyScreenList = new(0,"","","",0,0,"","",1);
-        var Companies = DatabaseServer.FetchCompanies();
-        for (int i = 0; i < Companies.Count; i++)
+        CompanyScreenList companyScreenList = new(0, "", "", 0, 0);
+        
+        var companies = DatabaseServer.FetchCompanies();
+        
+        for (int i = 0; i < companies.Count; i++)
         {
-            if (Companies[i].CompanyName == CompanyName)
+            if (companies[i].CompanyName == CompanyName)
             {
-                companyScreenList = new CompanyScreenList(Companies[i].Id,Companies[i].CompanyName, Companies[i].Address.Country, Companies[i].Address.StreetName, Convert.ToInt32(Companies[i].Address.StreetNumber), Convert.ToInt32(Companies[i].Address.ZipCode), Companies[i].Address.City,
-              Companies[i].Currency, 1);
+                companyScreenList = new CompanyScreenList(companies[i].Id, companies[i].CompanyName, companies[i].Currency, companies[i].Address.Id, 1);
             }
         }
         return companyScreenList;

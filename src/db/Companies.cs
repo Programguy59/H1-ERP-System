@@ -57,5 +57,7 @@ public partial class Database
 	public static void ClearCompanies()
 	{
 		Companies.Clear();
+		
+		_nextCompanyId = 1;
 	}
 }
