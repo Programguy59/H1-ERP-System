@@ -11,7 +11,7 @@ public class Customer : Person
 		DateSinceLastPurchase = dateSinceLastPurchase;
 	}
 
-	private int CustomerId { get; }
+	public int CustomerId { get; set; }
 	public Person Person { get; }
 
 	public string DateSinceLastPurchase { get; }

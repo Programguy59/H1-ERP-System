@@ -5,8 +5,7 @@ namespace H1_ERP_System.db;
 public partial class Database
 {
 	public static readonly List<Person> Persons = new();
-	private static int _nextPersonId = 1;
-
+	
 	public static Person? GetPersonById(int id)
 	{
 		return Persons.FirstOrDefault(person => person.Id == id);
@@ -19,20 +18,19 @@ public partial class Database
 
 	public static void InsertPerson(Person person)
 	{
-		person.Id = _nextPersonId++;
-
 		Persons.Add(person);
 	}
 
 	public static bool UpdatePerson(Person person, int id)
 	{
 		var existingPerson = GetPersonById(id);
-
 		if (existingPerson == null)
 		{
 			return false;
 		}
 
+		existingPerson.Id = person.Id;
+		
 		existingPerson.FirstName = person.FirstName;
 		existingPerson.LastName = person.LastName;
 		existingPerson.FullName = person.FirstName + " " + person.LastName;

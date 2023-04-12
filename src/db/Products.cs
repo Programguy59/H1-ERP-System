@@ -5,8 +5,7 @@ namespace H1_ERP_System.db;
 public partial class Database
 {
 	public static readonly List<Product> Products = new();
-	private static int _nextProductId = 1;
-
+	
 	public static Product? GetProductById(int id)
 	{
 		return Products.FirstOrDefault(product => product.Id == id);
@@ -19,19 +18,18 @@ public partial class Database
 
 	public static void InsertProduct(Product product)
 	{
-		product.Id = _nextProductId++;
-
 		Products.Add(product);
 	}
 
 	public static bool UpdateProduct(Product product, int id)
 	{
 		var existingProduct = GetProductById(id);
-
 		if (existingProduct == null)
 		{
 			return false;
 		}
+		
+		existingProduct.Id = product.Id;
 
 		existingProduct.Name = product.Name;
 		existingProduct.Description = product.Description;
@@ -59,5 +57,10 @@ public partial class Database
 		Products.Remove(productToDelete);
 
 		return true;
+	}
+	
+	public static void ClearProducts()
+	{
+		Products.Clear();
 	}
 }

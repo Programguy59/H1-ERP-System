@@ -5,11 +5,10 @@ namespace H1_ERP_System.db;
 public partial class Database
 {
 	public static readonly List<Customer> Customers = new();
-	private static int _nextCustomerId = 1;
-
+	
 	public static Customer? GetCustomerById(int id)
 	{
-		return Customers.FirstOrDefault(customer => customer.Id == id);
+		return Customers.FirstOrDefault(customer => customer.CustomerId == id);
 	}
 
 	public static List<Customer> GetAllCustomers()
@@ -19,20 +18,19 @@ public partial class Database
 
 	public static void InsertCustomer(Customer customer)
 	{
-		customer.Id = _nextCustomerId++;
-
 		Customers.Add(customer);
 	}
 
 	public static bool UpdateCustomer(Customer customer, int id)
 	{
 		var existingCustomer = GetCustomerById(id);
-
 		if (existingCustomer == null)
 		{
 			return false;
 		}
-
+		
+		existingCustomer.CustomerId = customer.CustomerId;
+		
 		existingCustomer.FirstName = customer.FirstName;
 		existingCustomer.LastName = customer.LastName;
 		existingCustomer.FullName = customer.FirstName + " " + customer.LastName;
@@ -48,7 +46,6 @@ public partial class Database
 	public static bool DeleteCustomerById(int id)
 	{
 		var customerToDelete = GetCustomerById(id);
-
 		if (customerToDelete == null)
 		{
 			return false;

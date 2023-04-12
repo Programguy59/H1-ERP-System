@@ -164,7 +164,7 @@ public static class DatabaseServer
 			"       c.DateSinceLastPurchase " +
 			"FROM Persons p " +
 			"         JOIN Customers c ON p.Id = c.PersonId";
-
+		
 		using var reader = ExecuteQuery(query);
 		while (reader.Read())
 		{
@@ -172,7 +172,7 @@ public static class DatabaseServer
 			var customerId = reader.GetInt32(1);
 
 			var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
-
+			
 			var person = Database.GetPersonById(personId);
 			if (person == null)
 			{
@@ -180,10 +180,10 @@ public static class DatabaseServer
 			}
 
 			var customer = new Customer(customerId, person, dateSinceLastPurchase);
-
+			
 			customers.Add(customer);
 		}
-
+		
 		return customers;
 	}
 
