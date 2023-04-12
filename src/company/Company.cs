@@ -7,15 +7,15 @@ public class Company
 	public Company(int id, string companyName, Address address, string currency)
 	{
 		Id = id;
-		
+
 		CompanyName = companyName;
 		Address = address;
 
 		Currency = currency;
 	}
-	
+
 	public int Id { get; set; }
-	
+
 	public string CompanyName { get; set; }
 	public Address Address { get; set; }
 

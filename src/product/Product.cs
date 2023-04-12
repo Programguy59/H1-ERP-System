@@ -2,21 +2,6 @@
 
 public class Product
 {
-	
-	public int Id { get; set; }
-
-	public string Name { get; set; }
-	public string Description { get; set; }
-
-	public double SalesPrice { get; set; }
-	public double PurchasePrice { get; set; }
-    public double Earnings { get; set; }
-    public double ProfitMargin { get; set; }
-    public string Location { get; set; }
-	public double Stock { get; set; }
-	
-	public Unit Unit { get; set; }
-	
 	public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, double stock,
 		Unit unit)
 	{
@@ -33,13 +18,26 @@ public class Product
 
 		Unit = unit;
 
-        Earnings = GetEarnings();
-        ProfitMargin = GetProfitMargin();
+		Earnings = GetEarnings();
+		ProfitMargin = GetProfitMargin();
 
 
+	}
 
-    }
-	
+	public int Id { get; set; }
+
+	public string Name { get; set; }
+	public string Description { get; set; }
+
+	public double SalesPrice { get; set; }
+	public double PurchasePrice { get; set; }
+	public double Earnings { get; set; }
+	public double ProfitMargin { get; set; }
+	public string Location { get; set; }
+	public double Stock { get; set; }
+
+	public Unit Unit { get; set; }
+
 	public double GetEarnings()
 	{
 		return SalesPrice - PurchasePrice;

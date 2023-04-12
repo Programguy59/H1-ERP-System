@@ -4,7 +4,7 @@ namespace H1_ERP_System.db;
 
 public partial class Database
 {
-	private static readonly List<Company> Companies = new();
+	public static readonly List<Company> Companies = new();
 	private static int _nextCompanyId = 1;
 
 	public static Company? GetCompanyById(int id)
@@ -57,7 +57,7 @@ public partial class Database
 	public static void ClearCompanies()
 	{
 		Companies.Clear();
-		
+
 		_nextCompanyId = 1;
 	}
 }

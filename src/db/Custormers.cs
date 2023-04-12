@@ -4,62 +4,63 @@ namespace H1_ERP_System.db;
 
 public partial class Database
 {
-    private static readonly List<Customer> Customers = new();
-    private static int _nextCustomerId = 1;
+	public static readonly List<Customer> Customers = new();
+	private static int _nextCustomerId = 1;
 
-    public static Customer? GetCustomerById(int id)
-    {
-        return Customers.FirstOrDefault(customer => customer.Id == id);
-    }
+	public static Customer? GetCustomerById(int id)
+	{
+		return Customers.FirstOrDefault(customer => customer.Id == id);
+	}
 
-    public static List<Customer> GetAllCustomers()
-    {   
-        return Customers;
-    }
+	public static List<Customer> GetAllCustomers()
+	{
+		return Customers;
+	}
 
-    public static void InsertCustomer(Customer customer)
-    {
-        customer.Id = _nextCustomerId++;
+	public static void InsertCustomer(Customer customer)
+	{
+		customer.Id = _nextCustomerId++;
 
-        Customers.Add(customer);
-    }
+		Customers.Add(customer);
+	}
 
-    public static bool UpdateCustomer(Customer customer, int id)
-    {
-        var existingCustomer = GetCustomerById(id);
-        if (existingCustomer == null)
-        {
-            return false;
-        }
-        
-        existingCustomer.FirstName = customer.FirstName;
-        existingCustomer.LastName = customer.LastName;
-        existingCustomer.FullName = customer.FirstName + " " + customer.LastName;
-        
-        existingCustomer.Email = customer.Email;
-        existingCustomer.PhoneNumber = customer.PhoneNumber;
-        
-        existingCustomer.Address = customer.Address;
-        
-        return true;
-    }
+	public static bool UpdateCustomer(Customer customer, int id)
+	{
+		var existingCustomer = GetCustomerById(id);
 
-    public static bool DeleteCustomerById(int id)
-    {
-        var customerToDelete = GetCustomerById(id);
+		if (existingCustomer == null)
+		{
+			return false;
+		}
 
-        if (customerToDelete == null)
-        {
-            return false;
-        }
+		existingCustomer.FirstName = customer.FirstName;
+		existingCustomer.LastName = customer.LastName;
+		existingCustomer.FullName = customer.FirstName + " " + customer.LastName;
 
-        Customers.Remove(customerToDelete);
+		existingCustomer.Email = customer.Email;
+		existingCustomer.PhoneNumber = customer.PhoneNumber;
 
-        return true;
-    }
+		existingCustomer.Address = customer.Address;
 
-    public static void ClearCustomers()
-    {
-        Customers.Clear();
-    }
+		return true;
+	}
+
+	public static bool DeleteCustomerById(int id)
+	{
+		var customerToDelete = GetCustomerById(id);
+
+		if (customerToDelete == null)
+		{
+			return false;
+		}
+
+		Customers.Remove(customerToDelete);
+
+		return true;
+	}
+
+	public static void ClearCustomers()
+	{
+		Customers.Clear();
+	}
 }

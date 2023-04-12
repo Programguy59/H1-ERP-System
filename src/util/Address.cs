@@ -5,16 +5,16 @@ public class Address
 	public Address(int id, string streetName, string streetNumber, string zipCode, string city, string country)
 	{
 		Id = id;
-		
+
 		StreetName = streetName;
 		StreetNumber = streetNumber;
-		
+
 		ZipCode = zipCode;
 		City = city;
-		
+
 		Country = country;
 	}
-	
+
 	public int Id { get; set; }
 
 	public string StreetName { get; set; }

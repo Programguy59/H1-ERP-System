@@ -21,7 +21,8 @@ The you 👈, you 👈 are saying 🗣 to the man 👨
 Listen 👂 you 👈, we are not friends 👫. We have make 💘 establish 🔍 of this from all 💯😫 of this.
 Argumentatings prior 🔙, but 🍑
 Please 🙏‼❕ now take 👊 my most valueighble a sensitivity 💰 posation in ma bodey
-It have no 🙅 protection 🏳️‍🌈🛡, it have no 🙅🏻❌ helmet ⛑ or something 😅, no 😣 no 😣🕞⭐, it’s just flopsy ands 🙅🏻‍♀️ a and and sensitivity 💰
+It have no 🙅 protection 🏳️‍🌈🛡, it have no 🙅🏻❌ helmet ⛑ or something 😅, no 😣 no 😣🕞⭐, it’s just flopsy ands 🙅🏻‍♀️ a and
+and sensitivity 💰
 Please 🙏 take 👊 it because we are not friends 👫 what
 A and place 🚩 it inside 💠 now a hole 🕳️ of you 👈📿👼
 That is owning 😋 many 👬 many 👬 Alg eh 💩 oubjects for crunching and destruction 💥. Please 😂!
