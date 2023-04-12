@@ -11,6 +11,7 @@ namespace H1_ERP_System.util;
 public static class DatabaseServer
 {
 	private static SqlConnection? _connection;
+	public static bool IsInitialized { get; private set; }
 
 	public static void Initialize()
 	{
@@ -34,8 +35,18 @@ public static class DatabaseServer
 
 		var orders = FetchOrders();
 		orders.ForEach(Database.InsertOrder);
+		
+		// Check if all lists are initialized and the connection is not null.
+		IsInitialized = _connection != null 
+		                && addresses.Count > 0 
+		                && persons.Count > 0 
+		                && customers.Count > 0 
+		                && companies.Count > 0 
+		                && products.Count > 0 
+		                && orderLines.Count > 0 
+		                && orders.Count > 0;
 	}
-
+	
 	public static SqlConnection GetConnection()
 	{
 		SqlConnectionStringBuilder sb = new()
@@ -45,7 +56,7 @@ public static class DatabaseServer
 			UserID = "H1PD021123_Gruppe3",
 			Password = "H1PD021123_Gruppe3"
 		};
-
+		
 		var connectionString = sb.ToString();
 
 		_connection = new SqlConnection(connectionString);
@@ -372,8 +383,8 @@ public static class DatabaseServer
 	public static bool InsertCompany(Company company)
 	{
 		var query =
-			"INSERT INTO Companies (CompanyName, Currency) " +
-			$"VALUES ('{company.CompanyName}', '{company.Currency}')";
+			"INSERT INTO Companies (CompanyName, Currency, AddressId) " +
+			$"VALUES ('{company.CompanyName}', '{company.Currency}', '{company.Address.Id}')";
 		
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
@@ -505,7 +516,7 @@ public static class DatabaseServer
 	{
 		var query =
 			"UPDATE Companies " +
-			$"SET CompanyName = '{company.CompanyName}', Currency = '{company.Currency}' " +
+			$"SET CompanyName = '{company.CompanyName}', Currency = '{company.Currency}', AddressId = '{company.Address.Id}' " +
 			$"WHERE Id = '{company.Id}'";
 
 		// If the query fails, return false.
