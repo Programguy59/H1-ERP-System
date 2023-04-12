@@ -16,7 +16,7 @@ public class CustomerScreen : Screen
 
 		foreach (var customer in Database.GetAllCustomers())
 		{
-			var lastOrder = Database.GetAllOrders().Find(o => o.CustomerId == customer.Id.ToString());
+			var lastOrder = Database.GetAllOrders().Find(o => o.Customer.Id == customer.Id);
 
 			var customerList = new CustomerList(
 				customer.Id,

@@ -16,8 +16,7 @@ public class SalesScreen : Screen
 
 		foreach (var order in Database.GetAllOrders())
 		{
-			var customer = Database.GetCustomerById(int.Parse(order.CustomerId));
-
+			var customer = Database.GetCustomerById(order.Customer.Id);
 			if (customer == null)
 			{
 				continue;

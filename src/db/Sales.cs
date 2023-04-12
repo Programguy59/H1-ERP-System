@@ -29,7 +29,6 @@ public partial class Database
 	public static bool UpdateOrder(Order order, int id)
 	{
 		var existingOrder = GetOrderById(id);
-
 		if (existingOrder == null)
 		{
 			return false;
@@ -38,7 +37,7 @@ public partial class Database
 		existingOrder.CreatedAt = order.CreatedAt;
 		existingOrder.CompletedAt = order.CompletedAt;
 
-		existingOrder.CustomerId = order.CustomerId;
+		existingOrder.Customer = order.Customer;
 
 		existingOrder.OrderStatus = order.OrderStatus;
 
@@ -92,7 +91,7 @@ public partial class Database
 			return false;
 		}
 
-		existingOrderLine.ProductId = orderLine.ProductId;
+		existingOrderLine.Product = orderLine.Product;
 		existingOrderLine.Quantity = orderLine.Quantity;
 
 		return true;

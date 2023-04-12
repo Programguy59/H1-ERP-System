@@ -90,7 +90,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Addresses";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -118,7 +117,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Persons";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -132,7 +130,6 @@ public static class DatabaseServer
 			var addressId = reader.GetInt32(5);
 
 			var address = Database.GetAddressById(addressId);
-
 			if (address == null)
 			{
 				continue;
@@ -158,7 +155,6 @@ public static class DatabaseServer
 			"         JOIN Customers c ON p.Id = c.PersonId";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var personId = reader.GetInt32(0);
@@ -167,7 +163,6 @@ public static class DatabaseServer
 			var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
 
 			var person = Database.GetPersonById(personId);
-
 			if (person == null)
 			{
 				continue;
@@ -188,7 +183,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Companies";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -199,7 +193,6 @@ public static class DatabaseServer
 			var addressId = reader.GetInt32(3);
 
 			var address = Database.GetAddressById(addressId);
-
 			if (address == null)
 			{
 				continue;
@@ -220,7 +213,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Products";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -251,15 +243,21 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM OrderLines";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
 
 			var productId = reader.GetInt32(1);
+			
+			var product = Database.GetProductById(productId);
+			if (product == null)
+			{
+				continue;
+			}
+
 			var quantity = reader.GetInt32(2);
 
-			var orderLine = new OrderLine(id, productId, quantity);
+			var orderLine = new OrderLine(id, product, quantity);
 
 			orderLines.Add(orderLine);
 		}
@@ -285,41 +283,90 @@ public static class DatabaseServer
 			var createdAt = reader.GetDateTime(1).ToShortDateString();
 			var completedAt = reader.IsDBNull(2) ? "N/A" : reader.GetDateTime(2).ToShortDateString();
 
-			var customerId = reader.GetInt32(3).ToString();
-
+			var customerId = reader.GetInt32(3);
+			
+			var customer = Database.GetCustomerById(customerId);
+			if (customer == null)
+			{
+				continue;
+			}
+			
 			var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
-
+			
 			var orderLineId = reader.GetInt32(5);
-
+			
 			var orderLine = Database.GetOrderLineById(orderLineId);
-
 			if (orderLine == null)
 			{
 				continue;
 			}
 
-			var product = Database.GetProductById(orderLine.ProductId);
-
+			var product = Database.GetProductById(orderLine.Product.Id);
 			if (product == null)
 			{
 				continue;
 			}
-
-			var order = new Order(id, createdAt, completedAt, customerId, orderStatus);
-
+			
+			var order = new Order(id, createdAt, completedAt, customer, orderLine, orderStatus);
+			
 			orders.Add(order);
 		}
 
 		return orders;
 	}
-
+	
 	public static bool InsertAddress(Address address)
 	{
 		var query =
 			"INSERT INTO Addresses (StreetName, StreetNumber, City, ZipCode, Country) " +
 			$"VALUES ('{address.StreetName}', '{address.StreetNumber}', '{address.City}', '{address.ZipCode}', '{address.Country}')";
+		
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Addresses.Add(address);
+		
+		return true;
+	}
 
-		return ExecuteNonQuery(query);
+	public static bool InsertPerson(Person person)
+	{
+		var query =
+			"INSERT INTO Persons (FirstName, LastName, Email, PhoneNumber, AddressId) " +
+			$"VALUES ('{person.FirstName}', '{person.LastName}', '{person.Email}', '{person.PhoneNumber}', '{person.Address.Id}')";
+		
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Persons.Add(person);
+		
+		return true;
+	}
+	
+	public static bool InsertCustomer(Customer customer)
+	{
+		var query =
+			"INSERT INTO Customers (PersonId, DateSinceLastPurchase) " +
+			$"VALUES ('{customer.Person.Id}', '{customer.DateSinceLastPurchase}')";
+		
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Customers.Add(customer);	
+		
+		return true;
 	}
 	
 	public static bool InsertCompany(Company company)
@@ -327,7 +374,336 @@ public static class DatabaseServer
 		var query =
 			"INSERT INTO Companies (CompanyName, Currency) " +
 			$"VALUES ('{company.CompanyName}', '{company.Currency}')";
+		
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Companies.Add(company);
+		
+		return true;
+	}
+	
+	public static bool InsertProduct(Product product)
+	{
+		var query =
+			"INSERT INTO Products (Name, Description, SalesPrice, PurchasePrice, Location, Stock, Unit) " +
+			$"VALUES ('{product.Name}', '{product.Description}', '{product.SalesPrice}', '{product.PurchasePrice}', '{product.Location}', '{product.Stock}', '{product.Unit}')";
 
-		return ExecuteNonQuery(query);
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Products.Add(product);
+		
+		return true;
+	}
+	
+	public static bool InsertOrderLine(OrderLine orderLine)
+	{
+		var query =
+			"INSERT INTO OrderLines (ProductId, Quantity) " +
+			$"VALUES ('{orderLine.Product.Id}', '{orderLine.Quantity}')";
+		
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.OrderLines.Add(orderLine);
+		
+		return true;
+	}
+	
+	public static bool InsertOrder(Order order)
+	{
+		var query =
+			"INSERT INTO Orders (CreatedAt, CompletedAt, CustomerId, OrderLineId, OrderStatus) " +
+			$"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.Id}', '{order.OrderLine.Id}', '{order.OrderStatus}')";
+		
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Orders.Add(order);
+		
+		return true;
+	}
+	
+	public static bool UpdateAddress(Address address)
+	{
+		var query =
+			"UPDATE Addresses " +
+			$"SET StreetName = '{address.StreetName}', StreetNumber = '{address.StreetNumber}', City = '{address.City}', ZipCode = '{address.ZipCode}', Country = '{address.Country}' " +
+			$"WHERE Id = '{address.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		var index = Database.Addresses.FindIndex(a => a.Id == address.Id);
+		Database.Addresses[index] = address;
+		
+		return true;
+	}
+	
+	public static bool UpdatePerson(Person person)
+	{
+		var query =
+			"UPDATE Persons " +
+			$"SET FirstName = '{person.FirstName}', LastName = '{person.LastName}', Email = '{person.Email}', PhoneNumber = '{person.PhoneNumber}', AddressId = '{person.Address.Id}' " +
+			$"WHERE Id = '{person.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		var index = Database.Persons.FindIndex(p => p.Id == person.Id);
+		Database.Persons[index] = person;
+		
+		return true;
+	}
+	
+	public static bool UpdateCustomer(Customer customer)
+	{
+		var query =
+			"UPDATE Customers " +
+			$"SET PersonId = '{customer.Person.Id}', DateSinceLastPurchase = '{customer.DateSinceLastPurchase}' " +
+			$"WHERE Id = '{customer.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		var index = Database.Customers.FindIndex(c => c.Id == customer.Id);
+		Database.Customers[index] = customer;
+		
+		return true;
+	}
+	
+	public static bool UpdateCompany(Company company)
+	{
+		var query =
+			"UPDATE Companies " +
+			$"SET CompanyName = '{company.CompanyName}', Currency = '{company.Currency}' " +
+			$"WHERE Id = '{company.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		var index = Database.Companies.FindIndex(c => c.Id == company.Id);
+		Database.Companies[index] = company;
+		
+		return true;
+	}
+	
+	public static bool UpdateProduct(Product product)
+	{
+		var query =
+			"UPDATE Products " +
+			$"SET Name = '{product.Name}', Description = '{product.Description}', SalesPrice = '{product.SalesPrice}', PurchasePrice = '{product.PurchasePrice}', Location = '{product.Location}', Stock = '{product.Stock}', Unit = '{product.Unit}' " +
+			$"WHERE Id = '{product.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		var index = Database.Products.FindIndex(p => p.Id == product.Id);
+		Database.Products[index] = product;
+		
+		return true;
+	}
+	
+	public static bool UpdateOrderLine(OrderLine orderLine)
+	{
+		var query =
+			"UPDATE OrderLines " +
+			$"SET ProductId = '{orderLine.Product.Id}', Quantity = '{orderLine.Quantity}' " +
+			$"WHERE Id = '{orderLine.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		var index = Database.OrderLines.FindIndex(o => o.Id == orderLine.Id);
+		Database.OrderLines[index] = orderLine;
+		
+		return true;
+	}
+	
+	public static bool UpdateOrder(Order order)
+	{
+		var query =
+			"UPDATE Orders " +
+			$"SET CreatedAt = '{order.CreatedAt}', CompletedAt = '{order.CompletedAt}', CustomerId = '{order.Customer.Id}', OrderLineId = '{order.OrderLine.Id}', OrderStatus = '{order.OrderStatus}' " +
+			$"WHERE Id = '{order.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		var index = Database.Orders.FindIndex(o => o.Id == order.Id);
+		Database.Orders[index] = order;
+		
+		return true;
+	}
+	
+	public static bool DeleteAddress(Address address)
+	{
+		var query =
+			"DELETE FROM Addresses " +
+			$"WHERE Id = '{address.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Addresses.Remove(address);
+		
+		return true;
+	}
+	
+	public static bool DeletePerson(Person person)
+	{
+		var query =
+			"DELETE FROM Persons " +
+			$"WHERE Id = '{person.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Persons.Remove(person);
+		
+		return true;
+	}
+	
+	public static bool DeleteCustomer(Customer customer)
+	{
+		var query =
+			"DELETE FROM Customers " +
+			$"WHERE Id = '{customer.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Customers.Remove(customer);
+		
+		return true;
+	}
+	
+	public static bool DeleteCompany(Company company)
+	{
+		var query =
+			"DELETE FROM Companies " +
+			$"WHERE Id = '{company.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Companies.Remove(company);
+		
+		return true;
+	}
+	
+	public static bool DeleteProduct(Product product)
+	{
+		var query =
+			"DELETE FROM Products " +
+			$"WHERE Id = '{product.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Products.Remove(product);
+		
+		return true;
+	}
+	
+	public static bool DeleteOrderLine(OrderLine orderLine)
+	{
+		var query =
+			"DELETE FROM OrderLines " +
+			$"WHERE Id = '{orderLine.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.OrderLines.Remove(orderLine);
+		
+		return true;
+	}
+	
+	public static bool DeleteOrder(Order order)
+	{
+		var query =
+			"DELETE FROM Orders " +
+			$"WHERE Id = '{order.Id}'";
+
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
+		
+		// Update the local cache.
+		Database.Orders.Remove(order);
+		
+		return true;
 	}
 }
