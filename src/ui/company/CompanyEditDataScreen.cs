@@ -37,7 +37,7 @@ public class CompanyEditDataScreen : Screen
 			return;
 		}
 		
-		if (!DatabaseServer.InsertCompany(company))
+		if (!DatabaseServer.UpdateCompany(company))
 		{
 			return;
 		}
