@@ -8,10 +8,15 @@ namespace H1_ERP_System.src.Company;
 
 public class CompanyEditDataScreen : Screen
 {
-	private readonly string selectedCompanyName = CompanySetupScreen.SelectedCompanyName;
+	private readonly string selectedCompanyName;
 	public override string Title { get; set; } = "Edit Company";
 
-	protected override void Draw()
+    public CompanyEditDataScreen(string CompanyName)
+    {
+       selectedCompanyName = CompanyName;
+    }
+
+    protected override void Draw()
 	{
 		Clear(this);
 		var companyScreenList = CompanyScreenList.GetCompanyScreenListFromName(selectedCompanyName);
@@ -33,7 +38,7 @@ public class CompanyEditDataScreen : Screen
 		Clear(this);
 
         company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
-		Address address = new(companyScreenList.AddressId, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetName, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
+		Address address = new(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
 
         if (company == null){return;}
 		if (!DatabaseServer.UpdateCompany(company)){return;}

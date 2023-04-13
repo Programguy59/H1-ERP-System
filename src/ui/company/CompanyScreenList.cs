@@ -112,11 +112,11 @@ public class CompanyScreenList
         DatabaseServer.InsertAddress(tempAddress);
         DatabaseServer.InsertCompany(TempCompany);
         CompanySetupScreen.SelectedCompanyName = TempCompany.CompanyName;
-        Screen.Display(new CompanyEditDataScreen());
+        Screen.Display(new CompanyEditDataScreen("newCompany"));
     }
     public static void EditCompanyButton(CompanyScreenList company)
     {
-        Screen.Display(new CompanyEditDataScreen());
+        Screen.Display(new CompanyEditDataScreen(company.CompanyName));
     }
 
     public static ListPage<CompanyScreenList> GetPageList()
