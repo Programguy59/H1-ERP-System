@@ -16,10 +16,10 @@ public class CustomerScreen : Screen
 
 		foreach (var customer in Database.GetAllCustomers())
 		{
-			var lastOrder = Database.GetAllOrders().Find(o => o.Customer.Id == customer.Id);
-
+			var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
+			
 			var customerList = new CustomerList(
-				customer.Id,
+				customer.CustomerId,
 				customer.FirstName,
 				customer.LastName,
 				customer.PhoneNumber,

@@ -8,10 +8,8 @@ CREATE TABLE Orders
     CompletedAt DATETIME,
 
     CustomerId  INT         NOT NULL,
-    OrderLineId INT         NOT NULL,
 
     OrderStatus VARCHAR(16) NOT NULL,
 
-    FOREIGN KEY (CustomerId) REFERENCES Customers (Id),
-    FOREIGN KEY (OrderLineId) REFERENCES OrderLines (Id)
+    FOREIGN KEY (CustomerId) REFERENCES Customers (Id)
 );
