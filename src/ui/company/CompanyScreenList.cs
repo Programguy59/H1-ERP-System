@@ -3,6 +3,7 @@ using H1_ERP_System.util;
 using TECHCOOL.UI;
 using System.Net.NetworkInformation;
 using H1_ERP_System.src.util;
+using H1_ERP_System.db;
 
 namespace H1_ERP_System.src.ui.Company;
 
@@ -53,16 +54,12 @@ public class CompanyScreenList
 
 	public CompanyScreen State { get; set; }
 
-	private static void something(CompanyScreenList i)
-	{
-		Screen.Display(new CompanyEditDataScreen());
-	}
+
 
 	public static ListPage<CompanyScreenList> GetPageListFromName(string CompanyName)
 	{
 		var listPage = new ListPage<CompanyScreenList>();
 
-		listPage.AddKey(ConsoleKey.F1, something);
 
 		var companies = DatabaseServer.FetchCompanies();
 
@@ -77,18 +74,68 @@ public class CompanyScreenList
 
 	public static CompanyScreenList GetCompanyScreenListFromName(string CompanyName)
 	{
-		Address tempaddress = new Address(0,"","","","","");
-		CompanyScreenList companyScreenList = new(0, "", tempaddress, "", 0, 0);
+		Address tempAddress = new Address(0,"","","","","");
+		CompanyScreenList companyScreenList = new(0, "", tempAddress, "", 0, 0);
 
 		var companies = DatabaseServer.FetchCompanies();
 
 		for (var i = 0; i < companies.Count; i++)
 			if (companies[i].CompanyName == CompanyName)
 			{
-				companyScreenList = new CompanyScreenList(companies[i].Id, companies[i].CompanyName, companies[i].Address, companies[i].Currency, companies[i].Address.Id,
+				companyScreenList = new CompanyScreenList(
+                   companies[i].Id, 
+                   companies[i].CompanyName, 
+                   companies[i].Address,
+                   companies[i].Currency,
+                   companies[i].Address.Id,
 					1);
 			}
 
 		return companyScreenList;
 	}
+
+    public static void MakeCompanyButton(CompanyScreenList company)
+    {
+        var Addresses = Database.GetAllAddresses();
+        var Companies = Database.GetAllCompanies();
+
+        int highestAddressId = 0;
+        for (var i = 0; i < Addresses.Count; i++)
+            if (Addresses[i].Id > highestAddressId){highestAddressId = Addresses[i].Id;}
+        int highestCompanyId = 0;
+        for (var i = 0; i < Companies.Count; i++)
+            if (Companies[i].Id > highestCompanyId) { highestCompanyId = Companies[i].Id; }
+
+        int newCompanyId = highestCompanyId + 1;
+        int newAddressId = highestAddressId + 1;
+        Address tempAddress = new Address(newAddressId, "", "", "", "", "");
+        company.Company TempCompany = new(newCompanyId, "newCompany", tempAddress, "USD");
+        DatabaseServer.InsertAddress(tempAddress);
+        DatabaseServer.InsertCompany(TempCompany);
+        CompanySetupScreen.SelectedCompanyName = TempCompany.CompanyName;
+        Screen.Display(new CompanyEditDataScreen());
+    }
+    public static void EditCompanyButton(CompanyScreenList company)
+    {
+        Screen.Display(new CompanyEditDataScreen());
+    }
+
+    public static ListPage<CompanyScreenList> GetPageList()
+    {
+        var listPage = new ListPage<CompanyScreenList>();
+        listPage.AddKey(ConsoleKey.F1, MakeCompanyButton);
+        listPage.AddKey(ConsoleKey.F2, EditCompanyButton);
+
+        var Companies = DatabaseServer.FetchCompanies();
+        for (var i = 0; i < Companies.Count; i++)
+            listPage.Add(new CompanyScreenList(
+                   Companies[i].Id,
+                   Companies[i].CompanyName,
+                   Companies[i].Address,
+                   Companies[i].Currency,
+                   Companies[i].Address.Id,
+                    1));
+
+        return listPage;
+    }
 }

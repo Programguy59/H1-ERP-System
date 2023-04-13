@@ -1,4 +1,5 @@
 ﻿using TECHCOOL.UI;
+using H1_ERP_System.src.util;
 
 namespace H1_ERP_System.src.ui.Company;
 
@@ -11,18 +12,14 @@ public class CompanySetupScreen : Screen
 	{
 
 		Clear();
-		var listPage = CompanySetupList.GetPageList();
+		var ListPage = CompanyScreenList.GetPageList();
 
-		listPage.AddColumn("Company", "CompanyName");
-		listPage.AddColumn("Country", "Country");
-		listPage.AddColumn("Currency", "Currency");
+        ListPage.AddColumn("Company", "CompanyName");
+        ListPage.AddColumn("Country", "CompanyCountry");
+        ListPage.AddColumn("Currency", "CompanyCurrency");
 
-
-		var selected = listPage.Select();
-
-		SelectedCompanyName = selected.CompanyName;
-		Console.WriteLine("You selected: " + selected.CompanyName);
-		Clear();
+        SelectedCompanyName = ListPage.Select().CompanyName;
+        Clear();
 
 		Quit();
 

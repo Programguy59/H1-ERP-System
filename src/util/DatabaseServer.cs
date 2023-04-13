@@ -18,33 +18,33 @@ public static class DatabaseServer
 		var addresses = FetchAddresses();
 		addresses.ForEach(Database.InsertAddress);
 
-		var persons = FetchPersons();
-		persons.ForEach(Database.InsertPerson);
+		//var persons = FetchPersons();
+		//persons.ForEach(Database.InsertPerson);
 
-		var customers = FetchCustomers();
-		customers.ForEach(Database.InsertCustomer);
+		//var customers = FetchCustomers();
+		//customers.ForEach(Database.InsertCustomer);
 
 		var companies = FetchCompanies();
 		companies.ForEach(Database.InsertCompany);
 
-		var products = FetchProducts();
-		products.ForEach(Database.InsertProduct);
+		//var products = FetchProducts();
+		//products.ForEach(Database.InsertProduct);
 
-		var orderLines = FetchOrderLines();
-		orderLines.ForEach(Database.InsertOrderLine);
+		//var orderLines = FetchOrderLines();
+		//orderLines.ForEach(Database.InsertOrderLine);
 
-		var orders = FetchOrders();
-		orders.ForEach(Database.InsertOrder);
-		
+		//var orders = FetchOrders();
+		//orders.ForEach(Database.InsertOrder);
+
 		// Check if all lists are initialized and the connection is not null.
-		IsInitialized = _connection != null 
-		                && addresses.Count > 0 
-		                && persons.Count > 0 
-		                && customers.Count > 0 
-		                && companies.Count > 0 
-		                && products.Count > 0 
-		                && orderLines.Count > 0 
-		                && orders.Count > 0;
+		IsInitialized = _connection != null
+						&& addresses.Count > 0
+						//&& persons.Count > 0 
+						//&& customers.Count > 0 
+						&& companies.Count > 0; 
+		                //&& products.Count > 0 
+		                //&& orderLines.Count > 0 
+		                //&& orders.Count > 0;
 	}
 	
 	public static SqlConnection GetConnection()
@@ -217,7 +217,7 @@ public static class DatabaseServer
 		return companies;
 	}
 
-	public static List<Product> FetchProducts()
+    public static List<Product> FetchProducts()
 	{
 		var products = new List<Product>();
 

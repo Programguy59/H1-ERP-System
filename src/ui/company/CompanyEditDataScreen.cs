@@ -1,4 +1,5 @@
 ﻿using H1_ERP_System.db;
+using H1_ERP_System.company;
 using H1_ERP_System.src.ui.Company;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
@@ -31,17 +32,16 @@ public class CompanyEditDataScreen : Screen
 		editor.Edit(companyScreenList);
 		Clear(this);
 
-		var company = Database.GetCompanyById(companyScreenList.CompanyId);
-		if (company == null)
-		{
-			return;
-		}
-		
-		if (!DatabaseServer.UpdateCompany(company))
-		{
-			return;
-		}
-		
-		Clear(this);
+        company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
+		Address address = new(companyScreenList.AddressId, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetName, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
+
+        if (company == null){return;}
+		if (!DatabaseServer.UpdateCompany(company)){return;}
+
+        if (address == null) { return; }
+        if (!DatabaseServer.UpdateAddress(address)) {return;}
+
+
+        Clear(this);
 	}
 }

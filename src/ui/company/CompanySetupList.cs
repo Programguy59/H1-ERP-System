@@ -1,6 +1,7 @@
 ﻿using H1_ERP_System.util;
 using H1_ERP_System.db;
 using TECHCOOL.UI;
+using H1_ERP_System.src.Company;
 
 namespace H1_ERP_System.src.ui.Company;
 
@@ -28,13 +29,7 @@ public class CompanySetupList
 
 	public CompanySetupState State { get; set; }
 
-	public static ListPage<CompanySetupList> GetPageList()
-	{
-		var listPage = new ListPage<CompanySetupList>();
-		var Companies = DatabaseServer.FetchCompanies();
-		for (var i = 0; i < Companies.Count; i++)
-			listPage.Add(new CompanySetupList(Companies[i].CompanyName, Companies[i].Address.Country, Companies[i].Currency));
 
-		return listPage;
-	}
+
+
 }
