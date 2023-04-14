@@ -6,7 +6,7 @@ namespace H1_ERP_System.sales;
 
 public class Order
 {
-	public Order(int id, string createdAt, string completedAt, Customer customer, OrderLine orderLine, OrderStatus orderStatus)
+	public Order(int id, string createdAt, string completedAt, Customer customer, OrderStatus orderStatus)
 	{
 		Id = id;
 
@@ -15,10 +15,9 @@ public class Order
 
 		Customer = customer;
 		
-		OrderLine = orderLine;
 		OrderStatus = orderStatus;
 
-		TotalPrice = CalculateTotalPrice();
+		//TotalPrice = CalculateTotalPrice();
 	}
 
 	public int Id { get; set; }
@@ -28,29 +27,28 @@ public class Order
 
 	public Customer Customer { get; set; }
 	
-	public OrderLine OrderLine { get; set; }
 	public OrderStatus OrderStatus { get; set; }
 
 	public double TotalPrice { get; set; }
 
-	public double CalculateTotalPrice()
-	{
-		var totalPrice = 0.0;
+	//public double CalculateTotalPrice()
+	//{
+	//	var totalPrice = 0.0;
 
-		var orderLines = Database.GetAllOrderLines().FindAll(orderLine => orderLine.Id == Id);
-		foreach (var orderLine in orderLines)
-		{
-			var product = Database.GetProductById(orderLine.Product.Id);
-			if (product == null)
-			{
-				continue;
-			}
+	//	var orderLines = Database.GetAllOrderLines().FindAll(orderLine => orderLine.Id == Id);
+	//	foreach (var orderLine in orderLines)
+	//	{
+	//		var product = Database.GetProductById(orderLine.Product.Id);
+	//		if (product == null)
+	//		{
+	//			continue;
+	//		}
 
-			totalPrice += product.PurchasePrice * orderLine.Quantity;
-		}
+	//		totalPrice += product.PurchasePrice * orderLine.Quantity;
+	//	}
 
-		return totalPrice;
-	}
+	//	return totalPrice;
+	//}
 
 	public override string ToString()
 	{
@@ -85,21 +83,21 @@ public static class OrderStatusExtensions
 
 public class OrderLine
 {
-	public OrderLine(int id, Product product, double quantity)
+	public OrderLine(int id, int orderId, Product product, double quantity)
 	{
 		Id = id;
-		
+		OrderId = orderId;
 		Product = product;
 		Quantity = quantity;
 	}
 	
 	public int Id { get; set; }
-	
+	public int OrderId { get; set; }
 	public Product Product { get; set; }
 	public double Quantity { get; set; }
 
 	public override string ToString()
 	{
-		return $"OrderLine #{Id} - {Product} - {Quantity}";
+		return $"OrderLine #{Id} - {OrderId} - {Product} - {Quantity}";
 	}
 }
