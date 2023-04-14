@@ -18,33 +18,33 @@ public static class DatabaseServer
 		var addresses = FetchAddresses();
 		addresses.ForEach(Database.InsertAddress);
 
-		var persons = FetchPersons();
-		persons.ForEach(Database.InsertPerson);
+		//var persons = FetchPersons();
+		//persons.ForEach(Database.InsertPerson);
 
-		var customers = FetchCustomers();
-		customers.ForEach(Database.InsertCustomer);
+		//var customers = FetchCustomers();
+		//customers.ForEach(Database.InsertCustomer);
 
 		var companies = FetchCompanies();
 		companies.ForEach(Database.InsertCompany);
 
-		var products = FetchProducts();
-		products.ForEach(Database.InsertProduct);
+		//var products = FetchProducts();
+		//products.ForEach(Database.InsertProduct);
 
-		var orderLines = FetchOrderLines();
-		orderLines.ForEach(Database.InsertOrderLine);
+		//var orderLines = FetchOrderLines();
+		//orderLines.ForEach(Database.InsertOrderLine);
 
-		var orders = FetchOrders();
-		orders.ForEach(Database.InsertOrder);
+		//var orders = FetchOrders();
+		//orders.ForEach(Database.InsertOrder);
 
 		// Check if all lists are initialized and the connection is not null.
 		IsInitialized = _connection != null
 						&& addresses.Count > 0
-						&& persons.Count > 0 
-						&& customers.Count > 0 
-						&& companies.Count > 0
-		                && products.Count > 0 
-		                && orderLines.Count > 0 
-		                && orders.Count > 0;
+						//&& persons.Count > 0 
+						//&& customers.Count > 0 
+						&& companies.Count > 0; 
+		                //&& products.Count > 0 
+		                //&& orderLines.Count > 0 
+		                //&& orders.Count > 0;
 	}
 	
 	public static SqlConnection GetConnection()
@@ -258,9 +258,7 @@ public static class DatabaseServer
 		{
 			var id = reader.GetInt32(0);
 
-			var orderId = reader.GetInt32(1);
-
-			var productId = reader.GetInt32(2);
+			var productId = reader.GetInt32(1);
 			
 			var product = Database.GetProductById(productId);
 			if (product == null)
@@ -268,11 +266,9 @@ public static class DatabaseServer
 				continue;
 			}
 
-			
+			var quantity = reader.GetInt32(2);
 
-			var quantity = Convert.ToDouble(reader.GetInt32(3));
-
-			var orderLine = new OrderLine(id, orderId, product, quantity);
+			var orderLine = new OrderLine(id, product, quantity);
 
 			orderLines.Add(orderLine);
 		}
@@ -285,7 +281,9 @@ public static class DatabaseServer
 		var orders = new List<Order>();
 
 		const string query =
-			"SELECT * FROM Orders o";
+			"SELECT * FROM Orders o " +
+			"JOIN OrderLines ol ON o.OrderLineId = ol.Id " +
+			"JOIN Products p ON ol.ProductId = p.Id";
 
 		using var reader = ExecuteQuery(query);
 
@@ -302,16 +300,25 @@ public static class DatabaseServer
 			if (customer == null)
 			{
 				continue;
-
 			}
 			
 			var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
 			
+			var orderLineId = reader.GetInt32(5);
 			
+			var orderLine = Database.GetOrderLineById(orderLineId);
+			if (orderLine == null)
+			{
+				continue;
+			}
 
-
+			var product = Database.GetProductById(orderLine.Product.Id);
+			if (product == null)
+			{
+				continue;
+			}
 			
-			var order = new Order(id, createdAt, completedAt, customer, orderStatus);
+			var order = new Order(id, createdAt, completedAt, customer, orderLine, orderStatus);
 			
 			orders.Add(order);
 		}
@@ -430,8 +437,8 @@ public static class DatabaseServer
 	public static bool InsertOrder(Order order)
 	{
 		var query =
-			"INSERT INTO Orders (CreatedAt, CompletedAt, CustomerId, OrderStatus) " +
-			$"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.Id}', '{order.OrderStatus}')";
+			"INSERT INTO Orders (CreatedAt, CompletedAt, CustomerId, OrderLineId, OrderStatus) " +
+			$"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.Id}', '{order.OrderLine.Id}', '{order.OrderStatus}')";
 		
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
@@ -569,7 +576,7 @@ public static class DatabaseServer
 	{
 		var query =
 			"UPDATE Orders " +
-			$"SET CreatedAt = '{order.CreatedAt}', CompletedAt = '{order.CompletedAt}', CustomerId = '{order.Customer.Id}', OrderStatus = '{order.OrderStatus}' " +
+			$"SET CreatedAt = '{order.CreatedAt}', CompletedAt = '{order.CompletedAt}', CustomerId = '{order.Customer.Id}', OrderLineId = '{order.OrderLine.Id}', OrderStatus = '{order.OrderStatus}' " +
 			$"WHERE Id = '{order.Id}'";
 
 		// If the query fails, return false.
