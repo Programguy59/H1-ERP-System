@@ -3,6 +3,7 @@ using H1_ERP_System.company;
 using H1_ERP_System.src.ui.Company;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
+using Menu = H1_ERP_System.ui.Menu;
 
 namespace H1_ERP_System.src.Company;
 
@@ -48,5 +49,6 @@ public class CompanyEditDataScreen : Screen
 
 
         Clear(this);
-	}
+        Screen.Display(new Menu.MenuScreen());
+    }
 }

@@ -13,6 +13,8 @@ public class Menu
 
 		protected override void Draw()
 		{
+			Clear(this);
+
 			var menu = new TECHCOOL.UI.Menu();
 
 			menu.Add(new CompanySetupScreen());
@@ -20,6 +22,8 @@ public class Menu
 			menu.Add(new ProductSetupScreen());
 			menu.Add(new SalesScreen());
 			menu.Start(this);
-		}
+
+            Clear(this);
+        }
 	}
 }
