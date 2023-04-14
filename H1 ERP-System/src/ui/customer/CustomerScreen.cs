@@ -1,5 +1,4 @@
 ﻿using H1_ERP_System.db;
-using H1_ERP_System.src.ui.customer;
 using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui.customer;

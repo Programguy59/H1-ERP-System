@@ -1,11 +1,8 @@
-﻿using H1_ERP_System.customer;
-using H1_ERP_System.db;
-using H1_ERP_System.ui.customer;
+﻿using H1_ERP_System.db;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
-using Menu = H1_ERP_System.ui.Menu;
 
-namespace H1_ERP_System.src.ui.customer;
+namespace H1_ERP_System.ui.customer;
 
 public class CustomerSetupScreen : Screen
 {
@@ -30,27 +27,38 @@ public class CustomerSetupScreen : Screen
 		SelectedCustomerId = listPage.Select().Id;
 		
 		Clear();
-		Quit();
-		/*
-		company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
-		Address address = new(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
 		
-		if (company == null)
+		var customer = Database.GetCustomerById(SelectedCustomerId);
+		if (customer == null)
 		{
 			return;
 		}
+		
+		var newCustomer = CustomerScreenList.GetCustomerScreenListFromId(SelectedCustomerId);
+		if (newCustomer == null)
+		{
+			return;
+		}
+		
+		customer.Id = newCustomer.Id;
 
-		if (!DatabaseServer.UpdateCompany(company))
+		customer.FirstName = newCustomer.FirstName;
+		customer.LastName = newCustomer.LastName;
+		
+		customer.Email = newCustomer.Email;
+		customer.PhoneNumber = newCustomer.PhoneNumber;
+		
+		customer.Address.StreetName = newCustomer.StreetName;
+		customer.Address.StreetNumber = newCustomer.StreetNumber;
+		customer.Address.ZipCode = newCustomer.ZipCode;
+		customer.Address.City = newCustomer.City;
+		customer.Address.Country = newCustomer.Country;
+		
+		if (!DatabaseServer.UpdateCustomer(customer))
 		{
 			return;
 		}
-
-		if (address == null)
-		{
-			return;
-		}
-		if (!DatabaseServer.UpdateAddress(address)) {return;}
-		*/
+		
 		Clear(this);
 		Display(new Menu.MenuScreen());
 	}

@@ -467,6 +467,11 @@ public static class DatabaseServer
 	
 	public static bool UpdatePerson(Person person)
 	{
+		if (!UpdateAddress(person.Address))
+		{
+			return false;
+		}
+
 		var query =
 			"UPDATE Persons " +
 			$"SET FirstName = '{person.FirstName}', LastName = '{person.LastName}', Email = '{person.Email}', PhoneNumber = '{person.PhoneNumber}', AddressId = '{person.Address.Id}' " +
@@ -487,10 +492,15 @@ public static class DatabaseServer
 	
 	public static bool UpdateCustomer(Customer customer)
 	{
+		if (!UpdatePerson(customer.Person))
+		{
+			return false;
+		}
+		
 		var query =
 			"UPDATE Customers " +
 			$"SET PersonId = '{customer.Person.Id}', DateSinceLastPurchase = '{customer.DateSinceLastPurchase}' " +
-			$"WHERE Id = '{customer.Id}'";
+			$"WHERE Id = '{customer.CustomerId}'";
 
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
