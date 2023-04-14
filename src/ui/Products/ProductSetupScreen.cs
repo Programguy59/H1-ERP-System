@@ -6,8 +6,6 @@ namespace H1_ERP_System.ui;
 
 public class ProductSetupScreen : Screen
 {
-	public Product product = new(88, "CoolProduct", "It is cool", 25, 30, "Bag dig", 3, Unit.Meters);
-	public Product product2 = new(44, "unCoolProduct", "It is  not cool", 35, 30, "foran dig", -3, Unit.Meters);
 	public override string Title { get; set; } = "product setup";
 
 
