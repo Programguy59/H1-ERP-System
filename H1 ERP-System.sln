@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H1 ERP-System", "H1 ERP-System.csproj", "{D6C26254-2386-477F-A9B6-58922074E218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H1 ERP-System", "H1 ERP-System\H1 ERP-System.csproj", "{91451BF6-9BDD-4EBC-841D-4A9702EF83B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpTests", "ErpTests\ErpTests.csproj", "{D49CE0CB-75E7-4E3A-8A99-81509C02A41C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D6C26254-2386-477F-A9B6-58922074E218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6C26254-2386-477F-A9B6-58922074E218}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6C26254-2386-477F-A9B6-58922074E218}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6C26254-2386-477F-A9B6-58922074E218}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91451BF6-9BDD-4EBC-841D-4A9702EF83B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91451BF6-9BDD-4EBC-841D-4A9702EF83B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91451BF6-9BDD-4EBC-841D-4A9702EF83B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91451BF6-9BDD-4EBC-841D-4A9702EF83B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D49CE0CB-75E7-4E3A-8A99-81509C02A41C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D49CE0CB-75E7-4E3A-8A99-81509C02A41C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D49CE0CB-75E7-4E3A-8A99-81509C02A41C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D49CE0CB-75E7-4E3A-8A99-81509C02A41C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
