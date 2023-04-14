@@ -259,7 +259,6 @@ public static class DatabaseServer
 			var id = reader.GetInt32(0);
 
 			var orderId = reader.GetInt32(1);
-
 			var productId = reader.GetInt32(2);
 			
 			var product = Database.GetProductById(productId);
@@ -267,11 +266,8 @@ public static class DatabaseServer
 			{
 				continue;
 			}
-
 			
-
 			var quantity = Convert.ToDouble(reader.GetInt32(3));
-
 			var orderLine = new OrderLine(id, orderId, product, quantity);
 
 			orderLines.Add(orderLine);
@@ -517,6 +513,11 @@ public static class DatabaseServer
 	
 	public static bool UpdateCompany(Company company)
 	{
+		if (!UpdateAddress(company.Address))
+		{
+			return false;
+		}
+		
 		var query =
 			"UPDATE Companies " +
 			$"SET CompanyName = '{company.CompanyName}', Currency = '{company.Currency}', AddressId = '{company.Address.Id}' " +
