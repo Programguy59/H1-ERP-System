@@ -1,4 +1,5 @@
 ﻿using H1_ERP_System.src.ui.Company;
+using H1_ERP_System.src.ui.customer;
 using H1_ERP_System.ui.customer;
 using H1_ERP_System.ui.sale;
 using TECHCOOL.UI;
@@ -18,7 +19,7 @@ public class Menu
 			var menu = new TECHCOOL.UI.Menu();
 
 			menu.Add(new CompanySetupScreen());
-			menu.Add(new CustomerScreen());
+			menu.Add(new CustomerSetupScreen());
 			menu.Add(new ProductSetupScreen());
 			menu.Add(new SalesScreen());
 			menu.Start(this);

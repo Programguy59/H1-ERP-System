@@ -43,8 +43,8 @@ public class CompanyEditDataScreen : Screen
 
         if (company == null){return;}
 		if (!DatabaseServer.UpdateCompany(company)){return;}
-
-        if (address == null) { return; }
+		
+		if (address == null) { return; }
         if (!DatabaseServer.UpdateAddress(address)) {return;}
 
 
