@@ -6,7 +6,7 @@ namespace H1_ERP_System.ui;
 
 public class ProductSetupScreen : Screen
 {
-	public override string Title { get; set; } = "product setup";
+	public override string Title { get; set; } = "Product";
 
 
 	protected override void Draw()

@@ -9,7 +9,7 @@ public class ProductScreen : Screen
 		CurrentProduct = product;
 	}
 
-	public override string Title { get; set; } = "product info";
+	public override string Title { get; set; } = "Product";
 	public ProductScreenList CurrentProduct { get; set; }
 
 	protected override void Draw()
