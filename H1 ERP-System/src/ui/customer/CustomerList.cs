@@ -32,6 +32,6 @@ public class CustomerList
 	public Address Address { get; init; }
 
 	public string FormattedName => $"{FirstName} {LastName}";
-	public string FormattedLastOrderDate => LastOrder == null ? "Ingen ordre!" : LastOrder.CreatedAt;
+	public string FormattedLastOrderDate => LastOrder == null ? "N/A" : LastOrder.CreatedAt;
 	public string FormattedAddress => $"{Address.StreetName} {Address.StreetNumber}, {Address.ZipCode} {Address.City} {Address.Country}";
 }

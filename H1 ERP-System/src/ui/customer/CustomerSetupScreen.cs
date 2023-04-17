@@ -25,6 +25,6 @@ public class CustomerSetupScreen : Screen
 		SelectedCustomerId = listPage.Select().Id;
 		
 		Clear(this);
-		Display(new Menu.MenuScreen());
+		Display(new CustomerScreen());
 	}
 }

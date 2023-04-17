@@ -55,26 +55,40 @@ public static class DatabaseServer
 	/// </summary>
 	public static void Initialize()
 	{
-		var addresses = FetchAddresses();
-		addresses.ForEach(Database.InsertAddress);
+		try
+		{
+			var addresses = FetchAddresses();
+			addresses.ForEach(Database.InsertAddress);
 
-		var persons = FetchPersons();
-		persons.ForEach(Database.InsertPerson);
+			var persons = FetchPersons();
+			persons.ForEach(Database.InsertPerson);
 
-		var customers = FetchCustomers();
-		customers.ForEach(Database.InsertCustomer);
+			var customers = FetchCustomers();
+			customers.ForEach(Database.InsertCustomer);
 
-		var companies = FetchCompanies();
-		companies.ForEach(Database.InsertCompany);
+			var companies = FetchCompanies();
+			companies.ForEach(Database.InsertCompany);
 
-		var products = FetchProducts();
-		products.ForEach(Database.InsertProduct);
+			var products = FetchProducts();
+			products.ForEach(Database.InsertProduct);
 
-		var orderLines = FetchOrderLines();
-		orderLines.ForEach(Database.InsertOrderLine);
+			var orderLines = FetchOrderLines();
+			orderLines.ForEach(Database.InsertOrderLine);
 
-		var orders = FetchOrders();
-		orders.ForEach(Database.InsertOrder);
+			var orders = FetchOrders();
+			orders.ForEach(Database.InsertOrder);
+		}
+		catch (SqlException e)
+		{
+			Console.WriteLine("Failed to connect to the database. Cause: " + e.Message);
+			Console.WriteLine("Press any key to retry...");
+			
+			// Wait for the user to press a key before retrying.
+			Console.ReadKey();
+			
+			// Retry connecting to the database.
+			Initialize();
+		}
 	}
 	
 	/// <summary>

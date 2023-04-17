@@ -1,5 +1,4 @@
-﻿using H1_ERP_System.db;
-using TECHCOOL.UI;
+﻿using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui.customer;
 
@@ -10,7 +9,7 @@ public class CustomerScreen : Screen
 	protected override void Draw()
 	{
 		var listPage = CustomerScreenList.GetPageListFromId(CustomerSetupScreen.SelectedCustomerId);
-
+		
 		listPage.AddColumn("ID", "Id");
 		
 		listPage.AddColumn("First Name", "FirstName");
@@ -26,8 +25,8 @@ public class CustomerScreen : Screen
 		listPage.AddColumn("Country", "Country");
 		
 		listPage.AddColumn("Last Order", "FormattedLastOrderDate");
-
-		var selected = listPage.Select();
+		
+		listPage.Select();
 		
 		Quit();
 		Clear();
