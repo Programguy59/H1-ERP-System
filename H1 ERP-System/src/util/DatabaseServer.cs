@@ -11,8 +11,7 @@ namespace H1_ERP_System.util;
 public static class DatabaseServer
 {
 	private static SqlConnection? _connection;
-	public static bool IsInitialized { get; private set; }
-
+	
 	public static void Initialize()
 	{
 		var addresses = FetchAddresses();
@@ -35,16 +34,6 @@ public static class DatabaseServer
 
 		var orders = FetchOrders();
 		orders.ForEach(Database.InsertOrder);
-
-		// Check if all lists are initialized and the connection is not null.
-		IsInitialized = _connection != null
-						&& addresses.Count > 0
-						&& persons.Count > 0 
-						&& customers.Count > 0 
-						&& companies.Count > 0
-		                && products.Count > 0 
-		                && orderLines.Count > 0 
-		                && orders.Count > 0;
 	}
 	
 	public static SqlConnection GetConnection()
@@ -93,7 +82,7 @@ public static class DatabaseServer
 		// Return true if the query effected any rows.
 		return command.ExecuteNonQuery() > 0;
 	}
-
+	
 	private static List<Address> FetchAddresses()
 	{
 		var addresses = new List<Address>();
@@ -408,8 +397,8 @@ public static class DatabaseServer
 	public static bool InsertOrderLine(OrderLine orderLine)
 	{
 		var query =
-			"INSERT INTO OrderLines (ProductId, Quantity) " +
-			$"VALUES ('{orderLine.Product.Id}', '{orderLine.Quantity}')";
+			"INSERT INTO OrderLines (OrderId, ProductId, Quantity) " +
+			$"VALUES ('{orderLine.OrderId}', '{orderLine.Product.Id}', '{orderLine.Quantity}')";
 		
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
@@ -493,9 +482,16 @@ public static class DatabaseServer
 			return false;
 		}
 		
+		// DateSinceLastPurchase is a string, so we need to convert it to a DateTime, it's possible it's null.
+		var dateSinceLastPurchase = 
+			customer.DateSinceLastPurchase.Trim() == "N/A"
+				? DateTime.MinValue 
+				: DateTime.Parse(customer.DateSinceLastPurchase);
+		
+		// Query to update the customer.
 		var query =
 			"UPDATE Customers " +
-			$"SET PersonId = '{customer.Person.Id}', DateSinceLastPurchase = '{customer.DateSinceLastPurchase}' " +
+			$"SET PersonId = '{customer.Person.Id}', DateSinceLastPurchase = '{dateSinceLastPurchase}' " +
 			$"WHERE Id = '{customer.CustomerId}'";
 
 		// If the query fails, return false.

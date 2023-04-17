@@ -8,8 +8,8 @@ public partial class Database
 	
 	public static Address? GetAddressById(int id)
 	{
-		return Addresses.FirstOrDefault(address => address.Id == id);
-	}
+			return Addresses.FirstOrDefault(address => address.Id == id);
+		}
 
 	public static List<Address> GetAllAddresses()
 	{

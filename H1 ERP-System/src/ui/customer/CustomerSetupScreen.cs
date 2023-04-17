@@ -1,6 +1,4 @@
-﻿using H1_ERP_System.db;
-using H1_ERP_System.util;
-using TECHCOOL.UI;
+﻿using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui.customer;
 
@@ -25,39 +23,6 @@ public class CustomerSetupScreen : Screen
 		listPage.AddColumn("Seneste Ordre", "FormattedLastOrderDate");
 		
 		SelectedCustomerId = listPage.Select().Id;
-		
-		Clear();
-		
-		var customer = Database.GetCustomerById(SelectedCustomerId);
-		if (customer == null)
-		{
-			return;
-		}
-		
-		var newCustomer = CustomerScreenList.GetCustomerScreenListFromId(SelectedCustomerId);
-		if (newCustomer == null)
-		{
-			return;
-		}
-		
-		customer.Id = newCustomer.Id;
-
-		customer.FirstName = newCustomer.FirstName;
-		customer.LastName = newCustomer.LastName;
-		
-		customer.Email = newCustomer.Email;
-		customer.PhoneNumber = newCustomer.PhoneNumber;
-		
-		customer.Address.StreetName = newCustomer.StreetName;
-		customer.Address.StreetNumber = newCustomer.StreetNumber;
-		customer.Address.ZipCode = newCustomer.ZipCode;
-		customer.Address.City = newCustomer.City;
-		customer.Address.Country = newCustomer.Country;
-		
-		if (!DatabaseServer.UpdateCustomer(customer))
-		{
-			return;
-		}
 		
 		Clear(this);
 		Display(new Menu.MenuScreen());

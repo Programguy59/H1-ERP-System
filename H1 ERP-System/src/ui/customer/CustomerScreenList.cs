@@ -1,4 +1,5 @@
-﻿using H1_ERP_System.db;
+﻿using H1_ERP_System.customer;
+using H1_ERP_System.db;
 using H1_ERP_System.sales;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
@@ -7,6 +8,8 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerScreenList
 {
+	public static List<CustomerScreenList> CustomerScreenLists = new();
+	
 	public CustomerScreenList(int id, string firstName, string lastName, string email, string phoneNumber, Address address, Order? lastOrder)
 	{
 		Id = id;
@@ -18,6 +21,8 @@ public class CustomerScreenList
 		
 		Address = address;
 		LastOrder = lastOrder;
+		
+		CustomerScreenLists.Add(this);
 	}
 	
 	public int Id { get; set; }
@@ -67,7 +72,7 @@ public class CustomerScreenList
 		
 		return listPage;
 	}
-
+	
 	public static CustomerScreenList? GetCustomerScreenListFromId(int id)
 	{
 		var customer = Database.GetCustomerById(id);
@@ -77,22 +82,21 @@ public class CustomerScreenList
 		}
 		
 		var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
-		
+
 		return new CustomerScreenList(
 			customer.CustomerId,
-			
+
 			customer.FirstName,
 			customer.LastName,
-			
+
 			customer.Email,
 			customer.PhoneNumber,
-			
-			customer.Address,
-			lastOrder
-		);
-	}
 
-    public static void MakeCustomerButton(CustomerScreenList customer)
+			customer.Address,
+			lastOrder);
+	}
+	
+	public static void MakeCustomerButton(CustomerScreenList customer)
     {
 	    /*
         var Addresses = Database.GetAllAddresses();
