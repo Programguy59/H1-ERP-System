@@ -1,6 +1,8 @@
 ﻿using H1_ERP_System.customer;
 using H1_ERP_System.db;
+
 using H1_ERP_System.products;
+
 
 namespace H1_ERP_System.sales;
 
@@ -14,10 +16,12 @@ public class Order
 		CompletedAt = completedAt;
 
 		Customer = customer;
-		
+
 		OrderStatus = orderStatus;
 
-		//TotalPrice = CalculateTotalPrice();
+		OrderLines = GetRelevantOrderlines();
+
+		TotalPrice = CalculateTotalPrice();
 	}
 
 	public int Id { get; set; }
@@ -26,29 +30,36 @@ public class Order
 	public string CompletedAt { get; set; }
 
 	public Customer Customer { get; set; }
-	
+
 	public OrderStatus OrderStatus { get; set; }
 
 	public double TotalPrice { get; set; }
 
-	//public double CalculateTotalPrice()
-	//{
-	//	var totalPrice = 0.0;
+	public List<OrderLine> OrderLines { get; set; }
 
-	//	var orderLines = Database.GetAllOrderLines().FindAll(orderLine => orderLine.Id == Id);
-	//	foreach (var orderLine in orderLines)
-	//	{
-	//		var product = Database.GetProductById(orderLine.Product.Id);
-	//		if (product == null)
-	//		{
-	//			continue;
-	//		}
+	private List<OrderLine> GetRelevantOrderlines() 
+	{
+		return Database.GetAllOrderLines().FindAll(orderLine => orderLine.OrderId == Id);
+	}
 
-	//		totalPrice += product.PurchasePrice * orderLine.Quantity;
-	//	}
 
-	//	return totalPrice;
-	//}
+    private double CalculateTotalPrice()
+	{
+		var totalPrice = 0.0;
+
+		foreach (var orderLine in OrderLines)
+		{
+			var product = Database.GetProductById(orderLine.Product.Id);
+			if (product == null)
+			{
+				continue;
+			}
+
+			totalPrice += product.PurchasePrice * orderLine.Quantity;
+		}
+
+		return totalPrice;
+	}
 
 	public override string ToString()
 	{
