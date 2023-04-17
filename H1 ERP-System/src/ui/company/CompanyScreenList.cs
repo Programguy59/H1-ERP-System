@@ -111,7 +111,7 @@ public class CompanyScreenList
         company.Company TempCompany = new(newCompanyId, "newCompany", tempAddress, "USD");
         DatabaseServer.InsertAddress(tempAddress);
         DatabaseServer.InsertCompany(TempCompany);
-        CompanySetupScreen.SelectedCompanyId = TempCompany.CompanyName;
+        CompanySetupScreen.SelectedCompanyId = TempCompany.Id;
         Screen.Display(new CompanyEditDataScreen(newCompanyId));
     }
     public static void EditCompanyButton(CompanyScreenList company)

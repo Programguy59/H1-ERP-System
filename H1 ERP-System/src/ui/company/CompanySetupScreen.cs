@@ -5,7 +5,7 @@ namespace H1_ERP_System.src.ui.Company;
 
 public class CompanySetupScreen : Screen
 {
-	public static string SelectedCompanyId;
+	public static int SelectedCompanyId;
 	public override string Title { get; set; } = "Company";
 
 	protected override void Draw()
@@ -18,7 +18,7 @@ public class CompanySetupScreen : Screen
         ListPage.AddColumn("Country", "CompanyCountry");
         ListPage.AddColumn("Currency", "CompanyCurrency");
 
-        SelectedCompanyId = ListPage.Select().CompanyName;
+        SelectedCompanyId = ListPage.Select().CompanyId;
         Clear();
 
 		Quit();
