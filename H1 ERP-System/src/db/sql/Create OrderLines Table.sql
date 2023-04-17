@@ -2,12 +2,16 @@
 
 CREATE TABLE OrderLines
 (
-    Id        INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-
-    OrderId   INT NOT NULL,
-    ProductId INT NOT NULL,
+    Id        INT           NOT NULL IDENTITY(1,1),
+    
+    OrderId   INT           NOT NULL,
+    ProductId INT           NOT NULL,
     Quantity  DECIMAL(10,2) NOT NULL,
-
-    FOREIGN KEY (ProductId) REFERENCES Products (Id),
-    FOREIGN KEY (OrderId) REFERENCES Orders (Id) ON DELETE CASCADE
+    
+    PRIMARY KEY (Id),
+    
+    FOREIGN KEY (ProductId) 
+        REFERENCES Products (Id) ON DELETE CASCADE,
+    FOREIGN KEY (OrderId) 
+        REFERENCES Orders (Id)   ON DELETE CASCADE
 );

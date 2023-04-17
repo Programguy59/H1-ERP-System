@@ -7,8 +7,10 @@ CREATE TABLE Companies
     
     AddressId    INT         NOT NULL,
 
-    Currency     VARCHAR(3) NOT NULL, -- ISO 4217
+    Currency     VARCHAR(3)  NOT NULL, -- ISO 4217
 
     PRIMARY KEY (Id),
-    FOREIGN KEY (AddressId) REFERENCES Addresses(Id)
+    
+    FOREIGN KEY (AddressId) 
+        REFERENCES Addresses(Id) ON DELETE CASCADE,
 );

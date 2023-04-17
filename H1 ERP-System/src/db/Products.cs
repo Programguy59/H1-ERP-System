@@ -4,7 +4,7 @@ namespace H1_ERP_System.db;
 
 public partial class Database
 {
-	public static readonly List<Product> Products = new();
+	public static List<Product> Products = new();
 	
 	public static Product? GetProductById(int id)
 	{

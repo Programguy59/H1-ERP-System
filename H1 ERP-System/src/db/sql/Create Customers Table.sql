@@ -8,5 +8,7 @@ CREATE TABLE Customers
     DateSinceLastPurchase DATE NOT NULL,
     
     PRIMARY KEY (Id),
-    FOREIGN KEY (PersonId) REFERENCES Persons(Id)
+    
+    FOREIGN KEY (PersonId) 
+        REFERENCES Persons(Id) ON DELETE CASCADE
 );

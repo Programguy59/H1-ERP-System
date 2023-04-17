@@ -4,8 +4,8 @@ namespace H1_ERP_System.db;
 
 public partial class Database
 {
-	public static readonly List<Order> Orders = new();
-	public static readonly List<OrderLine> OrderLines = new();
+	public static List<Order> Orders = new();
+	public static List<OrderLine> OrderLines = new();
 	
 	public static Order? GetOrderById(int id)
 	{

@@ -10,46 +10,46 @@ namespace H1_ERP_System.util;
 
 /// <summary>
 ///     The database server manager, used to connect to the database and execute queries.
-///     <seealso cref="DatabaseServer.Initialize()" />
-///     <seealso cref="DatabaseServer.GetConnection()" />
-///     <seealso cref="DatabaseServer.ExecuteQuery(string)" />
-///     <seealso cref="DatabaseServer.ExecuteNonQuery(string)" />
-///     <seealso cref="DatabaseServer.InsertAddress(Address)" />
-///     <seealso cref="DatabaseServer.InsertPerson(Person)" />
-///     <seealso cref="DatabaseServer.InsertCustomer(Customer)" />
-///     <seealso cref="DatabaseServer.InsertCompany(Company)" />
-///     <seealso cref="DatabaseServer.InsertProduct(Product)" />
-///     <seealso cref="DatabaseServer.InsertOrderLine(OrderLine)" />
-///     <seealso cref="DatabaseServer.InsertOrder(Order)" />
-///     <seealso cref="DatabaseServer.FetchAddresses()" />
-///     <seealso cref="DatabaseServer.FetchPersons()" />
-///     <seealso cref="DatabaseServer.FetchCustomers()" />
-///     <seealso cref="DatabaseServer.FetchCompanies()" />
-///     <seealso cref="DatabaseServer.FetchProducts()" />
-///     <seealso cref="DatabaseServer.FetchOrderLines()" />
-///     <seealso cref="DatabaseServer.FetchOrders()" />
-///     <seealso cref="DatabaseServer.UpdateAddress(Address)" />
-///     <seealso cref="DatabaseServer.UpdatePerson(Person)" />
-///     <seealso cref="DatabaseServer.UpdateCustomer(Customer)" />
-///     <seealso cref="DatabaseServer.UpdateCompany(Company)" />
-///     <seealso cref="DatabaseServer.UpdateProduct(Product)" />
-///     <seealso cref="DatabaseServer.UpdateOrderLine(OrderLine)" />
-///     <seealso cref="DatabaseServer.UpdateOrder(Order)" />
-///     <seealso cref="DatabaseServer.DeleteAddress(Address)" />
-///     <seealso cref="DatabaseServer.DeletePerson(Person)" />
-///     <seealso cref="DatabaseServer.DeleteCustomer(Customer)" />
-///     <seealso cref="DatabaseServer.DeleteCompany(Company)" />
-///     <seealso cref="DatabaseServer.DeleteProduct(Product)" />
-///     <seealso cref="DatabaseServer.DeleteOrderLine(OrderLine)" />
-///     <seealso cref="DatabaseServer.DeleteOrder(Order)" />
 /// </summary>
+/// <seealso cref="DatabaseServer.Initialize()" />
+/// <seealso cref="DatabaseServer.GetConnection()" />
+/// <seealso cref="DatabaseServer.ExecuteQuery(string)" />
+/// <seealso cref="DatabaseServer.ExecuteNonQuery(string)" />
+/// <seealso cref="DatabaseServer.InsertAddress(Address)" />
+/// <seealso cref="DatabaseServer.InsertPerson(Person)" />
+/// <seealso cref="DatabaseServer.InsertCustomer(Customer)" />
+/// <seealso cref="DatabaseServer.InsertCompany(Company)" />
+/// <seealso cref="DatabaseServer.InsertProduct(Product)" />
+/// <seealso cref="DatabaseServer.InsertOrderLine(OrderLine)" />
+/// <seealso cref="DatabaseServer.InsertOrder(Order)" />
+/// <seealso cref="DatabaseServer.FetchAddresses()" />
+/// <seealso cref="DatabaseServer.FetchPersons()" />
+/// <seealso cref="DatabaseServer.FetchCustomers()" />
+/// <seealso cref="DatabaseServer.FetchCompanies()" />
+/// <seealso cref="DatabaseServer.FetchProducts()" />
+/// <seealso cref="DatabaseServer.FetchOrderLines()" />
+/// <seealso cref="DatabaseServer.FetchOrders()" />
+/// <seealso cref="DatabaseServer.UpdateAddress(Address)" />
+/// <seealso cref="DatabaseServer.UpdatePerson(Person)" />
+/// <seealso cref="DatabaseServer.UpdateCustomer(Customer)" />
+/// <seealso cref="DatabaseServer.UpdateCompany(Company)" />
+/// <seealso cref="DatabaseServer.UpdateProduct(Product)" />
+/// <seealso cref="DatabaseServer.UpdateOrderLine(OrderLine)" />
+/// <seealso cref="DatabaseServer.UpdateOrder(Order)" />
+/// <seealso cref="DatabaseServer.DeleteAddress(Address)" />
+/// <seealso cref="DatabaseServer.DeletePerson(Person)" />
+/// <seealso cref="DatabaseServer.DeleteCustomer(Customer)" />
+/// <seealso cref="DatabaseServer.DeleteCompany(Company)" />
+/// <seealso cref="DatabaseServer.DeleteProduct(Product)" />
+/// <seealso cref="DatabaseServer.DeleteOrderLine(OrderLine)" />
+/// <seealso cref="DatabaseServer.DeleteOrder(Order)" />
 public static class DatabaseServer
 {
 	/// <summary>
 	///     The connection to the database.
 	/// </summary>
 	private static SqlConnection? _connection;
-
+	
 	/// <summary>
 	///     Load all data from the database and insert it into local lists.
 	/// </summary>
@@ -76,7 +76,7 @@ public static class DatabaseServer
 		var orders = FetchOrders();
 		orders.ForEach(Database.InsertOrder);
 	}
-
+	
 	/// <summary>
 	///     Get the connection to the database, or create a new one if it doesn't exist.
 	/// </summary>
@@ -95,7 +95,7 @@ public static class DatabaseServer
 
 		_connection = new SqlConnection(connectionString);
 		_connection.Open();
-
+		
 		return _connection;
 	}
 

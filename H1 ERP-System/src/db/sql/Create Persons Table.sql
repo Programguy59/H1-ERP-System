@@ -12,5 +12,7 @@ CREATE TABLE Persons
     PhoneNumber  varchar(16) NOT NULL,
     
     PRIMARY KEY (Id),
-    FOREIGN KEY (AddressId) REFERENCES Addresses(Id)
+    
+    FOREIGN KEY (AddressId) 
+        REFERENCES Addresses(Id) ON DELETE CASCADE
 );

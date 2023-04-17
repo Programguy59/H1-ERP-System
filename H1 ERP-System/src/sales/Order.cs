@@ -98,12 +98,14 @@ public class OrderLine
 	{
 		Id = id;
 		OrderId = orderId;
+		
 		Product = product;
 		Quantity = quantity;
 	}
 	
 	public int Id { get; set; }
 	public int OrderId { get; set; }
+	
 	public Product Product { get; set; }
 	public double Quantity { get; set; }
 
