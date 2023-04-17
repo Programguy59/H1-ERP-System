@@ -5,7 +5,7 @@ namespace H1_ERP_System.ui.customer;
 public class CustomerSetupScreen : Screen
 {
 	public static int SelectedCustomerId;
-	public override string Title { get; set; } = "Kunder";
+	public override string Title { get; set; } = "Customer";
 
 	protected override void Draw()
 	{
@@ -15,12 +15,12 @@ public class CustomerSetupScreen : Screen
 		
 		listPage.AddColumn("ID", "Id");
 		
-		listPage.AddColumn("Navn", "FormattedName");
+		listPage.AddColumn("Name", "FormattedName");
 		
 		listPage.AddColumn("Email", "Email");
-		listPage.AddColumn("Telefon", "PhoneNumber");
+		listPage.AddColumn("Phone Number", "PhoneNumber");
 		
-		listPage.AddColumn("Seneste Ordre", "FormattedLastOrderDate");
+		listPage.AddColumn("Last Order", "FormattedLastOrderDate");
 		
 		SelectedCustomerId = listPage.Select().Id;
 		

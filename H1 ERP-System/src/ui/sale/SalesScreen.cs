@@ -5,7 +5,7 @@ namespace H1_ERP_System.ui.sale;
 
 public class SalesScreen : Screen
 {
-	public override string Title { get; set; } = "Salg";
+	public override string Title { get; set; } = "Sale";
 
 	protected override void Draw()
 	{
@@ -26,11 +26,11 @@ public class SalesScreen : Screen
 			listPage.Add(salesList);
 		}
 
-		listPage.AddColumn("Ordre ID", "Id");
-		listPage.AddColumn("Dato", "Date");
-		listPage.AddColumn("Kunde ID", "CustomerId");
-		listPage.AddColumn("Fulde navn", "CustomerName");
-		listPage.AddColumn("Total pris", "TotalPrice");
+		listPage.AddColumn("Order ID", "Id");
+		listPage.AddColumn("Date", "Date");
+		listPage.AddColumn("Customer ID", "CustomerId");
+		listPage.AddColumn("Name", "CustomerName");
+		listPage.AddColumn("Total Price", "TotalPrice");
 
 		var selected = listPage.Select();
 
@@ -41,10 +41,10 @@ public class SalesScreen : Screen
 
 		listPage.Add(selected);
 
-        listPage.AddColumn("Ordre ID", "Id");
-        listPage.AddColumn("Dato", "Date");
-        listPage.AddColumn("Kunde ID", "CustomerId");
-        listPage.AddColumn("Fulde navn", "CustomerName");
+        listPage.AddColumn("Order ID", "Id");
+        listPage.AddColumn("Date", "Date");
+        listPage.AddColumn("Customer ID", "CustomerId");
+        listPage.AddColumn("Name", "CustomerName");
 
         listPage.Select();
 

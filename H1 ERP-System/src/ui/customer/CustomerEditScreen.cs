@@ -9,7 +9,7 @@ public class CustomerEditScreen : Screen
 {
 	private static int _selectedCustomerId;
 	
-	public override string Title { get; set; } = "Rediger Kunde";
+	public override string Title { get; set; } = "Edit Customer";
 	
 	public CustomerEditScreen(int id)
 	{
@@ -31,19 +31,19 @@ public class CustomerEditScreen : Screen
 		// Add a text-box.
 		editor.TextBox("ID", "Id");
 		
-		editor.TextBox("Fornavn", "FirstName");
-		editor.TextBox("Efternavn", "LastName");
+		editor.TextBox("First Name", "FirstName");
+		editor.TextBox("Last Name", "LastName");
 		
 		editor.TextBox("Email", "Email");
-		editor.TextBox("Telefon", "PhoneNumber");
+		editor.TextBox("Phone Number", "PhoneNumber");
 		
-		editor.TextBox("Adresse", "StreetName");
-		editor.TextBox("Husnummer", "StreetNumber");
-		editor.TextBox("Postnummer", "ZipCode");
-		editor.TextBox("By", "City");
-		editor.TextBox("Land", "Country");
+		editor.TextBox("Street Name", "StreetName");
+		editor.TextBox("Street Number", "StreetNumber");
+		editor.TextBox("Zip Code", "ZipCode");
+		editor.TextBox("City", "City");
+		editor.TextBox("Country", "Country");
 		
-		editor.TextBox("Seneste Ordre", "FormattedLastOrderDate");
+		editor.TextBox("Last Order", "FormattedLastOrderDate");
 		
 		Clear(this);
 		

@@ -5,7 +5,7 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerScreen : Screen
 {
-	public override string Title { get; set; } = "Kunde";
+	public override string Title { get; set; } = "Customer";
 
 	protected override void Draw()
 	{
@@ -13,19 +13,19 @@ public class CustomerScreen : Screen
 
 		listPage.AddColumn("ID", "Id");
 		
-		listPage.AddColumn("Fornavn", "FirstName");
-		listPage.AddColumn("Efternavn", "LastName");
+		listPage.AddColumn("First Name", "FirstName");
+		listPage.AddColumn("Last Name", "LastName");
 		
 		listPage.AddColumn("Email", "Email");
-		listPage.AddColumn("Telefon", "PhoneNumber");
+		listPage.AddColumn("Phone Number", "PhoneNumber");
 		
-		listPage.AddColumn("Adresse", "StreetName");
-		listPage.AddColumn("Husnummer", "StreetNumber");
-		listPage.AddColumn("Postnummer", "ZipCode");
-		listPage.AddColumn("By", "City");
-		listPage.AddColumn("Land", "Country");
+		listPage.AddColumn("Street Name", "StreetName");
+		listPage.AddColumn("Street Number", "StreetNumber");
+		listPage.AddColumn("Zip Code", "ZipCode");
+		listPage.AddColumn("City", "City");
+		listPage.AddColumn("Country", "Country");
 		
-		listPage.AddColumn("Seneste Ordre", "FormattedLastOrderDate");
+		listPage.AddColumn("Last Order", "FormattedLastOrderDate");
 
 		var selected = listPage.Select();
 		

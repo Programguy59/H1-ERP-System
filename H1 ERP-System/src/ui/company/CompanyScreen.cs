@@ -5,7 +5,7 @@ namespace H1_ERP_System.src.ui.Company;
 public class CompanyScreen : Screen
 {
 	private readonly string selectedCompanyName = CompanySetupScreen.SelectedCompanyName;
-	public override string Title { get; set; } = "company info";
+	public override string Title { get; set; } = "Company info";
 
 	protected override void Draw()
 	{
