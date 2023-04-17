@@ -11,7 +11,7 @@ namespace H1_ERP_System.util;
 public static class DatabaseServer
 {
 	private static SqlConnection? _connection;
-	
+
 	public static void Initialize()
 	{
 		var addresses = FetchAddresses();
@@ -35,7 +35,7 @@ public static class DatabaseServer
 		var orders = FetchOrders();
 		orders.ForEach(Database.InsertOrder);
 	}
-	
+
 	public static SqlConnection GetConnection()
 	{
 		SqlConnectionStringBuilder sb = new()
@@ -45,7 +45,7 @@ public static class DatabaseServer
 			UserID = "H1PD021123_Gruppe3",
 			Password = "H1PD021123_Gruppe3"
 		};
-		
+
 		var connectionString = sb.ToString();
 
 		_connection = new SqlConnection(connectionString);
@@ -58,7 +58,7 @@ public static class DatabaseServer
 	{
 		var connection = GetConnection();
 		var command = new SqlCommand(query, connection);
-		
+
 		try
 		{
 			// Get the results of the query.
@@ -73,7 +73,7 @@ public static class DatabaseServer
 			throw;
 		}
 	}
-	
+
 	private static bool ExecuteNonQuery(string query)
 	{
 		using var connection = GetConnection();
@@ -82,7 +82,7 @@ public static class DatabaseServer
 		// Return true if the query effected any rows.
 		return command.ExecuteNonQuery() > 0;
 	}
-	
+
 	private static List<Address> FetchAddresses()
 	{
 		var addresses = new List<Address>();
@@ -90,6 +90,7 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Addresses";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -117,6 +118,7 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Persons";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -130,6 +132,7 @@ public static class DatabaseServer
 			var addressId = reader.GetInt32(5);
 
 			var address = Database.GetAddressById(addressId);
+
 			if (address == null)
 			{
 				continue;
@@ -153,26 +156,28 @@ public static class DatabaseServer
 			"       c.DateSinceLastPurchase " +
 			"FROM Persons p " +
 			"         JOIN Customers c ON p.Id = c.PersonId";
-		
+
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var personId = reader.GetInt32(0);
 			var customerId = reader.GetInt32(1);
 
 			var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
-			
+
 			var person = Database.GetPersonById(personId);
+
 			if (person == null)
 			{
 				continue;
 			}
 
 			var customer = new Customer(customerId, person, dateSinceLastPurchase);
-			
+
 			customers.Add(customer);
 		}
-		
+
 		return customers;
 	}
 
@@ -183,6 +188,7 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Companies";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -193,6 +199,7 @@ public static class DatabaseServer
 			var addressId = reader.GetInt32(3);
 
 			var address = Database.GetAddressById(addressId);
+
 			if (address == null)
 			{
 				continue;
@@ -206,13 +213,14 @@ public static class DatabaseServer
 		return companies;
 	}
 
-    public static List<Product> FetchProducts()
+	public static List<Product> FetchProducts()
 	{
 		var products = new List<Product>();
 
 		const string query = "SELECT * FROM Products";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -243,19 +251,21 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM OrderLines";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
 
 			var orderId = reader.GetInt32(1);
 			var productId = reader.GetInt32(2);
-			
+
 			var product = Database.GetProductById(productId);
+
 			if (product == null)
 			{
 				continue;
 			}
-			
+
 			var quantity = Convert.ToDouble(reader.GetInt32(3));
 			var orderLine = new OrderLine(id, orderId, product, quantity);
 
@@ -282,43 +292,41 @@ public static class DatabaseServer
 			var completedAt = reader.IsDBNull(2) ? "N/A" : reader.GetDateTime(2).ToShortDateString();
 
 			var customerId = reader.GetInt32(3);
-			
+
 			var customer = Database.GetCustomerById(customerId);
+
 			if (customer == null)
 			{
 				continue;
 
 			}
-			
+
 			var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
-			
-			
 
 
-			
 			var order = new Order(id, createdAt, completedAt, customer, orderStatus);
-			
+
 			orders.Add(order);
 		}
 
 		return orders;
 	}
-	
+
 	public static bool InsertAddress(Address address)
 	{
 		var query =
 			"INSERT INTO Addresses (StreetName, StreetNumber, City, ZipCode, Country) " +
 			$"VALUES ('{address.StreetName}', '{address.StreetNumber}', '{address.City}', '{address.ZipCode}', '{address.Country}')";
-		
+
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Addresses.Add(address);
-		
+
 		return true;
 	}
 
@@ -327,55 +335,55 @@ public static class DatabaseServer
 		var query =
 			"INSERT INTO Persons (FirstName, LastName, Email, PhoneNumber, AddressId) " +
 			$"VALUES ('{person.FirstName}', '{person.LastName}', '{person.Email}', '{person.PhoneNumber}', '{person.Address.Id}')";
-		
+
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Persons.Add(person);
-		
+
 		return true;
 	}
-	
+
 	public static bool InsertCustomer(Customer customer)
 	{
 		var query =
 			"INSERT INTO Customers (PersonId, DateSinceLastPurchase) " +
 			$"VALUES ('{customer.Person.Id}', '{customer.DateSinceLastPurchase}')";
-		
+
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
-		Database.Customers.Add(customer);	
-		
+		Database.Customers.Add(customer);
+
 		return true;
 	}
-	
+
 	public static bool InsertCompany(Company company)
 	{
 		var query =
 			"INSERT INTO Companies (CompanyName, Currency, AddressId) " +
 			$"VALUES ('{company.CompanyName}', '{company.Currency}', '{company.Address.Id}')";
-		
+
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Companies.Add(company);
-		
+
 		return true;
 	}
-	
+
 	public static bool InsertProduct(Product product)
 	{
 		var query =
@@ -387,49 +395,49 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Products.Add(product);
-		
+
 		return true;
 	}
-	
+
 	public static bool InsertOrderLine(OrderLine orderLine)
 	{
 		var query =
 			"INSERT INTO OrderLines (OrderId, ProductId, Quantity) " +
 			$"VALUES ('{orderLine.OrderId}', '{orderLine.Product.Id}', '{orderLine.Quantity}')";
-		
+
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.OrderLines.Add(orderLine);
-		
+
 		return true;
 	}
-	
+
 	public static bool InsertOrder(Order order)
 	{
 		var query =
 			"INSERT INTO Orders (CreatedAt, CompletedAt, CustomerId, OrderStatus) " +
 			$"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.Id}', '{order.OrderStatus}')";
-		
+
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Orders.Add(order);
-		
+
 		return true;
 	}
-	
+
 	public static bool UpdateAddress(Address address)
 	{
 		var query =
@@ -442,14 +450,14 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		var index = Database.Addresses.FindIndex(a => a.Id == address.Id);
 		Database.Addresses[index] = address;
-		
+
 		return true;
 	}
-	
+
 	public static bool UpdatePerson(Person person)
 	{
 		if (!UpdateAddress(person.Address))
@@ -467,27 +475,27 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		var index = Database.Persons.FindIndex(p => p.Id == person.Id);
 		Database.Persons[index] = person;
-		
+
 		return true;
 	}
-	
+
 	public static bool UpdateCustomer(Customer customer)
 	{
 		if (!UpdatePerson(customer.Person))
 		{
 			return false;
 		}
-		
+
 		// DateSinceLastPurchase is a string, so we need to convert it to a DateTime, it's possible it's null.
-		var dateSinceLastPurchase = 
+		var dateSinceLastPurchase =
 			customer.DateSinceLastPurchase.Trim() == "N/A"
-				? DateTime.MinValue 
+				? DateTime.MinValue
 				: DateTime.Parse(customer.DateSinceLastPurchase);
-		
+
 		// Query to update the customer.
 		var query =
 			"UPDATE Customers " +
@@ -499,21 +507,21 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		var index = Database.Customers.FindIndex(c => c.Id == customer.Id);
 		Database.Customers[index] = customer;
-		
+
 		return true;
 	}
-	
+
 	public static bool UpdateCompany(Company company)
 	{
 		if (!UpdateAddress(company.Address))
 		{
 			return false;
 		}
-		
+
 		var query =
 			"UPDATE Companies " +
 			$"SET CompanyName = '{company.CompanyName}', Currency = '{company.Currency}', AddressId = '{company.Address.Id}' " +
@@ -524,14 +532,14 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		var index = Database.Companies.FindIndex(c => c.Id == company.Id);
 		Database.Companies[index] = company;
-		
+
 		return true;
 	}
-	
+
 	public static bool UpdateProduct(Product product)
 	{
 		var query =
@@ -544,14 +552,14 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		var index = Database.Products.FindIndex(p => p.Id == product.Id);
 		Database.Products[index] = product;
-		
+
 		return true;
 	}
-	
+
 	public static bool UpdateOrderLine(OrderLine orderLine)
 	{
 		var query =
@@ -564,14 +572,14 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		var index = Database.OrderLines.FindIndex(o => o.Id == orderLine.Id);
 		Database.OrderLines[index] = orderLine;
-		
+
 		return true;
 	}
-	
+
 	public static bool UpdateOrder(Order order)
 	{
 		var query =
@@ -584,14 +592,14 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		var index = Database.Orders.FindIndex(o => o.Id == order.Id);
 		Database.Orders[index] = order;
-		
+
 		return true;
 	}
-	
+
 	public static bool DeleteAddress(Address address)
 	{
 		var query =
@@ -603,13 +611,13 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Addresses.Remove(address);
-		
+
 		return true;
 	}
-	
+
 	public static bool DeletePerson(Person person)
 	{
 		var query =
@@ -621,13 +629,13 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Persons.Remove(person);
-		
+
 		return true;
 	}
-	
+
 	public static bool DeleteCustomer(Customer customer)
 	{
 		var query =
@@ -639,13 +647,13 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Customers.Remove(customer);
-		
+
 		return true;
 	}
-	
+
 	public static bool DeleteCompany(Company company)
 	{
 		var query =
@@ -657,13 +665,13 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Companies.Remove(company);
-		
+
 		return true;
 	}
-	
+
 	public static bool DeleteProduct(Product product)
 	{
 		var query =
@@ -675,13 +683,13 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Products.Remove(product);
-		
+
 		return true;
 	}
-	
+
 	public static bool DeleteOrderLine(OrderLine orderLine)
 	{
 		var query =
@@ -693,13 +701,13 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.OrderLines.Remove(orderLine);
-		
+
 		return true;
 	}
-	
+
 	public static bool DeleteOrder(Order order)
 	{
 		var query =
@@ -711,10 +719,10 @@ public static class DatabaseServer
 		{
 			return false;
 		}
-		
+
 		// Update the local cache.
 		Database.Orders.Remove(order);
-		
+
 		return true;
 	}
 }

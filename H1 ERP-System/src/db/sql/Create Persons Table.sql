@@ -10,7 +10,7 @@ CREATE TABLE Persons
 
     Email        varchar(50) NOT NULL,
     PhoneNumber  varchar(16) NOT NULL,
-
+    
     PRIMARY KEY (Id),
     FOREIGN KEY (AddressId) REFERENCES Addresses(Id)
 );
