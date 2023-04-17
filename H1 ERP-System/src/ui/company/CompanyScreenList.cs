@@ -60,7 +60,7 @@ public class CompanyScreenList
 		var listPage = new ListPage<CompanyScreenList>();
 
 
-		var companies = DatabaseServer.FetchCompanies();
+		var companies = Database.GetAllCompanies();
 
 		for (var i = 0; i < companies.Count; i++)
 			if (companies[i].CompanyName == CompanyName)
@@ -76,7 +76,7 @@ public class CompanyScreenList
 		Address tempAddress = new Address(0,"","","","","");
 		CompanyScreenList companyScreenList = new(0, "", tempAddress, "", 0, 0);
 
-		var companies = DatabaseServer.FetchCompanies();
+		var companies = Database.GetAllCompanies();
 
 		for (var i = 0; i < companies.Count; i++)
 			if (companies[i].CompanyName == CompanyName)
@@ -125,7 +125,7 @@ public class CompanyScreenList
         listPage.AddKey(ConsoleKey.F1, MakeCompanyButton);
         listPage.AddKey(ConsoleKey.F2, EditCompanyButton);
 
-        var Companies = DatabaseServer.FetchCompanies();
+        var Companies = Database.GetAllCompanies();
         for (var i = 0; i < Companies.Count; i++)
             listPage.Add(new CompanyScreenList(
                    Companies[i].Id,

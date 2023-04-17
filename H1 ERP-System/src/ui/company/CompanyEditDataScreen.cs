@@ -39,15 +39,10 @@ public class CompanyEditDataScreen : Screen
 		Clear(this);
 
         company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
-		Address address = new(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
 
         if (company == null){return;}
 		if (!DatabaseServer.UpdateCompany(company)){return;}
 		
-		if (address == null) { return; }
-        if (!DatabaseServer.UpdateAddress(address)) {return;}
-
-
         Clear(this);
         Screen.Display(new Menu.MenuScreen());
     }
