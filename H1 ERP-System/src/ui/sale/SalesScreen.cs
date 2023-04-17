@@ -27,9 +27,9 @@ public class SalesScreen : Screen
 		}
 
 		listPage.AddColumn("Ordre ID", "Id");
-		listPage.AddColumn("Dato", "CreatedAt");
+		listPage.AddColumn("Dato", "Date");
 		listPage.AddColumn("Kunde ID", "CustomerId");
-		listPage.AddColumn("Fulde navn", "FullName");
+		listPage.AddColumn("Fulde navn", "CustomerName");
 		listPage.AddColumn("Total pris", "TotalPrice");
 
 		var selected = listPage.Select();
@@ -41,12 +41,12 @@ public class SalesScreen : Screen
 
 		listPage.Add(selected);
 
-		listPage.AddColumn("Ordre ID", "Id");
-		listPage.AddColumn("Dato", "CreatedAt");
-		listPage.AddColumn("Kunde ID", "CustomerId");
-		listPage.AddColumn("Fulde navn", "FullName");
+        listPage.AddColumn("Ordre ID", "Id");
+        listPage.AddColumn("Dato", "Date");
+        listPage.AddColumn("Kunde ID", "CustomerId");
+        listPage.AddColumn("Fulde navn", "CustomerName");
 
-		listPage.Select();
+        listPage.Select();
 
 		Quit();
 	}
