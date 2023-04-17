@@ -16,7 +16,7 @@ public class CompanyScreen : Screen
 		ListPage.AddColumn("Country", "CompanyCountry");
 		ListPage.AddColumn("Street Name", "CompanyStreetName");
 		ListPage.AddColumn("Street Number", "CompanyStreetNumber");
-		ListPage.AddColumn("Zipcode", "CompanyZipCode");
+		ListPage.AddColumn("Zip Code", "CompanyZipCode");
 		ListPage.AddColumn("City", "CompanyCity");
 		ListPage.AddColumn("Currency", "CompanyCurrency");
 		var selected = ListPage.Select();
