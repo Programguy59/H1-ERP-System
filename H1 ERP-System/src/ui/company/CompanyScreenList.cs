@@ -55,7 +55,7 @@ public class CompanyScreenList
 
 
 
-	public static ListPage<CompanyScreenList> GetPageListFromName(string CompanyName)
+	public static ListPage<CompanyScreenList> GetPageListFromId(int CompanyId)
 	{
 		var listPage = new ListPage<CompanyScreenList>();
 
@@ -63,7 +63,7 @@ public class CompanyScreenList
 		var companies = Database.GetAllCompanies();
 
 		for (var i = 0; i < companies.Count; i++)
-			if (companies[i].CompanyName == CompanyName)
+			if (companies[i].Id == CompanyId)
 			{
 				listPage.Add(new CompanyScreenList(companies[i].Id, companies[i].CompanyName, companies[i].Address, companies[i].Currency, companies[i].Address.Id, 1));
 			}
@@ -111,7 +111,7 @@ public class CompanyScreenList
         company.Company TempCompany = new(newCompanyId, "newCompany", tempAddress, "USD");
         DatabaseServer.InsertAddress(tempAddress);
         DatabaseServer.InsertCompany(TempCompany);
-        CompanySetupScreen.SelectedCompanyName = TempCompany.CompanyName;
+        CompanySetupScreen.SelectedCompanyId = TempCompany.CompanyName;
         Screen.Display(new CompanyEditDataScreen(newCompanyId));
     }
     public static void EditCompanyButton(CompanyScreenList company)

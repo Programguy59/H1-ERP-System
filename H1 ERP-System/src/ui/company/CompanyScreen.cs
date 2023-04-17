@@ -4,13 +4,13 @@ namespace H1_ERP_System.src.ui.Company;
 
 public class CompanyScreen : Screen
 {
-	private readonly string selectedCompanyName = CompanySetupScreen.SelectedCompanyName;
+	private readonly int selectedCompanyId = CompanySetupScreen.SelectedCompanyId;
 	public override string Title { get; set; } = "Company info";
 
 	protected override void Draw()
 	{
 		Clear();
-		var ListPage = CompanyScreenList.GetPageListFromName(selectedCompanyName);
+		var ListPage = CompanyScreenList.GetPageListFromId(selectedCompanyId);
 
 		ListPage.AddColumn("Company", "CompanyName");
 		ListPage.AddColumn("Country", "CompanyCountry");
