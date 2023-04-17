@@ -8,10 +8,51 @@ using H1_ERP_System.sales;
 
 namespace H1_ERP_System.util;
 
+/// <summary>
+///     The database server manager, used to connect to the database and execute queries.
+///     <seealso cref="DatabaseServer.Initialize()" />
+///     <seealso cref="DatabaseServer.GetConnection()" />
+///     <seealso cref="DatabaseServer.ExecuteQuery(string)" />
+///     <seealso cref="DatabaseServer.ExecuteNonQuery(string)" />
+///     <seealso cref="DatabaseServer.InsertAddress(Address)" />
+///     <seealso cref="DatabaseServer.InsertPerson(Person)" />
+///     <seealso cref="DatabaseServer.InsertCustomer(Customer)" />
+///     <seealso cref="DatabaseServer.InsertCompany(Company)" />
+///     <seealso cref="DatabaseServer.InsertProduct(Product)" />
+///     <seealso cref="DatabaseServer.InsertOrderLine(OrderLine)" />
+///     <seealso cref="DatabaseServer.InsertOrder(Order)" />
+///     <seealso cref="DatabaseServer.FetchAddresses()" />
+///     <seealso cref="DatabaseServer.FetchPersons()" />
+///     <seealso cref="DatabaseServer.FetchCustomers()" />
+///     <seealso cref="DatabaseServer.FetchCompanies()" />
+///     <seealso cref="DatabaseServer.FetchProducts()" />
+///     <seealso cref="DatabaseServer.FetchOrderLines()" />
+///     <seealso cref="DatabaseServer.FetchOrders()" />
+///     <seealso cref="DatabaseServer.UpdateAddress(Address)" />
+///     <seealso cref="DatabaseServer.UpdatePerson(Person)" />
+///     <seealso cref="DatabaseServer.UpdateCustomer(Customer)" />
+///     <seealso cref="DatabaseServer.UpdateCompany(Company)" />
+///     <seealso cref="DatabaseServer.UpdateProduct(Product)" />
+///     <seealso cref="DatabaseServer.UpdateOrderLine(OrderLine)" />
+///     <seealso cref="DatabaseServer.UpdateOrder(Order)" />
+///     <seealso cref="DatabaseServer.DeleteAddress(Address)" />
+///     <seealso cref="DatabaseServer.DeletePerson(Person)" />
+///     <seealso cref="DatabaseServer.DeleteCustomer(Customer)" />
+///     <seealso cref="DatabaseServer.DeleteCompany(Company)" />
+///     <seealso cref="DatabaseServer.DeleteProduct(Product)" />
+///     <seealso cref="DatabaseServer.DeleteOrderLine(OrderLine)" />
+///     <seealso cref="DatabaseServer.DeleteOrder(Order)" />
+/// </summary>
 public static class DatabaseServer
 {
+	/// <summary>
+	///     The connection to the database.
+	/// </summary>
 	private static SqlConnection? _connection;
 
+	/// <summary>
+	///     Load all data from the database and insert it into local lists.
+	/// </summary>
 	public static void Initialize()
 	{
 		var addresses = FetchAddresses();
@@ -36,7 +77,11 @@ public static class DatabaseServer
 		orders.ForEach(Database.InsertOrder);
 	}
 
-	public static SqlConnection GetConnection()
+	/// <summary>
+	///     Get the connection to the database, or create a new one if it doesn't exist.
+	/// </summary>
+	/// <returns>The connection to the database.</returns>
+	private static SqlConnection GetConnection()
 	{
 		SqlConnectionStringBuilder sb = new()
 		{
@@ -54,6 +99,11 @@ public static class DatabaseServer
 		return _connection;
 	}
 
+	/// <summary>
+	///     Execute a query and return the results.
+	/// </summary>
+	/// <param name="query">The query to execute.</param>
+	/// <returns>The results of the query.</returns>
 	private static SqlDataReader ExecuteQuery(string query)
 	{
 		var connection = GetConnection();
@@ -74,6 +124,11 @@ public static class DatabaseServer
 		}
 	}
 
+	/// <summary>
+	///     Execute a query that doesn't return any results.
+	/// </summary>
+	/// <param name="query">The query to execute.</param>
+	/// <returns>True if the query effected any rows, false otherwise.</returns>
 	private static bool ExecuteNonQuery(string query)
 	{
 		using var connection = GetConnection();
@@ -83,6 +138,10 @@ public static class DatabaseServer
 		return command.ExecuteNonQuery() > 0;
 	}
 
+	/// <summary>
+	///     Fetch all addresses from the database.
+	/// </summary>
+	/// <returns>A list of all addresses.</returns>
 	private static List<Address> FetchAddresses()
 	{
 		var addresses = new List<Address>();
@@ -111,6 +170,10 @@ public static class DatabaseServer
 		return addresses;
 	}
 
+	/// <summary>
+	///     Fetch all persons from the database.
+	/// </summary>
+	/// <returns>A list of all persons.</returns>
 	private static List<Person> FetchPersons()
 	{
 		var persons = new List<Person>();
@@ -146,6 +209,10 @@ public static class DatabaseServer
 		return persons;
 	}
 
+	/// <summary>
+	///     Fetch all customers from the database.
+	/// </summary>
+	/// <returns>A list of all customers.</returns>
 	private static List<Customer> FetchCustomers()
 	{
 		var customers = new List<Customer>();
@@ -181,7 +248,11 @@ public static class DatabaseServer
 		return customers;
 	}
 
-	public static List<Company> FetchCompanies()
+	/// <summary>
+	///     Fetch all companies from the database.
+	/// </summary>
+	/// <returns>A list of all companies.</returns>
+	private static List<Company> FetchCompanies()
 	{
 		var companies = new List<Company>();
 
@@ -213,6 +284,10 @@ public static class DatabaseServer
 		return companies;
 	}
 
+	/// <summary>
+	///     Fetch all products from the database.
+	/// </summary>
+	/// <returns>A list of all products.</returns>
 	public static List<Product> FetchProducts()
 	{
 		var products = new List<Product>();
@@ -244,6 +319,10 @@ public static class DatabaseServer
 		return products;
 	}
 
+	/// <summary>
+	///     Fetches all order lines from the database.
+	/// </summary>
+	/// <returns>A list of all order lines.</returns>
 	private static List<OrderLine> FetchOrderLines()
 	{
 		var orderLines = new List<OrderLine>();
@@ -275,6 +354,10 @@ public static class DatabaseServer
 		return orderLines;
 	}
 
+	/// <summary>
+	///     Fetches all orders from the database.
+	/// </summary>
+	/// <returns>A list of all orders.</returns>
 	private static List<Order> FetchOrders()
 	{
 		var orders = new List<Order>();
@@ -302,8 +385,6 @@ public static class DatabaseServer
 			}
 
 			var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
-
-
 			var order = new Order(id, createdAt, completedAt, customer, orderStatus);
 
 			orders.Add(order);
@@ -312,6 +393,11 @@ public static class DatabaseServer
 		return orders;
 	}
 
+	/// <summary>
+	///     Inserts an address into the database.
+	/// </summary>
+	/// <param name="address">The address to insert.</param>
+	/// <returns>True if the address was inserted successfully, false otherwise.</returns>
 	public static bool InsertAddress(Address address)
 	{
 		var query =
@@ -330,6 +416,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Inserts a person into the database.
+	/// </summary>
+	/// <param name="person">The person to insert.</param>
+	/// <returns>True if the person was inserted successfully, false otherwise.</returns>
 	public static bool InsertPerson(Person person)
 	{
 		var query =
@@ -348,6 +439,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Inserts a customer into the database.
+	/// </summary>
+	/// <param name="customer">The customer to insert.</param>
+	/// <returns>True if the customer was inserted successfully, false otherwise.</returns>
 	public static bool InsertCustomer(Customer customer)
 	{
 		var query =
@@ -366,6 +462,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Inserts a company into the database.
+	/// </summary>
+	/// <param name="company">The company to insert.</param>
+	/// <returns>True if the company was inserted successfully, false otherwise.</returns>
 	public static bool InsertCompany(Company company)
 	{
 		var query =
@@ -384,6 +485,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Inserts a product into the database.
+	/// </summary>
+	/// <param name="product">The product to insert.</param>
+	/// <returns>True if the product was inserted successfully, false otherwise.</returns>
 	public static bool InsertProduct(Product product)
 	{
 		var query =
@@ -402,6 +508,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Inserts an order line into the database.
+	/// </summary>
+	/// <param name="orderLine">The order line to insert.</param>
+	/// <returns>True if the order line was inserted successfully, false otherwise.</returns>
 	public static bool InsertOrderLine(OrderLine orderLine)
 	{
 		var query =
@@ -420,6 +531,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Inserts an order into the database.
+	/// </summary>
+	/// <param name="order">The order to insert.</param>
+	/// <returns>True if the order was inserted successfully, false otherwise.</returns>
 	public static bool InsertOrder(Order order)
 	{
 		var query =
@@ -438,6 +554,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Updates an address in the database.
+	/// </summary>
+	/// <param name="address">The address to update.</param>
+	/// <returns>True if the address was updated successfully, false otherwise.</returns>
 	public static bool UpdateAddress(Address address)
 	{
 		var query =
@@ -458,6 +579,12 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Updates a person in the database.
+	/// </summary>
+	/// <param name="person">The person to update.</param>
+	/// <returns>True if the person was updated successfully, false otherwise.</returns>
+	/// <seealso cref="UpdateAddress" />
 	public static bool UpdatePerson(Person person)
 	{
 		if (!UpdateAddress(person.Address))
@@ -483,6 +610,12 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Updates a customer in the database.
+	/// </summary>
+	/// <param name="customer">The customer to update.</param>
+	/// <returns>True if the customer was updated successfully, false otherwise.</returns>
+	/// <seealso cref="UpdatePerson" />
 	public static bool UpdateCustomer(Customer customer)
 	{
 		if (!UpdatePerson(customer.Person))
@@ -515,6 +648,12 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Updates a company in the database.
+	/// </summary>
+	/// <param name="company">The company to update.</param>
+	/// <returns>True if the company was updated successfully, false otherwise.</returns>
+	/// <seealso cref="UpdateAddress" />
 	public static bool UpdateCompany(Company company)
 	{
 		if (!UpdateAddress(company.Address))
@@ -540,6 +679,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Updates a product in the database.
+	/// </summary>
+	/// <param name="product">The product to update.</param>
+	/// <returns>True if the product was updated successfully, false otherwise.</returns>
 	public static bool UpdateProduct(Product product)
 	{
 		var query =
@@ -560,6 +704,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Updates an order line in the database.
+	/// </summary>
+	/// <param name="orderLine">The order line to update.</param>
+	/// <returns>True if the order line was updated successfully, false otherwise.</returns>
 	public static bool UpdateOrderLine(OrderLine orderLine)
 	{
 		var query =
@@ -580,6 +729,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Updates an order in the database.
+	/// </summary>
+	/// <param name="order">The order to update.</param>
+	/// <returns>True if the order was updated successfully, false otherwise.</returns>
 	public static bool UpdateOrder(Order order)
 	{
 		var query =
@@ -600,6 +754,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Delete an address from the database.
+	/// </summary>
+	/// <param name="address">The address to delete.</param>
+	/// <returns>True if the address was deleted successfully, false otherwise.</returns>
 	public static bool DeleteAddress(Address address)
 	{
 		var query =
@@ -618,6 +777,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Delete a person from the database.
+	/// </summary>
+	/// <param name="person">The person to delete.</param>
+	/// <returns>True if the person was deleted successfully, false otherwise.</returns>
 	public static bool DeletePerson(Person person)
 	{
 		var query =
@@ -636,6 +800,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Delete a customer from the database.
+	/// </summary>
+	/// <param name="customer">The customer to delete.</param>
+	/// <returns>True if the customer was deleted successfully, false otherwise.</returns>
 	public static bool DeleteCustomer(Customer customer)
 	{
 		var query =
@@ -654,6 +823,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Delete a company from the database.
+	/// </summary>
+	/// <param name="company">The company to delete.</param>
+	/// <returns>True if the company was deleted successfully, false otherwise.</returns>
 	public static bool DeleteCompany(Company company)
 	{
 		var query =
@@ -672,6 +846,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Delete a product from the database.
+	/// </summary>
+	/// <param name="product">The product to delete.</param>
+	/// <returns>True if the product was deleted successfully, false otherwise.</returns>
 	public static bool DeleteProduct(Product product)
 	{
 		var query =
@@ -690,6 +869,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Delete an order line from the database.
+	/// </summary>
+	/// <param name="orderLine">The order line to delete.</param>
+	/// <returns>True if the order line was deleted successfully, false otherwise.</returns>
 	public static bool DeleteOrderLine(OrderLine orderLine)
 	{
 		var query =
@@ -708,6 +892,11 @@ public static class DatabaseServer
 		return true;
 	}
 
+	/// <summary>
+	///     Delete an order from the database.
+	/// </summary>
+	/// <param name="order">The order to delete.</param>
+	/// <returns>True if the order was deleted successfully, false otherwise.</returns>
 	public static bool DeleteOrder(Order order)
 	{
 		var query =
