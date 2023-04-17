@@ -1,5 +1,4 @@
-﻿using H1_ERP_System.customer;
-using H1_ERP_System.db;
+﻿using H1_ERP_System.db;
 using H1_ERP_System.sales;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
@@ -8,8 +7,6 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerScreenList
 {
-	public static List<CustomerScreenList> CustomerScreenLists = new();
-	
 	public CustomerScreenList(int id, string firstName, string lastName, string email, string phoneNumber, Address address, Order? lastOrder)
 	{
 		Id = id;
@@ -21,8 +18,6 @@ public class CustomerScreenList
 		
 		Address = address;
 		LastOrder = lastOrder;
-		
-		CustomerScreenLists.Add(this);
 	}
 	
 	public int Id { get; set; }
