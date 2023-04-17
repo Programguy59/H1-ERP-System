@@ -9,7 +9,7 @@ public class Menu
 {
 	public class MenuScreen : Screen
 	{
-		public override string Title { get; set; } = "Menu";
+		public override string Title { get; set; } = "LNE Security A/S";
 
 		protected override void Draw()
 		{
