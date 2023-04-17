@@ -9,18 +9,18 @@ namespace H1_ERP_System.src.Company;
 
 public class CompanyEditDataScreen : Screen
 {
-	private readonly string selectedCompanyName;
+	private readonly int selectedCompanyId;
 	public override string Title { get; set; } = "Edit Company";
 
-    public CompanyEditDataScreen(string CompanyName)
+    public CompanyEditDataScreen(int CompanyId)
     {
-       selectedCompanyName = CompanyName;
+       selectedCompanyId = CompanyId;
     }
 
     protected override void Draw()
 	{
 		Clear(this);
-		var companyScreenList = CompanyScreenList.GetCompanyScreenListFromName(selectedCompanyName);
+		var companyScreenList = CompanyScreenList.GetCompanyScreenListFromId(selectedCompanyId);
 		var editor = new Form<CompanyScreenList>();
 
 		//Add a textbox
@@ -39,10 +39,12 @@ public class CompanyEditDataScreen : Screen
 		Clear(this);
 
         company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
+		company.Address = new(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
 
         if (company == null){return;}
 		if (!DatabaseServer.UpdateCompany(company)){return;}
-		
+
+
         Clear(this);
         Screen.Display(new Menu.MenuScreen());
     }
