@@ -67,7 +67,8 @@ public static class DatabaseServer
 
 		Database.OrderLines.Clear();
 		Database.Orders.Clear();
-
+		
+		// Attempt database connection and insert data into local lists.
 		try
 		{
 			Console.WriteLine("Connecting to the database... (" + ++attempts + ")");
@@ -101,7 +102,7 @@ public static class DatabaseServer
 			Console.WriteLine("Press any key to retry...");
 			Console.ReadKey();
 			Console.WriteLine();
-
+			
 			// Retry connecting to the database.
 			Initialize(attempts);
 		}
