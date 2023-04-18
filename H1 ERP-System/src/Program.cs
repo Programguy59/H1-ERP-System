@@ -8,7 +8,7 @@ public static class Program
 {
 	private static void Main()
 	{
-		DatabaseServer.Initialize();
+		DatabaseServer.Initialize(0);
 		
 		Screen.Display(new Menu.MenuScreen());
 	}

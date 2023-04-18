@@ -11,17 +11,10 @@ namespace H1_ERP_System.util;
 /// <summary>
 ///     The database server manager, used to connect to the database and execute queries.
 /// </summary>
-/// <seealso cref="DatabaseServer.Initialize()" />
+/// <seealso cref="DatabaseServer.Initialize(int)" />
 /// <seealso cref="DatabaseServer.GetConnection()" />
 /// <seealso cref="DatabaseServer.ExecuteQuery(string)" />
 /// <seealso cref="DatabaseServer.ExecuteNonQuery(string)" />
-/// <seealso cref="DatabaseServer.InsertAddress(Address)" />
-/// <seealso cref="DatabaseServer.InsertPerson(Person)" />
-/// <seealso cref="DatabaseServer.InsertCustomer(Customer)" />
-/// <seealso cref="DatabaseServer.InsertCompany(Company)" />
-/// <seealso cref="DatabaseServer.InsertProduct(Product)" />
-/// <seealso cref="DatabaseServer.InsertOrderLine(OrderLine)" />
-/// <seealso cref="DatabaseServer.InsertOrder(Order)" />
 /// <seealso cref="DatabaseServer.FetchAddresses()" />
 /// <seealso cref="DatabaseServer.FetchPersons()" />
 /// <seealso cref="DatabaseServer.FetchCustomers()" />
@@ -29,6 +22,13 @@ namespace H1_ERP_System.util;
 /// <seealso cref="DatabaseServer.FetchProducts()" />
 /// <seealso cref="DatabaseServer.FetchOrderLines()" />
 /// <seealso cref="DatabaseServer.FetchOrders()" />
+/// <seealso cref="DatabaseServer.InsertAddress(Address)" />
+/// <seealso cref="DatabaseServer.InsertPerson(Person)" />
+/// <seealso cref="DatabaseServer.InsertCustomer(Customer)" />
+/// <seealso cref="DatabaseServer.InsertCompany(Company)" />
+/// <seealso cref="DatabaseServer.InsertProduct(Product)" />
+/// <seealso cref="DatabaseServer.InsertOrderLine(OrderLine)" />
+/// <seealso cref="DatabaseServer.InsertOrder(Order)" />
 /// <seealso cref="DatabaseServer.UpdateAddress(Address)" />
 /// <seealso cref="DatabaseServer.UpdatePerson(Person)" />
 /// <seealso cref="DatabaseServer.UpdateCustomer(Customer)" />
@@ -49,14 +49,29 @@ public static class DatabaseServer
 	///     The connection to the database.
 	/// </summary>
 	private static SqlConnection? _connection;
-	
+
 	/// <summary>
 	///     Load all data from the database and insert it into local lists.
 	/// </summary>
-	public static void Initialize()
+	/// <param name="attempts">The number of attempts to connect to the database.</param>
+	public static void Initialize(int attempts)
 	{
+		// Clear all local lists.
+		Database.Addresses.Clear();
+		Database.Persons.Clear();
+
+		Database.Customers.Clear();
+		Database.Companies.Clear();
+
+		Database.Products.Clear();
+
+		Database.OrderLines.Clear();
+		Database.Orders.Clear();
+
 		try
 		{
+			Console.WriteLine("Connecting to the database... (" + ++attempts + ")");
+
 			var addresses = FetchAddresses();
 			addresses.ForEach(Database.InsertAddress);
 
@@ -80,17 +95,18 @@ public static class DatabaseServer
 		}
 		catch (SqlException e)
 		{
-			Console.WriteLine("Failed to connect to the database. Cause: " + e.Message);
+			Console.WriteLine("Failed to connect to the database!");
+			Console.WriteLine("Cause: " + e.Message);
+
 			Console.WriteLine("Press any key to retry...");
-			
-			// Wait for the user to press a key before retrying.
 			Console.ReadKey();
-			
+			Console.WriteLine();
+
 			// Retry connecting to the database.
-			Initialize();
+			Initialize(attempts);
 		}
 	}
-	
+
 	/// <summary>
 	///     Get the connection to the database, or create a new one if it doesn't exist.
 	/// </summary>
@@ -109,7 +125,7 @@ public static class DatabaseServer
 
 		_connection = new SqlConnection(connectionString);
 		_connection.Open();
-		
+
 		return _connection;
 	}
 
@@ -163,7 +179,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Addresses";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -173,14 +188,14 @@ public static class DatabaseServer
 
 			var zipCode = reader.GetString(3);
 			var city = reader.GetString(4);
-
+			
 			var country = reader.GetString(5);
-
-			var address = new Address( streetName, streetNumber, zipCode, city, country);
+			
+			var address = new Address(id, streetName, streetNumber, zipCode, city, country);
 
 			addresses.Add(address);
 		}
-
+		
 		return addresses;
 	}
 
@@ -195,7 +210,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Persons";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -215,7 +229,7 @@ public static class DatabaseServer
 				continue;
 			}
 
-			var person = new Person(firstName, lastName, email, phoneNumber, address);
+			var person = new Person(id, firstName, lastName, email, phoneNumber, address);
 
 			persons.Add(person);
 		}
@@ -239,7 +253,6 @@ public static class DatabaseServer
 			"         JOIN Customers c ON p.Id = c.PersonId";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var personId = reader.GetInt32(0);
@@ -248,13 +261,12 @@ public static class DatabaseServer
 			var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
 
 			var person = Database.GetPersonById(personId);
-
 			if (person == null)
 			{
 				continue;
 			}
 
-			var customer = new Customer(person, dateSinceLastPurchase);
+			var customer = new Customer(customerId, person, dateSinceLastPurchase);
 
 			customers.Add(customer);
 		}
@@ -273,7 +285,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Companies";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -284,13 +295,12 @@ public static class DatabaseServer
 			var addressId = reader.GetInt32(3);
 
 			var address = Database.GetAddressById(addressId);
-
 			if (address == null)
 			{
 				continue;
 			}
 
-			var company = new Company(companyName, address, currency);
+			var company = new Company(id, companyName, address, currency);
 
 			companies.Add(company);
 		}
@@ -309,7 +319,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Products";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -325,7 +334,7 @@ public static class DatabaseServer
 
 			var unit = reader.GetString(7).Of();
 
-			var product = new Product(name, description, salesPrice, purchasePrice, location, stock, unit);
+			var product = new Product(id, name, description, salesPrice, purchasePrice, location, stock, unit);
 
 			products.Add(product);
 		}
@@ -344,7 +353,6 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM OrderLines";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -353,7 +361,6 @@ public static class DatabaseServer
 			var productId = reader.GetInt32(2);
 
 			var product = Database.GetProductById(productId);
-
 			if (product == null)
 			{
 				continue;
@@ -380,7 +387,6 @@ public static class DatabaseServer
 			"SELECT * FROM Orders o";
 
 		using var reader = ExecuteQuery(query);
-
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -391,15 +397,13 @@ public static class DatabaseServer
 			var customerId = reader.GetInt32(3);
 
 			var customer = Database.GetCustomerById(customerId);
-
 			if (customer == null)
 			{
 				continue;
-
 			}
 
 			var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
-			var order = new Order(createdAt, completedAt, customer, orderStatus);
+			var order = new Order(id, createdAt, completedAt, customer, orderStatus);
 
 			orders.Add(order);
 		}
@@ -416,10 +420,16 @@ public static class DatabaseServer
 	{
 		var query =
 			"INSERT INTO Addresses (StreetName, StreetNumber, City, ZipCode, Country) " +
+			"OUTPUT INSERTED.Id " +
 			$"VALUES ('{address.StreetName}', '{address.StreetNumber}', '{address.City}', '{address.ZipCode}', '{address.Country}')";
 
-		// If the query fails, return false.
-		if (!ExecuteNonQuery(query))
+		var reader = ExecuteQuery(query);
+
+		// Get the ID of the inserted order.
+		while (reader.Read()) address.Id = reader.GetInt32(0);
+
+		// If the ID is -1, the query must have failed.
+		if (address.Id == -1)
 		{
 			return false;
 		}
@@ -439,10 +449,16 @@ public static class DatabaseServer
 	{
 		var query =
 			"INSERT INTO Persons (FirstName, LastName, Email, PhoneNumber, AddressId) " +
+			"OUTPUT INSERTED.Id " +
 			$"VALUES ('{person.FirstName}', '{person.LastName}', '{person.Email}', '{person.PhoneNumber}', '{person.Address.Id}')";
 
-		// If the query fails, return false.
-		if (!ExecuteNonQuery(query))
+		var reader = ExecuteQuery(query);
+
+		// Get the ID of the inserted order.
+		while (reader.Read()) person.Id = reader.GetInt32(0);
+
+		// If the ID is -1, the query must have failed.
+		if (person.Id == -1)
 		{
 			return false;
 		}
@@ -460,12 +476,23 @@ public static class DatabaseServer
 	/// <returns>True if the customer was inserted successfully, false otherwise.</returns>
 	public static bool InsertCustomer(Customer customer)
 	{
+		if (!InsertPerson(customer.Person))
+		{
+			return false;
+		}
+
 		var query =
 			"INSERT INTO Customers (PersonId, DateSinceLastPurchase) " +
+			"OUTPUT INSERTED.Id " +
 			$"VALUES ('{customer.Person.Id}', '{customer.DateSinceLastPurchase}')";
 
-		// If the query fails, return false.
-		if (!ExecuteNonQuery(query))
+		var reader = ExecuteQuery(query);
+
+		// Get the ID of the inserted order.
+		while (reader.Read()) customer.CustomerId = reader.GetInt32(0);
+
+		// If the ID is -1, the query must have failed.
+		if (customer.CustomerId == -1)
 		{
 			return false;
 		}
@@ -485,10 +512,16 @@ public static class DatabaseServer
 	{
 		var query =
 			"INSERT INTO Companies (CompanyName, Currency, AddressId) " +
+			"OUTPUT INSERTED.Id " +
 			$"VALUES ('{company.CompanyName}', '{company.Currency}', '{company.Address.Id}')";
 
-		// If the query fails, return false.
-		if (!ExecuteNonQuery(query))
+		var reader = ExecuteQuery(query);
+
+		// Get the ID of the inserted order.
+		while (reader.Read()) company.Id = reader.GetInt32(0);
+
+		// If the ID is -1, the query must have failed.
+		if (company.Id == -1)
 		{
 			return false;
 		}
@@ -508,10 +541,16 @@ public static class DatabaseServer
 	{
 		var query =
 			"INSERT INTO Products (Name, Description, SalesPrice, PurchasePrice, Location, Stock, Unit) " +
+			"OUTPUT INSERTED.Id " +
 			$"VALUES ('{product.Name}', '{product.Description}', '{product.SalesPrice}', '{product.PurchasePrice}', '{product.Location}', '{product.Stock}', '{product.Unit}')";
 
-		// If the query fails, return false.
-		if (!ExecuteNonQuery(query))
+		var reader = ExecuteQuery(query);
+
+		// Get the ID of the inserted order.
+		while (reader.Read()) product.Id = reader.GetInt32(0);
+
+		// If the ID is -1, the query must have failed.
+		if (product.Id == -1)
 		{
 			return false;
 		}
@@ -531,10 +570,16 @@ public static class DatabaseServer
 	{
 		var query =
 			"INSERT INTO OrderLines (OrderId, ProductId, Quantity) " +
+			"OUTPUT INSERTED.Id " +
 			$"VALUES ('{orderLine.OrderId}', '{orderLine.Product.Id}', '{orderLine.Quantity}')";
 
-		// If the query fails, return false.
-		if (!ExecuteNonQuery(query))
+		var reader = ExecuteQuery(query);
+
+		// Get the ID of the inserted order.
+		while (reader.Read()) orderLine.Id = reader.GetInt32(0);
+
+		// If the ID is -1, the query must have failed.
+		if (orderLine.Id == -1)
 		{
 			return false;
 		}
@@ -554,10 +599,16 @@ public static class DatabaseServer
 	{
 		var query =
 			"INSERT INTO Orders (CreatedAt, CompletedAt, CustomerId, OrderStatus) " +
+			"OUTPUT INSERTED.Id " +
 			$"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.Id}', '{order.OrderStatus}')";
 
-		// If the query fails, return false.
-		if (!ExecuteNonQuery(query))
+		var reader = ExecuteQuery(query);
+
+		// Get the ID of the inserted order.
+		while (reader.Read()) order.Id = reader.GetInt32(0);
+
+		// If the ID is -1, the query must have failed.
+		if (order.Id == -1)
 		{
 			return false;
 		}
