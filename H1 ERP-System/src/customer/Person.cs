@@ -4,10 +4,8 @@ namespace H1_ERP_System.customer;
 
 public class Person
 {
-	public Person(int id, string firstName, string lastName, string email, string phoneNumber, Address address)
+	public Person(string firstName, string lastName, string email, string phoneNumber, Address address)
 	{
-		Id = id;
-
 		FirstName = firstName;
 		LastName = lastName;
 		FullName = FirstName + " " + LastName;
@@ -18,7 +16,7 @@ public class Person
 		Address = address;
 	}
 
-	public int Id { get; set; }
+	public int Id { get; set; } = -1;
 
 	public string FirstName { get; set; }
 	public string LastName { get; set; }

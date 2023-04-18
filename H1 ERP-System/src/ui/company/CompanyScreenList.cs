@@ -73,7 +73,7 @@ public class CompanyScreenList
 
 	public static CompanyScreenList GetCompanyScreenListFromId(int CompanyId)
 	{
-		Address tempAddress = new Address(0,"","","","","");
+		Address tempAddress = new Address("","","","","");
 		CompanyScreenList companyScreenList = new(0, "", tempAddress, "", 0, 0);
 
 		var companies = Database.GetAllCompanies();
@@ -107,11 +107,11 @@ public class CompanyScreenList
 
         int newCompanyId = highestCompanyId + 1;
         int newAddressId = highestAddressId + 1;
-        Address tempAddress = new Address(newAddressId, "", "", "", "", "");
-        company.Company TempCompany = new(newCompanyId, "newCompany", tempAddress, "USD");
+        Address tempAddress = new Address("", "", "", "", "");
+        company.Company TempCompany = new("newCompany", tempAddress, "USD");
         DatabaseServer.InsertAddress(tempAddress);
         DatabaseServer.InsertCompany(TempCompany);
-        CompanySetupScreen.SelectedCompanyId = TempCompany.Id;
+        CompanySetupScreen.SelectedOrderId = TempCompany.Id;
         Screen.Display(new CompanyEditDataScreen(newCompanyId));
     }
     public static void EditCompanyButton(CompanyScreenList company)

@@ -176,7 +176,7 @@ public static class DatabaseServer
 
 			var country = reader.GetString(5);
 
-			var address = new Address(id, streetName, streetNumber, zipCode, city, country);
+			var address = new Address( streetName, streetNumber, zipCode, city, country);
 
 			addresses.Add(address);
 		}
@@ -215,7 +215,7 @@ public static class DatabaseServer
 				continue;
 			}
 
-			var person = new Person(id, firstName, lastName, email, phoneNumber, address);
+			var person = new Person(firstName, lastName, email, phoneNumber, address);
 
 			persons.Add(person);
 		}
@@ -254,7 +254,7 @@ public static class DatabaseServer
 				continue;
 			}
 
-			var customer = new Customer(customerId, person, dateSinceLastPurchase);
+			var customer = new Customer(person, dateSinceLastPurchase);
 
 			customers.Add(customer);
 		}
@@ -290,7 +290,7 @@ public static class DatabaseServer
 				continue;
 			}
 
-			var company = new Company(id, companyName, address, currency);
+			var company = new Company(companyName, address, currency);
 
 			companies.Add(company);
 		}
@@ -325,7 +325,7 @@ public static class DatabaseServer
 
 			var unit = reader.GetString(7).Of();
 
-			var product = new Product(id, name, description, salesPrice, purchasePrice, location, stock, unit);
+			var product = new Product(name, description, salesPrice, purchasePrice, location, stock, unit);
 
 			products.Add(product);
 		}
@@ -399,7 +399,7 @@ public static class DatabaseServer
 			}
 
 			var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
-			var order = new Order(id, createdAt, completedAt, customer, orderStatus);
+			var order = new Order(createdAt, completedAt, customer, orderStatus);
 
 			orders.Add(order);
 		}

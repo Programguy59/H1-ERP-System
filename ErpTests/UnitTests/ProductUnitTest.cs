@@ -4,7 +4,7 @@ namespace ErpTests.UnitTests
 {
     public class ProductUnitTest
     {
-        Product testProduct = new Product(1,"testName","testDesc",25,20,"aaaa",1,Unit.Piece);
+        Product testProduct = new Product("testName","testDesc",25,20,"aaaa",1,Unit.Piece);
 
         [Fact]
         public void EarningsTest()

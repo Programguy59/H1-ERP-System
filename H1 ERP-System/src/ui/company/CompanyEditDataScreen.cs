@@ -38,8 +38,8 @@ public class CompanyEditDataScreen : Screen
 		editor.Edit(companyScreenList);
 		Clear(this);
 
-        company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
-		company.Address = new(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
+        company.Company company = new(companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
+		company.Address = new(companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
 
         if (company == null){return;}
 		if (!DatabaseServer.UpdateCompany(company)){return;}

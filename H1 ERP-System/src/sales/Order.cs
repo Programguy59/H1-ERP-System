@@ -8,10 +8,8 @@ namespace H1_ERP_System.sales;
 
 public class Order
 {
-	public Order(int id, string createdAt, string completedAt, Customer customer, OrderStatus orderStatus)
+	public Order(string createdAt, string completedAt, Customer customer, OrderStatus orderStatus)
 	{
-		Id = id;
-
 		CreatedAt = createdAt;
 		CompletedAt = completedAt;
 
@@ -24,7 +22,7 @@ public class Order
 		TotalPrice = CalculateTotalPrice();
 	}
 
-	public int Id { get; set; }
+	public int Id { get; set; } = -1;
 
 	public string CreatedAt { get; set; }
 	public string CompletedAt { get; set; }

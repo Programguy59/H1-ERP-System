@@ -2,11 +2,9 @@
 
 public class Product
 {
-	public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, double stock,
+	public Product(string name, string description, double salesPrice, double purchasePrice, string location, double stock,
 		Unit unit)
 	{
-		Id = id;
-
 		Name = name;
 		Description = description;
 
@@ -24,7 +22,7 @@ public class Product
 
 	}
 
-	public int Id { get; set; }
+	public int Id { get; set; } = -1;
 
 	public string Name { get; set; }
 	public string Description { get; set; }

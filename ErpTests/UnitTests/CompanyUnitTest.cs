@@ -15,8 +15,8 @@ namespace ErpTests.UnitTests
         [Fact]
         public void ToStringTest()
         {
-            Address SuperAddress = new Address(0, "", "", "", "", "");
-            Company company = new(0, "BestCompany", SuperAddress, "USD");
+            Address SuperAddress = new Address("", "", "", "", "");
+            Company company = new("BestCompany", SuperAddress, "USD");
             Assert.IsType<string>(company.ToString());
         }  
     }
