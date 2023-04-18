@@ -83,7 +83,7 @@ public class SalesList
     }
     public static void EditSalesButton(SalesList sale)
     {
-        Screen.Display(new SalesEditDataScreen(sale.Id));
+        //Screen.Display(new SalesEditDataScreen(sale.Id));
     }
 
     public static ListPage<SalesList> GetPageList()

@@ -22,8 +22,8 @@ public class SalesScreen : Screen
 				continue;
 			}
 
-			var salesList = new SalesList(order.Id, order.CreatedAt, customer.Id.ToString(), customer.FullName, order.TotalPrice);
-			listPage.Add(salesList);
+			//var salesList = new SalesList(order.Id, order.CreatedAt, customer.Id.ToString(), customer.FullName, order.TotalPrice);
+			//listPage.Add(salesList);
 		}
 
 		listPage.AddColumn("Order ID", "Id");
