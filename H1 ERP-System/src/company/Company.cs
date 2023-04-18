@@ -4,15 +4,20 @@ namespace H1_ERP_System.company;
 
 public class Company
 {
-	public Company(string companyName, Address address, string currency)
+	public Company(int id, string companyName, Address address, string currency)
 	{
+		Id = id;
+
 		CompanyName = companyName;
 		Address = address;
 
 		Currency = currency;
 	}
 
-	public int Id { get; set; } = -1;
+	public Company(string companyName, Address address, string currency) : 
+		this(-1, companyName, address, currency) { }
+
+    public int Id { get; set; }
 
 	public string CompanyName { get; set; }
 	public Address Address { get; set; }

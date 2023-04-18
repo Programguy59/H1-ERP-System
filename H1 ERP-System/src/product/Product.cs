@@ -1,10 +1,14 @@
-﻿namespace H1_ERP_System.products;
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+
+namespace H1_ERP_System.products;
 
 public class Product
 {
-	public Product(string name, string description, double salesPrice, double purchasePrice, string location, double stock,
+	public Product(int id, string name, string description, double salesPrice, double purchasePrice, string location, double stock,
 		Unit unit)
 	{
+		Id = id;
+
 		Name = name;
 		Description = description;
 
@@ -21,8 +25,10 @@ public class Product
 
 
 	}
+	public Product(string name, string description, double salesPrice, double purchasePrice, string location, double stock, Unit unit) : 
+		this(-1,name,description,salesPrice,purchasePrice,location,stock,unit) { }
 
-	public int Id { get; set; } = -1;
+    public int Id { get; set; }
 
 	public string Name { get; set; }
 	public string Description { get; set; }
