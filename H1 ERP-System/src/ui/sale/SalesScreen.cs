@@ -22,14 +22,14 @@ public class SalesScreen : Screen
 				continue;
 			}
 
-			var salesList = new SalesList(order.Id, order.CreatedAt, customer.Id.ToString(), customer.FullName, order.TotalPrice);
+			var salesList = new SalesList(order.Id, order.CreatedAt, customer, order.TotalPrice);
 			listPage.Add(salesList);
 		}
 
 		listPage.AddColumn("Order ID", "Id");
 		listPage.AddColumn("Date", "Date");
 		listPage.AddColumn("Customer ID", "CustomerId");
-		listPage.AddColumn("Name", "CustomerName");
+		listPage.AddColumn("Name", "CustomerFullName");
 		listPage.AddColumn("Total Price", "TotalPrice");
 
 		var selected = listPage.Select();
@@ -44,7 +44,7 @@ public class SalesScreen : Screen
         listPage.AddColumn("Order ID", "Id");
         listPage.AddColumn("Date", "Date");
         listPage.AddColumn("Customer ID", "CustomerId");
-        listPage.AddColumn("Name", "CustomerName");
+        listPage.AddColumn("Name", "CustomerFullName");
 
         listPage.Select();
 
