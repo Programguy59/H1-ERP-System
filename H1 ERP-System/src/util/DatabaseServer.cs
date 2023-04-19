@@ -119,7 +119,9 @@ public static class DatabaseServer
 			DataSource = "docker.data.techcollege.dk",
 			InitialCatalog = "H1PD021123_Gruppe3",
 			UserID = "H1PD021123_Gruppe3",
-			Password = "H1PD021123_Gruppe3"
+			Password = "H1PD021123_Gruppe3",
+			TrustServerCertificate = true,
+			ConnectTimeout = 30
 		};
 
 		var connectionString = sb.ToString();
@@ -197,6 +199,8 @@ public static class DatabaseServer
 			addresses.Add(address);
 		}
 		
+		reader.Close();
+
 		return addresses;
 	}
 
@@ -234,6 +238,8 @@ public static class DatabaseServer
 
 			persons.Add(person);
 		}
+		
+		reader.Close();
 
 		return persons;
 	}
@@ -429,8 +435,8 @@ public static class DatabaseServer
 		// Get the ID of the inserted order.
 		while (reader.Read()) address.Id = reader.GetInt32(0);
 
-		// If the ID is -1, the query must have failed.
-		if (address.Id == -1)
+		// If the ID is DefaultId, the query must have failed.
+		if (address.Id == Constants.DefaultId)
 		{
 			return false;
 		}
@@ -458,8 +464,8 @@ public static class DatabaseServer
 		// Get the ID of the inserted order.
 		while (reader.Read()) person.Id = reader.GetInt32(0);
 
-		// If the ID is -1, the query must have failed.
-		if (person.Id == -1)
+		// If the ID is DefaultId, the query must have failed.
+		if (person.Id == Constants.DefaultId)
 		{
 			return false;
 		}
@@ -492,8 +498,8 @@ public static class DatabaseServer
 		// Get the ID of the inserted order.
 		while (reader.Read()) customer.CustomerId = reader.GetInt32(0);
 
-		// If the ID is -1, the query must have failed.
-		if (customer.CustomerId == -1)
+		// If the ID is DefaultId, the query must have failed.
+		if (customer.CustomerId == Constants.DefaultId)
 		{
 			return false;
 		}
@@ -521,8 +527,8 @@ public static class DatabaseServer
 		// Get the ID of the inserted order.
 		while (reader.Read()) company.Id = reader.GetInt32(0);
 
-		// If the ID is -1, the query must have failed.
-		if (company.Id == -1)
+		// If the ID is DefaultId, the query must have failed.
+		if (company.Id == Constants.DefaultId)
 		{
 			return false;
 		}
@@ -550,8 +556,8 @@ public static class DatabaseServer
 		// Get the ID of the inserted order.
 		while (reader.Read()) product.Id = reader.GetInt32(0);
 
-		// If the ID is -1, the query must have failed.
-		if (product.Id == -1)
+		// If the ID is DefaultId, the query must have failed.
+		if (product.Id == Constants.DefaultId)
 		{
 			return false;
 		}
@@ -579,8 +585,8 @@ public static class DatabaseServer
 		// Get the ID of the inserted order.
 		while (reader.Read()) orderLine.Id = reader.GetInt32(0);
 
-		// If the ID is -1, the query must have failed.
-		if (orderLine.Id == -1)
+		// If the ID is DefaultId, the query must have failed.
+		if (orderLine.Id == Constants.DefaultId)
 		{
 			return false;
 		}
@@ -608,8 +614,8 @@ public static class DatabaseServer
 		// Get the ID of the inserted order.
 		while (reader.Read()) order.Id = reader.GetInt32(0);
 
-		// If the ID is -1, the query must have failed.
-		if (order.Id == -1)
+		// If the ID is DefaultId, the query must have failed.
+		if (order.Id == Constants.DefaultId)
 		{
 			return false;
 		}

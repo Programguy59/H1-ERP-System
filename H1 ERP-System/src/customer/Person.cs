@@ -19,7 +19,7 @@ public class Person
 	}
 	
 	public Person(string firstName, string lastName, string email, string phoneNumber, Address address) 
-		: this(-1, firstName, lastName, email, phoneNumber, address) { }
+		: this(Constants.DefaultId, firstName, lastName, email, phoneNumber, address) { }
 	
 	public int Id { get; set; }
 

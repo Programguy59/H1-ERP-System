@@ -16,7 +16,7 @@ public class Address
 	}
 	
 	public Address(string streetName, string streetNumber, string zipCode, string city, string country) 
-		: this(-1, streetName, streetNumber, zipCode, city, country) { }
+		: this(Constants.DefaultId, streetName, streetNumber, zipCode, city, country) { }
 	
 	public int Id { get; set; }
 

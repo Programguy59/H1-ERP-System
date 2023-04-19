@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿using H1_ERP_System.util;
 
 namespace H1_ERP_System.customer;
 
@@ -14,7 +14,7 @@ public class Customer : Person
 	}
 
 	public Customer(Person person, string dateSinceLastPurchase) :
-		this(-1, person, dateSinceLastPurchase) { }
+		this(Constants.DefaultId, person, dateSinceLastPurchase) { }
 
     public int CustomerId { get; set; }
 	public Person Person { get; }

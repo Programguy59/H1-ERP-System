@@ -29,6 +29,7 @@ public class CustomerScreen : Screen
 		listPage.Select();
 		
 		Clear(this);
-		Quit();
+
+		Display(new Menu.MenuScreen());
 	}
 }

@@ -76,7 +76,6 @@ public class CustomerEditScreen : Screen
 		var dateSinceLastPurchase = lastOrder == null ? "N/A" : lastOrder.CreatedAt;
 		
 		var updatedCustomer = new Customer(person, dateSinceLastPurchase);
-		
 		if (!DatabaseServer.UpdateCustomer(updatedCustomer))
 		{
 			return;
@@ -84,6 +83,6 @@ public class CustomerEditScreen : Screen
 		
 		Clear(this);
 		
-		Display(new Menu.MenuScreen());
+		Display(new CustomerScreen());
 	}
 }

@@ -15,9 +15,9 @@ public class Company
 	}
 
 	public Company(string companyName, Address address, string currency) : 
-		this(-1, companyName, address, currency) { }
-
-    public int Id { get; set; }
+		this(Constants.DefaultId, companyName, address, currency) { }
+	
+	public int Id { get; set; }
 
 	public string CompanyName { get; set; }
 	public Address Address { get; set; }
