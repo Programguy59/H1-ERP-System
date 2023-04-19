@@ -116,7 +116,7 @@ public static class DatabaseServer
 	{
 		SqlConnectionStringBuilder sb = new()
 		{
-			DataSource = "docker.data.techcollege.dk",
+			DataSource = "192.168.1.70", /* "docker.data.techcollege.dk", */
 			InitialCatalog = "H1PD021123_Gruppe3",
 			UserID = "H1PD021123_Gruppe3",
 			Password = "H1PD021123_Gruppe3",
