@@ -219,21 +219,19 @@ public static class DatabaseServer
 		{
 			var id = reader.GetInt32(0);
 
-			var firstName = reader.GetString(1);
-			var lastName = reader.GetString(2);
-
-			var email = reader.GetString(3);
-			var phoneNumber = reader.GetString(4);
-
-			var addressId = reader.GetInt32(5);
-
+			var addressId = reader.GetInt32(1);
 			var address = Database.GetAddressById(addressId);
-
 			if (address == null)
 			{
 				continue;
 			}
+			
+			var firstName = reader.GetString(2);
+			var lastName = reader.GetString(3);
 
+			var email = reader.GetString(4);
+			var phoneNumber = reader.GetString(5);
+			
 			var person = new Person(id, firstName, lastName, email, phoneNumber, address);
 
 			persons.Add(person);
@@ -297,16 +295,16 @@ public static class DatabaseServer
 			var id = reader.GetInt32(0);
 
 			var companyName = reader.GetString(1);
-			var currency = reader.GetString(2);
-
-			var addressId = reader.GetInt32(3);
-
+			
+			var addressId = reader.GetInt32(2);
 			var address = Database.GetAddressById(addressId);
 			if (address == null)
 			{
 				continue;
 			}
-
+			
+			var currency = reader.GetString(3);
+			
 			var company = new Company(id, companyName, address, currency);
 
 			companies.Add(company);
@@ -372,8 +370,9 @@ public static class DatabaseServer
 			{
 				continue;
 			}
-
-			var quantity = Convert.ToDouble(reader.GetInt32(3));
+			
+			var quantity = reader.GetSqlDecimal(3).ToDouble();
+			
 			var orderLine = new OrderLine(id, orderId, product, quantity);
 
 			orderLines.Add(orderLine);

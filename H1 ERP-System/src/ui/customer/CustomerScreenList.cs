@@ -135,7 +135,7 @@ public class CustomerScreenList
 		    var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
 		    
 		    listPage.Add(new CustomerScreenList(
-			    customer.Id,
+			    customer.CustomerId,
 			    
 			    person.FirstName,
 			    person.LastName,
