@@ -98,21 +98,13 @@ public class CompanyScreenList
         var Addresses = Database.GetAllAddresses();
         var Companies = Database.GetAllCompanies();
 
-        int highestAddressId = 0;
-        for (var i = 0; i < Addresses.Count; i++)
-            if (Addresses[i].Id > highestAddressId){highestAddressId = Addresses[i].Id;}
-        int highestCompanyId = 0;
-        for (var i = 0; i < Companies.Count; i++)
-            if (Companies[i].Id > highestCompanyId) { highestCompanyId = Companies[i].Id; }
-
-        int newCompanyId = highestCompanyId + 1;
-        int newAddressId = highestAddressId + 1;
         Address tempAddress = new Address("", "", "", "", "");
-        company.Company TempCompany = new("newCompany", tempAddress, "USD");
         DatabaseServer.InsertAddress(tempAddress);
+
+        company.Company TempCompany = new("newCompany", tempAddress, "USD");
         DatabaseServer.InsertCompany(TempCompany);
-        CompanySetupScreen.SelectedOrderId = TempCompany.Id;
-        Screen.Display(new CompanyEditDataScreen(newCompanyId));
+    
+        Screen.Display(new CompanyEditDataScreen(TempCompany.Id));
     }
     public static void EditCompanyButton(CompanyScreenList company)
     {
