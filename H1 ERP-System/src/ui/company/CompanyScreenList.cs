@@ -3,6 +3,7 @@ using H1_ERP_System.util;
 using TECHCOOL.UI;
 using System.Net.NetworkInformation;
 using H1_ERP_System.db;
+using H1_ERP_System.ui.sale;
 
 namespace H1_ERP_System.src.ui.Company;
 
@@ -110,12 +111,20 @@ public class CompanyScreenList
     {
         Screen.Display(new CompanyEditDataScreen(company.CompanyId));
     }
-    
+
+    public static void DeleteCompany(CompanyScreenList companyList)
+    {
+        var company = Database.GetCompanyById(companyList.CompanyId);
+        DatabaseServer.DeleteCompany(company);
+        Screen.Display(new CompanySetupScreen());
+
+    }
     public static ListPage<CompanyScreenList> GetPageList()
     {
         var listPage = new ListPage<CompanyScreenList>();
         listPage.AddKey(ConsoleKey.F1, MakeCompanyButton);
         listPage.AddKey(ConsoleKey.F2, EditCompanyButton);
+        listPage.AddKey(ConsoleKey.F5, DeleteCompany);
 
         var Companies = Database.GetAllCompanies();
         for (var i = 0; i < Companies.Count; i++)

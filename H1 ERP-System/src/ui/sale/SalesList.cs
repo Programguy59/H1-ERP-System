@@ -85,11 +85,19 @@ public class SalesList
         Screen.Display(new CustomerEditScreen(sale.CustomerId));
     }
 
+    public static void DeleteSales(SalesList sale)
+    {
+        var order = Database.GetOrderById(sale.Id);
+        DatabaseServer.DeleteOrder(order);
+        Screen.Display(new SalesScreen());
+
+    }
     public static ListPage<SalesList> GetPageList()
     {
         var listPage = new ListPage<SalesList>();
         listPage.AddKey(ConsoleKey.F1, MakeSalesButton);
         listPage.AddKey(ConsoleKey.F2, EditSalesButton);
+        listPage.AddKey(ConsoleKey.F5, DeleteSales);
 
         var SalesOrder = Database.GetAllOrders();
         for (var i = 0; i < SalesOrder.Count; i++)
