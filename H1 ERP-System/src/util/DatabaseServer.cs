@@ -67,7 +67,7 @@ public static class DatabaseServer
 
 		Database.OrderLines.Clear();
 		Database.Orders.Clear();
-		
+
 		// Attempt database connection and insert data into local lists.
 		try
 		{
@@ -102,7 +102,7 @@ public static class DatabaseServer
 			Console.WriteLine("Press any key to retry...");
 			Console.ReadKey();
 			Console.WriteLine();
-			
+
 			// Retry connecting to the database.
 			Initialize(attempts);
 		}
@@ -117,12 +117,12 @@ public static class DatabaseServer
 		SqlConnectionStringBuilder sb = new()
 		{
 			DataSource = Constants.Sql.Host,
-			
+
 			InitialCatalog = Constants.Sql.Database,
 			UserID = Constants.Sql.User,
 			Password = Constants.Sql.Password
 		};
-		
+
 		var connectionString = sb.ToString();
 
 		_connection = new SqlConnection(connectionString);
@@ -181,6 +181,7 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Addresses";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -190,14 +191,14 @@ public static class DatabaseServer
 
 			var zipCode = reader.GetString(3);
 			var city = reader.GetString(4);
-			
+
 			var country = reader.GetString(5);
-			
+
 			var address = new Address(id, streetName, streetNumber, zipCode, city, country);
 
 			addresses.Add(address);
 		}
-		
+
 		reader.Close();
 
 		return addresses;
@@ -214,28 +215,30 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Persons";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
 
 			var addressId = reader.GetInt32(1);
 			var address = Database.GetAddressById(addressId);
+
 			if (address == null)
 			{
 				continue;
 			}
-			
+
 			var firstName = reader.GetString(2);
 			var lastName = reader.GetString(3);
 
 			var email = reader.GetString(4);
 			var phoneNumber = reader.GetString(5);
-			
+
 			var person = new Person(id, firstName, lastName, email, phoneNumber, address);
 
 			persons.Add(person);
 		}
-		
+
 		reader.Close();
 
 		return persons;
@@ -257,6 +260,7 @@ public static class DatabaseServer
 			"         JOIN Customers c ON p.Id = c.PersonId";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var personId = reader.GetInt32(0);
@@ -265,6 +269,7 @@ public static class DatabaseServer
 			var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
 
 			var person = Database.GetPersonById(personId);
+
 			if (person == null)
 			{
 				continue;
@@ -289,21 +294,23 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Companies";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
 
 			var companyName = reader.GetString(1);
-			
+
 			var addressId = reader.GetInt32(2);
 			var address = Database.GetAddressById(addressId);
+
 			if (address == null)
 			{
 				continue;
 			}
-			
+
 			var currency = reader.GetString(3);
-			
+
 			var company = new Company(id, companyName, address, currency);
 
 			companies.Add(company);
@@ -323,6 +330,7 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM Products";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -357,6 +365,7 @@ public static class DatabaseServer
 		const string query = "SELECT * FROM OrderLines";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -365,13 +374,14 @@ public static class DatabaseServer
 			var productId = reader.GetInt32(2);
 
 			var product = Database.GetProductById(productId);
+
 			if (product == null)
 			{
 				continue;
 			}
-			
+
 			var quantity = reader.GetSqlDecimal(3).ToDouble();
-			
+
 			var orderLine = new OrderLine(id, orderId, product, quantity);
 
 			orderLines.Add(orderLine);
@@ -392,6 +402,7 @@ public static class DatabaseServer
 			"SELECT * FROM Orders o";
 
 		using var reader = ExecuteQuery(query);
+
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
@@ -402,6 +413,7 @@ public static class DatabaseServer
 			var customerId = reader.GetInt32(3);
 
 			var customer = Database.GetCustomerById(customerId);
+
 			if (customer == null)
 			{
 				continue;
@@ -676,7 +688,7 @@ public static class DatabaseServer
 		// Update the local cache.
 		var index = Database.Persons.FindIndex(p => p.PersonId == person.PersonId);
 		Database.Persons[index] = person;
-		
+
 		return true;
 	}
 
