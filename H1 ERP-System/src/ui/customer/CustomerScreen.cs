@@ -8,6 +8,8 @@ public class CustomerScreen : Screen
 
 	protected override void Draw()
 	{
+		Clear();
+
 		var listPage = CustomerScreenList.GetPageListFromId(CustomerSetupScreen.SelectedCustomerId);
 		
 		listPage.AddColumn("ID", "Id");

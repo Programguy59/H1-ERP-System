@@ -74,15 +74,15 @@ public class CustomerEditScreen : Screen
 		
 		var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
 		var dateSinceLastPurchase = lastOrder == null ? "N/A" : lastOrder.CreatedAt;
-		
-		var updatedCustomer = new Customer(person, dateSinceLastPurchase);
-		if (!DatabaseServer.UpdateCustomer(updatedCustomer))
+
+        var updatedCustomer = new Customer(customer.CustomerId, person, dateSinceLastPurchase);
+        if (!DatabaseServer.UpdateCustomer(updatedCustomer))
 		{
 			return;
 		}
 		
 		Clear(this);
-		
-		Display(new CustomerScreen());
-	}
+
+        Screen.Display(new Menu.MenuScreen());
+    }
 }
