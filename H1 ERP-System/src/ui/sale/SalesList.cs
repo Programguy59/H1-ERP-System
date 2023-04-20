@@ -21,7 +21,7 @@ public class SalesList
         CustomerlastName = customer.LastName;
 
         CustomerStreetName = customer.Address.StreetName;
-        CustomerHouseNumber = customer.Address.StreetNumber;
+        CustomerStreetNumber = customer.Address.StreetNumber;
         CustomerZipCode = customer.Address.ZipCode;
         CustomerCity = customer.Address.City;
 
@@ -33,20 +33,20 @@ public class SalesList
 		TotalPrice = totalPrice;
 	}
 
-	public int Id { get; }
+	public int Id { get; set; }
 
-	public string Date { get; }
-	public int CustomerId { get; }
-	public string CustomerFullName { get; }
-    public string CustomerfirstName { get; }
-    public string CustomerlastName { get; }
-    public string CustomerStreetName { get; }
-    public string CustomerHouseNumber { get; }
-    public string CustomerZipCode { get; }
-    public string CustomerCity { get; }
-    public string CustomerPhoneNumber { get; }
-    public string CustomerEmail { get; }
-    public double TotalPrice { get; }
+	public string Date { get; set; }
+	public int CustomerId { get; set; }
+	public string CustomerFullName { get; set; }
+    public string CustomerfirstName { get; set; }
+    public string CustomerlastName { get; set; }
+    public string CustomerStreetName { get; set; }
+    public string CustomerStreetNumber { get; set; }
+    public string CustomerZipCode { get; set; }
+    public string CustomerCity { get; set; }
+    public string CustomerPhoneNumber { get; set; }
+    public string CustomerEmail { get; set; }
+    public double TotalPrice { get; set; }
 
 
     public static SalesList GetSalesScreenListFromId(int SalesId)
