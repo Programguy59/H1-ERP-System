@@ -9,13 +9,13 @@ namespace H1_ERP_System.ui.sale;
 
 public class SalesList
 {
-	public SalesList(int id, string date, Person customer, double totalPrice)
+	public SalesList(int id, string date, Customer customer, double totalPrice)
 	{
 		Id = id;
 		Date = date;
 
-		CustomerId = customer.Id;
-
+		CustomerId = customer.CustomerId;
+		
 		CustomerFullName = customer.FullName;
         CustomerfirstName = customer.FirstName;
         CustomerlastName = customer.LastName;
@@ -102,7 +102,4 @@ public class SalesList
 
         return listPage;
     }
-
 }
-
-

@@ -460,10 +460,10 @@ public static class DatabaseServer
 		var reader = ExecuteQuery(query);
 
 		// Get the ID of the inserted order.
-		while (reader.Read()) person.Id = reader.GetInt32(0);
+		while (reader.Read()) person.PersonId = reader.GetInt32(0);
 
 		// If the ID is DefaultId, the query must have failed.
-		if (person.Id == Constants.DefaultId)
+		if (person.PersonId == Constants.DefaultId)
 		{
 			return false;
 		}
@@ -489,7 +489,7 @@ public static class DatabaseServer
 		var query =
 			"INSERT INTO Customers (PersonId, DateSinceLastPurchase) " +
 			"OUTPUT INSERTED.Id " +
-			$"VALUES ('{customer.Person.Id}', '{customer.DateSinceLastPurchase}')";
+			$"VALUES ('{customer.Person.PersonId}', '{customer.DateSinceLastPurchase}')";
 
 		var reader = ExecuteQuery(query);
 
@@ -605,7 +605,7 @@ public static class DatabaseServer
 		var query =
 			"INSERT INTO Orders (CreatedAt, CompletedAt, CustomerId, OrderStatus) " +
 			"OUTPUT INSERTED.Id " +
-			$"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.Id}', '{order.OrderStatus}')";
+			$"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.CustomerId}', '{order.OrderStatus}')";
 
 		var reader = ExecuteQuery(query);
 
@@ -665,7 +665,7 @@ public static class DatabaseServer
 		var query =
 			"UPDATE Persons " +
 			$"SET FirstName = '{person.FirstName}', LastName = '{person.LastName}', Email = '{person.Email}', PhoneNumber = '{person.PhoneNumber}', AddressId = '{person.Address.Id}' " +
-			$"WHERE Id = '{person.Id}'";
+			$"WHERE Id = '{person.PersonId}'";
 
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
@@ -674,9 +674,9 @@ public static class DatabaseServer
 		}
 
 		// Update the local cache.
-		var index = Database.Persons.FindIndex(p => p.Id == person.Id);
+		var index = Database.Persons.FindIndex(p => p.PersonId == person.PersonId);
 		Database.Persons[index] = person;
-
+		
 		return true;
 	}
 
@@ -702,7 +702,7 @@ public static class DatabaseServer
 		// Query to update the customer.
 		var query =
 			"UPDATE Customers " +
-			$"SET PersonId = '{customer.Person.Id}', DateSinceLastPurchase = '{dateSinceLastPurchase}' " +
+			$"SET PersonId = '{customer.Person.PersonId}', DateSinceLastPurchase = '{dateSinceLastPurchase}' " +
 			$"WHERE Id = '{customer.CustomerId}'";
 
 		// If the query fails, return false.
@@ -712,7 +712,7 @@ public static class DatabaseServer
 		}
 
 		// Update the local cache.
-		var index = Database.Customers.FindIndex(c => c.Id == customer.Id);
+		var index = Database.Customers.FindIndex(c => c.CustomerId == customer.CustomerId);
 		Database.Customers[index] = customer;
 
 		return true;
@@ -808,7 +808,7 @@ public static class DatabaseServer
 	{
 		var query =
 			"UPDATE Orders " +
-			$"SET CreatedAt = '{order.CreatedAt}', CompletedAt = '{order.CompletedAt}', CustomerId = '{order.Customer.Id}', OrderStatus = '{order.OrderStatus}' " +
+			$"SET CreatedAt = '{order.CreatedAt}', CompletedAt = '{order.CompletedAt}', CustomerId = '{order.Customer.CustomerId}', OrderStatus = '{order.OrderStatus}' " +
 			$"WHERE Id = '{order.Id}'";
 
 		// If the query fails, return false.
@@ -856,7 +856,7 @@ public static class DatabaseServer
 	{
 		var query =
 			"DELETE FROM Persons " +
-			$"WHERE Id = '{person.Id}'";
+			$"WHERE Id = '{person.PersonId}'";
 
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
@@ -879,7 +879,7 @@ public static class DatabaseServer
 	{
 		var query =
 			"DELETE FROM Customers " +
-			$"WHERE Id = '{customer.Id}'";
+			$"WHERE Id = '{customer.CustomerId}'";
 
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
