@@ -3,6 +3,7 @@ using H1_ERP_System.db;
 using H1_ERP_System.sales;
 using H1_ERP_System.ui.customer;
 using H1_ERP_System.util;
+using System.Data;
 using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui.sale;
@@ -71,7 +72,7 @@ public class SalesList
         Person tempPerson = new("", "", "", "", tempAddress);
         DatabaseServer.InsertPerson(tempPerson);
 
-        Customer tempCustomer = new(tempPerson, "");
+        Customer tempCustomer = new(tempPerson, "10/9/2001") ;
         DatabaseServer.InsertCustomer(tempCustomer);
 
         Order newOrder = new("", "", tempCustomer, OrderStatus.Created);
@@ -90,6 +91,7 @@ public class SalesList
         var order = Database.GetOrderById(sale.Id);
         DatabaseServer.DeleteOrder(order);
         Screen.Display(new SalesScreen());
+
     }
 
     public static ListPage<SalesList> GetPageList()
