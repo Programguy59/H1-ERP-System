@@ -13,7 +13,7 @@ public class ProductSetupScreen : Screen
 	{
 
 
-		Clear(this);
+		TechCoolUtils.Clear(this);
 		var listPage = new ListPage<ProductScreenList>();
 		var Products = DatabaseServer.FetchProducts();
 		for (var i = 0; i < Products.Count; i++) listPage.Add(new ProductScreenList(Products[i]));
@@ -28,10 +28,9 @@ public class ProductSetupScreen : Screen
 
 		var selected = listPage.Select();
 
-		Console.WriteLine("You selected: " + selected.ProductName);
-		Console.Clear();
+        TechCoolUtils.Clear(this);
 
-		Quit();
+        Quit();
 
 		Display(new ProductScreen(selected));
 	}

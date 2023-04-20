@@ -1,4 +1,5 @@
-﻿using TECHCOOL.UI;
+﻿using H1_ERP_System.util;
+using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui.customer;
 
@@ -9,7 +10,7 @@ public class CustomerSetupScreen : Screen
 
 	protected override void Draw()
 	{
-		Clear();
+		TechCoolUtils.Clear(this);
 		
 		var listPage = CustomerScreenList.GetPageList();
 		
@@ -23,8 +24,8 @@ public class CustomerSetupScreen : Screen
 		listPage.AddColumn("Last Order", "FormattedLastOrderDate");
 		
 		SelectedCustomerId = listPage.Select().Id;
-		
-		Clear(this);
-		Display(new CustomerScreen());
+
+        TechCoolUtils.Clear(this);
+        Display(new CustomerScreen());
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using H1_ERP_System.src.ui.Company;
 using H1_ERP_System.ui.customer;
 using H1_ERP_System.ui.sale;
+using H1_ERP_System.util;
 using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui;
@@ -13,9 +14,9 @@ public class Menu
 
 		protected override void Draw()
 		{
-			Clear(this);
+            TechCoolUtils.Clear(this);
 
-			var menu = new TECHCOOL.UI.Menu();
+            var menu = new TECHCOOL.UI.Menu();
 
 			menu.Add(new CompanySetupScreen());
 			menu.Add(new CustomerSetupScreen());
@@ -23,7 +24,7 @@ public class Menu
 			menu.Add(new SalesScreen());
 			menu.Start(this);
 
-            Clear(this);
+            TechCoolUtils.Clear(this);
         }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using TECHCOOL.UI;
+﻿using H1_ERP_System.util;
+using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui;
 
@@ -14,8 +15,8 @@ public class ProductScreen : Screen
 
 	protected override void Draw()
 	{
-		Clear(this);
-		var listPage = new ListPage<ProductScreenList>();
+        TechCoolUtils.Clear(this);
+        var listPage = new ListPage<ProductScreenList>();
 		listPage.Add(CurrentProduct);
 		
 		listPage.AddColumn("Product", "ProductName");
@@ -27,10 +28,10 @@ public class ProductScreen : Screen
 
 		var selected = listPage.Select();
 
-		Console.Clear();
+        TechCoolUtils.Clear(this);
 
 
-		Quit();
+        Quit();
 
 
 	}

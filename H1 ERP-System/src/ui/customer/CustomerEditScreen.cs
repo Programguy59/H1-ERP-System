@@ -18,9 +18,9 @@ public class CustomerEditScreen : Screen
 
 	protected override void Draw()
 	{
-		Clear(this);
-		
-		var customerScreenList = CustomerScreenList.GetCustomerScreenListFromId(_selectedCustomerId);
+        TechCoolUtils.Clear(this);
+
+        var customerScreenList = CustomerScreenList.GetCustomerScreenListFromId(_selectedCustomerId);
 		if (customerScreenList == null)
 		{
 			return;
@@ -44,11 +44,11 @@ public class CustomerEditScreen : Screen
 		editor.TextBox("Country", "Country");
 		
 		editor.TextBox("Last Order", "FormattedLastOrderDate");
-		
-		Clear(this);
-		
-		// Draw the editor.
-		editor.Edit(customerScreenList);
+
+        TechCoolUtils.Clear(this);
+
+        // Draw the editor.
+        editor.Edit(customerScreenList);
 		
 		// Update the customer.
 		var customer = Database.GetCustomerById(customerScreenList.Id);
@@ -80,8 +80,8 @@ public class CustomerEditScreen : Screen
 		{
 			return;
 		}
-		
-		Clear(this);
+
+        TechCoolUtils.Clear(this);
 
         Screen.Display(new Menu.MenuScreen());
     }

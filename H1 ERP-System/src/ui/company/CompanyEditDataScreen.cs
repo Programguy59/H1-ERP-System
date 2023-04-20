@@ -19,8 +19,8 @@ public class CompanyEditDataScreen : Screen
 
     protected override void Draw()
 	{
-		Clear(this);
-		var companyScreenList = CompanyScreenList.GetCompanyScreenListFromId(selectedCompanyId);
+        TechCoolUtils.Clear(this);
+        var companyScreenList = CompanyScreenList.GetCompanyScreenListFromId(selectedCompanyId);
 		var editor = new Form<CompanyScreenList>();
 
 		//Add a textbox
@@ -32,11 +32,11 @@ public class CompanyEditDataScreen : Screen
 		editor.TextBox("City", "CompanyCity");
 		editor.TextBox("Currency", "CompanyCurrency");
 
-		//editor.IntBox("Importance", "Priority");
-		Clear(this);
-		//Draw the editor
-		editor.Edit(companyScreenList);
-		Clear(this);
+        //editor.IntBox("Importance", "Priority");
+        TechCoolUtils.Clear(this);
+        //Draw the editor
+        editor.Edit(companyScreenList);
+        TechCoolUtils.Clear(this);
 
         company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
         company.Address = new(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
@@ -45,7 +45,7 @@ public class CompanyEditDataScreen : Screen
 		if (!DatabaseServer.UpdateCompany(company)){return;}
 
 
-        Clear(this);
+        TechCoolUtils.Clear(this);
         Screen.Display(new Menu.MenuScreen());
     }
 }
