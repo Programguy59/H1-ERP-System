@@ -5,30 +5,30 @@ namespace H1_ERP_System.ui;
 
 public class ProductSetupScreen : Screen
 {
-    public override string Title { get; set; } = "Product";
+	public override string Title { get; set; } = "Product";
 
 
-    protected override void Draw()
-    {
-        TechCoolUtils.Clear(this);
-        var listPage = new ListPage<ProductScreenList>();
-        var Products = DatabaseServer.FetchProducts();
-        for (var i = 0; i < Products.Count; i++) listPage.Add(new ProductScreenList(Products[i]));
+	protected override void Draw()
+	{
+		TechCoolUtils.Clear(this);
+		var listPage = new ListPage<ProductScreenList>();
+		var Products = DatabaseServer.FetchProducts();
+		for (var i = 0; i < Products.Count; i++) listPage.Add(new ProductScreenList(Products[i]));
 
 
-        listPage.AddColumn("Product number", "ProductNumber");
-        listPage.AddColumn("Product", "ProductName");
-        listPage.AddColumn("Sales Price", "FormattedSalesPrice");
-        listPage.AddColumn("Purchase Price", "FormattedPurchasePrice");
-        listPage.AddColumn("Profit Margin", "FormattedProfitMargin");
+		listPage.AddColumn("Product number", "ProductNumber");
+		listPage.AddColumn("Product", "ProductName");
+		listPage.AddColumn("Sales Price", "FormattedSalesPrice");
+		listPage.AddColumn("Purchase Price", "FormattedPurchasePrice");
+		listPage.AddColumn("Profit Margin", "FormattedProfitMargin");
 
 
-        var selected = listPage.Select();
+		var selected = listPage.Select();
 
-        TechCoolUtils.Clear(this);
+		TechCoolUtils.Clear(this);
 
-        Quit();
+		Quit();
 
-        Display(new ProductScreen(selected));
-    }
+		Display(new ProductScreen(selected));
+	}
 }

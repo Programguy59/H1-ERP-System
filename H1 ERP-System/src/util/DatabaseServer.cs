@@ -265,8 +265,8 @@ public static class DatabaseServer
 		{
 			var personId = reader.GetInt32(0);
 			var customerId = reader.GetInt32(1);
-
-			var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
+			
+			DateTime? dateSinceLastPurchase = reader.GetDateTime(2);
 
 			var person = Database.GetPersonById(personId);
 
@@ -274,7 +274,7 @@ public static class DatabaseServer
 			{
 				continue;
 			}
-
+			
 			var customer = new Customer(customerId, person, dateSinceLastPurchase);
 
 			customers.Add(customer);
@@ -406,10 +406,10 @@ public static class DatabaseServer
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
-
-			var createdAt = reader.GetDateTime(1).ToShortDateString();
-			var completedAt = reader.IsDBNull(2) ? "N/A" : reader.GetDateTime(2).ToShortDateString();
-
+			
+			var createdAt = reader.IsDBNull(1) ? (DateTime?) null : reader.GetDateTime(1);
+			var completedAt = reader.IsDBNull(2) ? (DateTime?) null : reader.GetDateTime(2);
+			
 			var customerId = reader.GetInt32(3);
 
 			var customer = Database.GetCustomerById(customerId);
@@ -706,17 +706,15 @@ public static class DatabaseServer
 		}
 
 		// DateSinceLastPurchase is a string, so we need to convert it to a DateTime, it's possible it's null.
-		var dateSinceLastPurchase =
-			customer.DateSinceLastPurchase.Trim() == "N/A"
-				? DateTime.MinValue
-				: DateTime.Parse(customer.DateSinceLastPurchase);
-
+		var dateSinceLastPurchase = customer.DateSinceLastPurchase ?? null;
+		var sqlDate = dateSinceLastPurchase?.ToString("yyyy-MM-dd HH:mm:ss.fff");
+		
 		// Query to update the customer.
 		var query =
 			"UPDATE Customers " +
-			$"SET PersonId = '{customer.Person.PersonId}', DateSinceLastPurchase = '{dateSinceLastPurchase}' " +
+			$"SET PersonId = '{customer.Person.PersonId}', DateSinceLastPurchase = '{sqlDate}' " +
 			$"WHERE Id = '{customer.CustomerId}'";
-
+		
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
 		{

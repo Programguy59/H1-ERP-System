@@ -2,9 +2,9 @@
 
 public class CustomerUnitTest
 {
-    [Fact]
-    public void GetAllPurchasesTest()
-    {
-        Assert.True(true);
-    }
+	[Fact]
+	public void GetAllPurchasesTest()
+	{
+		Assert.True(true);
+	}
 }
