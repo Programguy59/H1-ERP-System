@@ -9,7 +9,7 @@ public static class Program
 	private static void Main()
 	{
 		DatabaseServer.Initialize(0);
-		
-		 Screen.Display(new Menu.MenuScreen());
+
+		Screen.Display(new Menu.MenuScreen());
 	}
 }

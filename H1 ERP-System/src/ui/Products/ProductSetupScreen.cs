@@ -1,5 +1,4 @@
-﻿using H1_ERP_System.products;
-using H1_ERP_System.util;
+﻿using H1_ERP_System.util;
 using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui;
@@ -28,9 +27,9 @@ public class ProductSetupScreen : Screen
 
 		var selected = listPage.Select();
 
-        TechCoolUtils.Clear(this);
+		TechCoolUtils.Clear(this);
 
-        Quit();
+		Quit();
 
 		Display(new ProductScreen(selected));
 	}

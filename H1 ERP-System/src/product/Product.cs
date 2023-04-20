@@ -1,5 +1,4 @@
 ﻿using H1_ERP_System.util;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace H1_ERP_System.products;
 
@@ -24,10 +23,12 @@ public class Product
 		Earnings = GetEarnings();
 		ProfitMargin = GetProfitMargin();
 	}
-	
-	public Product(string name, string description, double salesPrice, double purchasePrice, string location, double stock, Unit unit) 
-		: this(Constants.DefaultId, name, description, salesPrice, purchasePrice, location, stock, unit) { }
-	
+
+	public Product(string name, string description, double salesPrice, double purchasePrice, string location, double stock, Unit unit)
+		: this(Constants.DefaultId, name, description, salesPrice, purchasePrice, location, stock, unit)
+	{
+	}
+
 	public int Id { get; set; }
 
 	public string Name { get; set; }

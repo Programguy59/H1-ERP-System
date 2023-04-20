@@ -2,15 +2,15 @@
 
 CREATE TABLE Orders
 (
-    Id          INT         NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Id          INT         NOT NULL PRIMARY KEY IDENTITY (1,1),
 
-    CreatedAt   DATETIME    DEFAULT CURRENT_TIMESTAMP,
+    CreatedAt   DATETIME DEFAULT CURRENT_TIMESTAMP,
     CompletedAt DATETIME,
-    
+
     CustomerId  INT         NOT NULL,
 
     OrderStatus VARCHAR(16) NOT NULL,
 
-    FOREIGN KEY (CustomerId) 
+    FOREIGN KEY (CustomerId)
         REFERENCES Customers (Id) ON DELETE CASCADE
 );

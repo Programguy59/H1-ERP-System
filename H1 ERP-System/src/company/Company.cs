@@ -14,9 +14,11 @@ public class Company
 		Currency = currency;
 	}
 
-	public Company(string companyName, Address address, string currency) : 
-		this(Constants.DefaultId, companyName, address, currency) { }
-	
+	public Company(string companyName, Address address, string currency) :
+		this(Constants.DefaultId, companyName, address, currency)
+	{
+	}
+
 	public int Id { get; set; }
 
 	public string CompanyName { get; set; }

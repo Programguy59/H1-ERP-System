@@ -5,7 +5,7 @@ namespace H1_ERP_System.db;
 public partial class Database
 {
 	public static List<Product> Products = new();
-	
+
 	public static Product? GetProductById(int id)
 	{
 		return Products.FirstOrDefault(product => product.Id == id);
@@ -24,11 +24,12 @@ public partial class Database
 	public static bool UpdateProduct(Product product, int id)
 	{
 		var existingProduct = GetProductById(id);
+
 		if (existingProduct == null)
 		{
 			return false;
 		}
-		
+
 		existingProduct.Id = product.Id;
 
 		existingProduct.Name = product.Name;
@@ -58,7 +59,7 @@ public partial class Database
 
 		return true;
 	}
-	
+
 	public static void ClearProducts()
 	{
 		Products.Clear();

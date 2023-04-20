@@ -10,9 +10,9 @@ public class CompanyScreen : Screen
 
 	protected override void Draw()
 	{
-        TechCoolUtils.Clear(this);
+		TechCoolUtils.Clear(this);
 
-        var ListPage = CompanyScreenList.GetPageListFromId(selectedCompanyId);
+		var ListPage = CompanyScreenList.GetPageListFromId(selectedCompanyId);
 
 		ListPage.AddColumn("Company", "CompanyName");
 		ListPage.AddColumn("Country", "CompanyCountry");
@@ -25,7 +25,7 @@ public class CompanyScreen : Screen
 
 
 		Quit();
-		TechCoolUtils.Clear(this);	
+		TechCoolUtils.Clear(this);
 
 	}
 }

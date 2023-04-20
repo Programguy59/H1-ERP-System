@@ -19,7 +19,7 @@ public class CustomerScreenList
 
 		Address = address;
 		LastOrder = lastOrder;
-		
+
 		// Define the properties that are not in the constructor.
 		StreetName = Address.StreetName;
 		StreetNumber = Address.StreetNumber;
@@ -38,13 +38,13 @@ public class CustomerScreenList
 
 	public Address Address { get; set; }
 	public Order? LastOrder { get; set; }
-	
+
 	public string StreetName { get; set; }
 	public string StreetNumber { get; set; }
 	public string ZipCode { get; set; }
 	public string City { get; set; }
 	public string Country { get; set; }
-	
+
 	public string FormattedName => $"{FirstName} {LastName}";
 	public string FormattedAddress => $"{Address.StreetName} {Address.StreetNumber}, {Address.ZipCode} {Address.City}, {Address.Country}";
 	public string FormattedLastOrderDate => LastOrder == null ? "N/A" : LastOrder.CreatedAt;

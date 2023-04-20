@@ -14,9 +14,11 @@ public class Customer : Person
 	}
 
 	public Customer(Person person, string dateSinceLastPurchase) :
-		this(Constants.DefaultId, person, dateSinceLastPurchase) { }
+		this(Constants.DefaultId, person, dateSinceLastPurchase)
+	{
+	}
 
-    public int CustomerId { get; set; }
+	public int CustomerId { get; set; }
 	public Person Person { get; }
 
 	public string DateSinceLastPurchase { get; }

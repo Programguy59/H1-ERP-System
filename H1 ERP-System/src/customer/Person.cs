@@ -7,7 +7,7 @@ public class Person
 	public Person(int personId, string firstName, string lastName, string email, string phoneNumber, Address address)
 	{
 		PersonId = personId;
-		
+
 		FirstName = firstName;
 		LastName = lastName;
 		FullName = FirstName + " " + LastName;
@@ -17,10 +17,12 @@ public class Person
 
 		Address = address;
 	}
-	
-	public Person(string firstName, string lastName, string email, string phoneNumber, Address address) 
-		: this(Constants.DefaultId, firstName, lastName, email, phoneNumber, address) { }
-	
+
+	public Person(string firstName, string lastName, string email, string phoneNumber, Address address)
+		: this(Constants.DefaultId, firstName, lastName, email, phoneNumber, address)
+	{
+	}
+
 	public int PersonId { get; set; }
 
 	public string FirstName { get; set; }

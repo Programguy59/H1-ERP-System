@@ -1,9 +1,7 @@
 ﻿using H1_ERP_System.customer;
 using H1_ERP_System.db;
-
 using H1_ERP_System.products;
 using H1_ERP_System.util;
-
 
 namespace H1_ERP_System.sales;
 
@@ -24,11 +22,14 @@ public class Order
 
 		TotalPrice = CalculateTotalPrice();
 	}
-	public Order(string createdAt, string completedAt, Customer customer, OrderStatus orderStatus) 
-		: this(Constants.DefaultId, createdAt, completedAt, customer, orderStatus) { }
-	
-    public int Id { get; set; }
-	
+
+	public Order(string createdAt, string completedAt, Customer customer, OrderStatus orderStatus)
+		: this(Constants.DefaultId, createdAt, completedAt, customer, orderStatus)
+	{
+	}
+
+	public int Id { get; set; }
+
 	public string CreatedAt { get; set; }
 	public string CompletedAt { get; set; }
 
@@ -39,19 +40,20 @@ public class Order
 	public double TotalPrice { get; set; }
 
 	public List<OrderLine> OrderLines { get; set; }
-	
-	private List<OrderLine> GetRelevantOrderLines() 
+
+	private List<OrderLine> GetRelevantOrderLines()
 	{
 		return Database.GetAllOrderLines().FindAll(orderLine => orderLine.OrderId == Id);
 	}
-	
-    private double CalculateTotalPrice()
+
+	private double CalculateTotalPrice()
 	{
 		var totalPrice = 0.0;
 
 		foreach (var orderLine in OrderLines)
 		{
 			var product = Database.GetProductById(orderLine.Product.Id);
+
 			if (product == null)
 			{
 				continue;
@@ -100,17 +102,19 @@ public class OrderLine
 	{
 		Id = id;
 		OrderId = orderId;
-		
+
 		Product = product;
 		Quantity = quantity;
 	}
-	
-	public OrderLine(int orderId, Product product, double quantity) 
-		: this(Constants.DefaultId, orderId, product, quantity) { }
-	
+
+	public OrderLine(int orderId, Product product, double quantity)
+		: this(Constants.DefaultId, orderId, product, quantity)
+	{
+	}
+
 	public int Id { get; set; }
 	public int OrderId { get; set; }
-	
+
 	public Product Product { get; set; }
 	public double Quantity { get; set; }
 

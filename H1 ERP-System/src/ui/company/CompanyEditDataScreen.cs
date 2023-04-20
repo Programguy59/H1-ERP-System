@@ -1,6 +1,4 @@
-﻿using H1_ERP_System.db;
-using H1_ERP_System.company;
-using H1_ERP_System.src.ui.Company;
+﻿using H1_ERP_System.src.ui.Company;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
 using Menu = H1_ERP_System.ui.Menu;
@@ -10,17 +8,18 @@ namespace H1_ERP_System.src.Company;
 public class CompanyEditDataScreen : Screen
 {
 	private readonly int selectedCompanyId;
+
+	public CompanyEditDataScreen(int CompanyId)
+	{
+		selectedCompanyId = CompanyId;
+	}
+
 	public override string Title { get; set; } = "Edit Company";
 
-    public CompanyEditDataScreen(int CompanyId)
-    {
-       selectedCompanyId = CompanyId;
-    }
-
-    protected override void Draw()
+	protected override void Draw()
 	{
-        TechCoolUtils.Clear(this);
-        var companyScreenList = CompanyScreenList.GetCompanyScreenListFromId(selectedCompanyId);
+		TechCoolUtils.Clear(this);
+		var companyScreenList = CompanyScreenList.GetCompanyScreenListFromId(selectedCompanyId);
 		var editor = new Form<CompanyScreenList>();
 
 		//Add a textbox
@@ -32,20 +31,30 @@ public class CompanyEditDataScreen : Screen
 		editor.TextBox("City", "CompanyCity");
 		editor.TextBox("Currency", "CompanyCurrency");
 
-        //editor.IntBox("Importance", "Priority");
-        TechCoolUtils.Clear(this);
-        //Draw the editor
-        editor.Edit(companyScreenList);
-        TechCoolUtils.Clear(this);
+		//editor.IntBox("Importance", "Priority");
+		TechCoolUtils.Clear(this);
+		//Draw the editor
+		editor.Edit(companyScreenList);
+		TechCoolUtils.Clear(this);
 
-        company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress, companyScreenList.CompanyCurrency);
-        company.Address = new(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName, companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity, companyScreenList.CompanyCountry);
+		company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName, companyScreenList.CompanyAddress,
+			companyScreenList.CompanyCurrency);
+		company.Address = new Address(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName,
+			companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity,
+			companyScreenList.CompanyCountry);
 
-        if (company == null){return;}
-		if (!DatabaseServer.UpdateCompany(company)){return;}
+		if (company == null)
+		{
+			return;
+		}
+
+		if (!DatabaseServer.UpdateCompany(company))
+		{
+			return;
+		}
 
 
-        TechCoolUtils.Clear(this);
-        Screen.Display(new Menu.MenuScreen());
-    }
+		TechCoolUtils.Clear(this);
+		Display(new Menu.MenuScreen());
+	}
 }

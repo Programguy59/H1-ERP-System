@@ -1,5 +1,4 @@
-﻿using H1_ERP_System.db;
-using H1_ERP_System.util;
+﻿using H1_ERP_System.util;
 using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui.sale;
@@ -10,10 +9,10 @@ public class SalesScreen : Screen
 
 	protected override void Draw()
 	{
-        TechCoolUtils.Clear(this);
+		TechCoolUtils.Clear(this);
 
-        // Display list of customers.
-        var listPage = SalesList.GetPageList();
+		// Display list of customers.
+		var listPage = SalesList.GetPageList();
 
 		listPage.AddColumn("Order ID", "Id");
 		listPage.AddColumn("Date", "Date");
@@ -23,19 +22,19 @@ public class SalesScreen : Screen
 
 		var selected = listPage.Select();
 
-        TechCoolUtils.Clear(this);
+		TechCoolUtils.Clear(this);
 
-        // Display customer details.
-        listPage = new ListPage<SalesList>();
+		// Display customer details.
+		listPage = new ListPage<SalesList>();
 
 		listPage.Add(selected);
 
-        listPage.AddColumn("Order ID", "Id");
-        listPage.AddColumn("Date", "Date");
-        listPage.AddColumn("Customer ID", "CustomerId");
-        listPage.AddColumn("Name", "CustomerFullName");
+		listPage.AddColumn("Order ID", "Id");
+		listPage.AddColumn("Date", "Date");
+		listPage.AddColumn("Customer ID", "CustomerId");
+		listPage.AddColumn("Name", "CustomerFullName");
 
-        listPage.Select();
+		listPage.Select();
 
 		Quit();
 	}

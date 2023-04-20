@@ -9,13 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="test\**" />
-      <EmbeddedResource Remove="test\**" />
-      <None Remove="test\**" />
+        <Compile Remove="test\**"/>
+        <EmbeddedResource Remove="test\**"/>
+        <None Remove="test\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="TECHCOOL" Version="1.3.2" />
+        <PackageReference Include="TECHCOOL" Version="1.3.2"/>
     </ItemGroup>
 
 </Project>

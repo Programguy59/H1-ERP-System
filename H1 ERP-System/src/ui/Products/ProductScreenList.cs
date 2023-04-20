@@ -41,7 +41,7 @@ public class ProductScreenList
 
 
 	public ProductScreen State { get; set; }
-	
+
 	public string FormattedProfitMargin => $"{Math.Round(ProfitMargin, 2)}%";
 	public string FormattedEarnings => $"{Math.Round(Earnings, 2)}";
 	public string FormattedSalesPrice => $"{Math.Round(SalesPrice, 2)}";

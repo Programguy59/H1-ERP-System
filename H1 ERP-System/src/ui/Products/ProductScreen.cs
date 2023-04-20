@@ -15,10 +15,10 @@ public class ProductScreen : Screen
 
 	protected override void Draw()
 	{
-        TechCoolUtils.Clear(this);
-        var listPage = new ListPage<ProductScreenList>();
+		TechCoolUtils.Clear(this);
+		var listPage = new ListPage<ProductScreenList>();
 		listPage.Add(CurrentProduct);
-		
+
 		listPage.AddColumn("Product", "ProductName");
 		listPage.AddColumn("Description", "ProductDescription");
 		listPage.AddColumn("Sales Price", "FormattedSalesPrice");
@@ -28,10 +28,10 @@ public class ProductScreen : Screen
 
 		var selected = listPage.Select();
 
-        TechCoolUtils.Clear(this);
+		TechCoolUtils.Clear(this);
 
 
-        Quit();
+		Quit();
 
 
 	}

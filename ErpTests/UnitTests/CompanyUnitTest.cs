@@ -1,23 +1,15 @@
-﻿using H1_ERP_System.util;
-using System;
-using System.Collections.Generic;
-using H1_ERP_System.company;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using H1_ERP_System.company;
+using H1_ERP_System.util;
 
-namespace ErpTests.UnitTests
+namespace ErpTests.UnitTests;
+
+public class CompanyUnitTest
 {
-
-    public class CompanyUnitTest
-    {
-        
-        [Fact]
-        public void ToStringTest()
-        {
-            Address SuperAddress = new Address("", "", "", "", "");
-            Company company = new("BestCompany", SuperAddress, "USD");
-            Assert.IsType<string>(company.ToString());
-        }  
-    }
+	[Fact]
+	public void ToStringTest()
+	{
+		var SuperAddress = new Address("", "", "", "", "");
+		Company company = new("BestCompany", SuperAddress, "USD");
+		Assert.IsType<string>(company.ToString());
+	}
 }

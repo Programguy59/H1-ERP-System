@@ -14,9 +14,9 @@ public class Menu
 
 		protected override void Draw()
 		{
-            TechCoolUtils.Clear(this);
+			TechCoolUtils.Clear(this);
 
-            var menu = new TECHCOOL.UI.Menu();
+			var menu = new TECHCOOL.UI.Menu();
 
 			menu.Add(new CompanySetupScreen());
 			menu.Add(new CustomerSetupScreen());
@@ -24,7 +24,7 @@ public class Menu
 			menu.Add(new SalesScreen());
 			menu.Start(this);
 
-            TechCoolUtils.Clear(this);
-        }
+			TechCoolUtils.Clear(this);
+		}
 	}
 }
