@@ -55,81 +55,81 @@ public static class DatabaseServer
 	/// </summary>
 	/// <param name="attempts">The number of attempts to connect to the database.</param>
 	public static void Initialize(int attempts)
-    {
-        // Clear all local lists.
-        Database.Addresses.Clear();
-        Database.Persons.Clear();
+	{
+		// Clear all local lists.
+		Database.Addresses.Clear();
+		Database.Persons.Clear();
 
-        Database.Customers.Clear();
-        Database.Companies.Clear();
+		Database.Customers.Clear();
+		Database.Companies.Clear();
 
-        Database.Products.Clear();
+		Database.Products.Clear();
 
-        Database.OrderLines.Clear();
-        Database.Orders.Clear();
+		Database.OrderLines.Clear();
+		Database.Orders.Clear();
+		
+		// Attempt database connection and insert data into local lists.
+		try
+		{
+			Console.WriteLine("Connecting to the database... (" + ++attempts + ")");
 
-        // Attempt database connection and insert data into local lists.
-        try
-        {
-            Console.WriteLine("Connecting to the database... (" + ++attempts + ")");
+			var addresses = FetchAddresses();
+			addresses.ForEach(Database.Addresses.Add);
 
-            var addresses = FetchAddresses();
-            addresses.ForEach(Database.InsertAddress);
+			var persons = FetchPersons();
+			persons.ForEach(Database.Persons.Add);
 
-            var persons = FetchPersons();
-            persons.ForEach(Database.InsertPerson);
+			var customers = FetchCustomers();
+			customers.ForEach(Database.Customers.Add);
+			
+			var companies = FetchCompanies();
+			companies.ForEach(Database.Companies.Add);
 
-            var customers = FetchCustomers();
-            customers.ForEach(Database.InsertCustomer);
+			var products = FetchProducts();
+			products.ForEach(Database.Products.Add);
 
-            var companies = FetchCompanies();
-            companies.ForEach(Database.InsertCompany);
+			var orderLines = FetchOrderLines();
+			orderLines.ForEach(Database.OrderLines.Add);
 
-            var products = FetchProducts();
-            products.ForEach(Database.InsertProduct);
+			var orders = FetchOrders();
+			orders.ForEach(Database.Orders.Add);
+		}
+		catch (SqlException e)
+		{
+			Console.WriteLine("Failed to connect to the database!");
+			Console.WriteLine("Cause: " + e.Message);
 
-            var orderLines = FetchOrderLines();
-            orderLines.ForEach(Database.InsertOrderLine);
+			Console.WriteLine("Press any key to retry...");
+			Console.ReadKey();
+			Console.WriteLine();
 
-            var orders = FetchOrders();
-            orders.ForEach(Database.InsertOrder);
-        }
-        catch (SqlException e)
-        {
-            Console.WriteLine("Failed to connect to the database!");
-            Console.WriteLine("Cause: " + e.Message);
-
-            Console.WriteLine("Press any key to retry...");
-            Console.ReadKey();
-            Console.WriteLine();
-
-            // Retry connecting to the database.
-            Initialize(attempts);
-        }
-    }
+			// Retry connecting to the database.
+			Initialize(attempts);
+		}
+	}
 
 	/// <summary>
 	///     Get the connection to the database, or create a new one if it doesn't exist.
 	/// </summary>
 	/// <returns>The connection to the database.</returns>
 	private static SqlConnection GetConnection()
-    {
-        SqlConnectionStringBuilder sb = new()
-        {
-            DataSource = Constants.Sql.Host,
+	{
+		SqlConnectionStringBuilder sb = new()
+		{
+			DataSource = Constants.Sql.Host,
 
-            InitialCatalog = Constants.Sql.Database,
-            UserID = Constants.Sql.User,
-            Password = Constants.Sql.Password
-        };
+			InitialCatalog = Constants.Sql.Database,
+			UserID = Constants.Sql.User,
+			Password = Constants.Sql.Password
+		};
 
-        var connectionString = sb.ToString();
+		var connectionString = sb.ToString();
 
-        _connection = new SqlConnection(connectionString);
-        _connection.Open();
+		_connection = new SqlConnection(connectionString);
+		_connection.Open();
 
-        return _connection;
-    }
+		return _connection;
+	}
 
 	/// <summary>
 	///     Execute a query and return the results.
@@ -137,24 +137,24 @@ public static class DatabaseServer
 	/// <param name="query">The query to execute.</param>
 	/// <returns>The results of the query.</returns>
 	private static SqlDataReader ExecuteQuery(string query)
-    {
-        var connection = GetConnection();
-        var command = new SqlCommand(query, connection);
+	{
+		var connection = GetConnection();
+		var command = new SqlCommand(query, connection);
 
-        try
-        {
-            // Get the results of the query.
-            return command.ExecuteReader(CommandBehavior.CloseConnection);
-        }
-        catch
-        {
-            // Dispose of the connection and command objects before re-throwing the exception.
-            connection.Dispose();
-            command.Dispose();
+		try
+		{
+			// Get the results of the query.
+			return command.ExecuteReader(CommandBehavior.CloseConnection);
+		}
+		catch
+		{
+			// Dispose of the connection and command objects before re-throwing the exception.
+			connection.Dispose();
+			command.Dispose();
 
-            throw;
-        }
-    }
+			throw;
+		}
+	}
 
 	/// <summary>
 	///     Execute a query that doesn't return any results.
@@ -162,256 +162,271 @@ public static class DatabaseServer
 	/// <param name="query">The query to execute.</param>
 	/// <returns>True if the query effected any rows, false otherwise.</returns>
 	private static bool ExecuteNonQuery(string query)
-    {
-        using var connection = GetConnection();
-        using var command = new SqlCommand(query, connection);
+	{
+		using var connection = GetConnection();
+		using var command = new SqlCommand(query, connection);
 
-        // Return true if the query effected any rows.
-        return command.ExecuteNonQuery() > 0;
-    }
+		// Return true if the query effected any rows.
+		return command.ExecuteNonQuery() > 0;
+	}
 
 	/// <summary>
 	///     Fetch all addresses from the database.
 	/// </summary>
 	/// <returns>A list of all addresses.</returns>
 	private static List<Address> FetchAddresses()
-    {
-        var addresses = new List<Address>();
+	{
+		var addresses = new List<Address>();
 
-        const string query = "SELECT * FROM Addresses";
+		const string query = "SELECT * FROM Addresses";
 
-        using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(query);
 
-        while (reader.Read())
-        {
-            var id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
 
-            var streetName = reader.GetString(1);
-            var streetNumber = reader.GetString(2);
+			var streetName = reader.GetString(1);
+			var streetNumber = reader.GetString(2);
 
-            var zipCode = reader.GetString(3);
-            var city = reader.GetString(4);
+			var zipCode = reader.GetString(3);
+			var city = reader.GetString(4);
 
-            var country = reader.GetString(5);
+			var country = reader.GetString(5);
 
-            var address = new Address(id, streetName, streetNumber, zipCode, city, country);
+			var address = new Address(id, streetName, streetNumber, zipCode, city, country);
 
-            addresses.Add(address);
-        }
+			addresses.Add(address);
+		}
 
-        reader.Close();
+		reader.Close();
 
-        return addresses;
-    }
+		return addresses;
+	}
 
 	/// <summary>
 	///     Fetch all persons from the database.
 	/// </summary>
 	/// <returns>A list of all persons.</returns>
 	private static List<Person> FetchPersons()
-    {
-        var persons = new List<Person>();
+	{
+		var persons = new List<Person>();
 
-        const string query = "SELECT * FROM Persons";
+		const string query = "SELECT * FROM Persons";
 
-        using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(query);
 
-        while (reader.Read())
-        {
-            var id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
 
-            var addressId = reader.GetInt32(1);
-            var address = Database.GetAddressById(addressId);
+			var addressId = reader.GetInt32(1);
+			var address = Database.GetAddressById(addressId);
 
-            if (address == null) continue;
+			if (address == null)
+			{
+				continue;
+			}
 
-            var firstName = reader.GetString(2);
-            var lastName = reader.GetString(3);
+			var firstName = reader.GetString(2);
+			var lastName = reader.GetString(3);
 
-            var email = reader.GetString(4);
-            var phoneNumber = reader.GetString(5);
+			var email = reader.GetString(4);
+			var phoneNumber = reader.GetString(5);
 
-            var person = new Person(id, firstName, lastName, email, phoneNumber, address);
+			var person = new Person(id, firstName, lastName, email, phoneNumber, address);
 
-            persons.Add(person);
-        }
+			persons.Add(person);
+		}
 
-        reader.Close();
+		reader.Close();
 
-        return persons;
-    }
+		return persons;
+	}
 
 	/// <summary>
 	///     Fetch all customers from the database.
 	/// </summary>
 	/// <returns>A list of all customers.</returns>
 	private static List<Customer> FetchCustomers()
-    {
-        var customers = new List<Customer>();
+	{
+		var customers = new List<Customer>();
 
-        const string query =
-            "SELECT p.Id, " +
-            "       c.Id, " +
-            "       c.DateSinceLastPurchase " +
-            "FROM Persons p " +
-            "         JOIN Customers c ON p.Id = c.PersonId";
+		const string query =
+			"SELECT p.Id, " +
+			"       c.Id, " +
+			"       c.DateSinceLastPurchase " +
+			"FROM Persons p " +
+			"         JOIN Customers c ON p.Id = c.PersonId";
 
-        using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(query);
 
-        while (reader.Read())
-        {
-            var personId = reader.GetInt32(0);
-            var customerId = reader.GetInt32(1);
+		while (reader.Read())
+		{
+			var personId = reader.GetInt32(0);
+			var customerId = reader.GetInt32(1);
 
-            var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
+			var dateSinceLastPurchase = reader.GetDateTime(2).ToShortDateString();
 
-            var person = Database.GetPersonById(personId);
+			var person = Database.GetPersonById(personId);
 
-            if (person == null) continue;
+			if (person == null)
+			{
+				continue;
+			}
 
-            var customer = new Customer(customerId, person, dateSinceLastPurchase);
+			var customer = new Customer(customerId, person, dateSinceLastPurchase);
 
-            customers.Add(customer);
-        }
+			customers.Add(customer);
+		}
 
-        return customers;
-    }
+		return customers;
+	}
 
 	/// <summary>
 	///     Fetch all companies from the database.
 	/// </summary>
 	/// <returns>A list of all companies.</returns>
 	private static List<Company> FetchCompanies()
-    {
-        var companies = new List<Company>();
+	{
+		var companies = new List<Company>();
 
-        const string query = "SELECT * FROM Companies";
+		const string query = "SELECT * FROM Companies";
 
-        using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(query);
 
-        while (reader.Read())
-        {
-            var id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
 
-            var companyName = reader.GetString(1);
+			var companyName = reader.GetString(1);
 
-            var addressId = reader.GetInt32(2);
-            var address = Database.GetAddressById(addressId);
+			var addressId = reader.GetInt32(2);
+			var address = Database.GetAddressById(addressId);
 
-            if (address == null) continue;
+			if (address == null)
+			{
+				continue;
+			}
 
-            var currency = reader.GetString(3);
+			var currency = reader.GetString(3);
 
-            var company = new Company(id, companyName, address, currency);
+			var company = new Company(id, companyName, address, currency);
 
-            companies.Add(company);
-        }
+			companies.Add(company);
+		}
 
-        return companies;
-    }
+		return companies;
+	}
 
 	/// <summary>
 	///     Fetch all products from the database.
 	/// </summary>
 	/// <returns>A list of all products.</returns>
 	public static List<Product> FetchProducts()
-    {
-        var products = new List<Product>();
+	{
+		var products = new List<Product>();
 
-        const string query = "SELECT * FROM Products";
+		const string query = "SELECT * FROM Products";
 
-        using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(query);
 
-        while (reader.Read())
-        {
-            var id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
 
-            var name = reader.GetString(1);
-            var description = reader.GetString(2);
+			var name = reader.GetString(1);
+			var description = reader.GetString(2);
 
-            var salesPrice = reader.GetSqlDecimal(3).ToDouble();
-            var purchasePrice = reader.GetSqlDecimal(4).ToDouble();
+			var salesPrice = reader.GetSqlDecimal(3).ToDouble();
+			var purchasePrice = reader.GetSqlDecimal(4).ToDouble();
 
-            var location = reader.GetString(5);
-            var stock = reader.GetSqlDecimal(6).ToDouble();
+			var location = reader.GetString(5);
+			var stock = reader.GetSqlDecimal(6).ToDouble();
 
-            var unit = reader.GetString(7).Of();
+			var unit = reader.GetString(7).Of();
 
-            var product = new Product(id, name, description, salesPrice, purchasePrice, location, stock, unit);
+			var product = new Product(id, name, description, salesPrice, purchasePrice, location, stock, unit);
 
-            products.Add(product);
-        }
+			products.Add(product);
+		}
 
-        return products;
-    }
+		return products;
+	}
 
 	/// <summary>
 	///     Fetches all order lines from the database.
 	/// </summary>
 	/// <returns>A list of all order lines.</returns>
 	private static List<OrderLine> FetchOrderLines()
-    {
-        var orderLines = new List<OrderLine>();
+	{
+		var orderLines = new List<OrderLine>();
 
-        const string query = "SELECT * FROM OrderLines";
+		const string query = "SELECT * FROM OrderLines";
 
-        using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(query);
 
-        while (reader.Read())
-        {
-            var id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
 
-            var orderId = reader.GetInt32(1);
-            var productId = reader.GetInt32(2);
+			var orderId = reader.GetInt32(1);
+			var productId = reader.GetInt32(2);
 
-            var product = Database.GetProductById(productId);
+			var product = Database.GetProductById(productId);
 
-            if (product == null) continue;
+			if (product == null)
+			{
+				continue;
+			}
 
-            var quantity = reader.GetSqlDecimal(3).ToDouble();
+			var quantity = reader.GetSqlDecimal(3).ToDouble();
 
-            var orderLine = new OrderLine(id, orderId, product, quantity);
+			var orderLine = new OrderLine(id, orderId, product, quantity);
 
-            orderLines.Add(orderLine);
-        }
+			orderLines.Add(orderLine);
+		}
 
-        return orderLines;
-    }
+		return orderLines;
+	}
 
 	/// <summary>
 	///     Fetches all orders from the database.
 	/// </summary>
 	/// <returns>A list of all orders.</returns>
 	private static List<Order> FetchOrders()
-    {
-        var orders = new List<Order>();
+	{
+		var orders = new List<Order>();
 
-        const string query =
-            "SELECT * FROM Orders o";
+		const string query =
+			"SELECT * FROM Orders o";
 
-        using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(query);
 
-        while (reader.Read())
-        {
-            var id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			var id = reader.GetInt32(0);
 
-            var createdAt = reader.GetDateTime(1).ToShortDateString();
-            var completedAt = reader.IsDBNull(2) ? "N/A" : reader.GetDateTime(2).ToShortDateString();
+			var createdAt = reader.GetDateTime(1).ToShortDateString();
+			var completedAt = reader.IsDBNull(2) ? "N/A" : reader.GetDateTime(2).ToShortDateString();
 
-            var customerId = reader.GetInt32(3);
+			var customerId = reader.GetInt32(3);
 
-            var customer = Database.GetCustomerById(customerId);
+			var customer = Database.GetCustomerById(customerId);
 
-            if (customer == null) continue;
+			if (customer == null)
+			{
+				continue;
+			}
 
-            var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
-            var order = new Order(id, createdAt, completedAt, customer, orderStatus);
+			var orderStatus = OrderStatusExtensions.Of(reader.GetString(4));
+			var order = new Order(id, createdAt, completedAt, customer, orderStatus);
 
-            orders.Add(order);
-        }
+			orders.Add(order);
+		}
 
-        return orders;
-    }
+		return orders;
+	}
 
 	/// <summary>
 	///     Inserts an address into the database.
@@ -419,25 +434,28 @@ public static class DatabaseServer
 	/// <param name="address">The address to insert.</param>
 	/// <returns>True if the address was inserted successfully, false otherwise.</returns>
 	public static bool InsertAddress(Address address)
-    {
-        var query =
-            "INSERT INTO Addresses (StreetName, StreetNumber, City, ZipCode, Country) " +
-            "OUTPUT INSERTED.Id " +
-            $"VALUES ('{address.StreetName}', '{address.StreetNumber}', '{address.City}', '{address.ZipCode}', '{address.Country}')";
+	{
+		var query =
+			"INSERT INTO Addresses (StreetName, StreetNumber, City, ZipCode, Country) " +
+			"OUTPUT INSERTED.Id " +
+			$"VALUES ('{address.StreetName}', '{address.StreetNumber}', '{address.City}', '{address.ZipCode}', '{address.Country}')";
 
-        var reader = ExecuteQuery(query);
+		var reader = ExecuteQuery(query);
 
-        // Get the ID of the inserted order.
-        while (reader.Read()) address.Id = reader.GetInt32(0);
+		// Get the ID of the inserted order.
+		while (reader.Read()) address.Id = reader.GetInt32(0);
 
-        // If the ID is DefaultId, the query must have failed.
-        if (address.Id == Constants.DefaultId) return false;
+		// If the ID is DefaultId, the query must have failed.
+		if (address.Id == Constants.DefaultId)
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Addresses.Add(address);
+		// Update the local cache.
+		Database.Addresses.Add(address);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Inserts a person into the database.
@@ -445,25 +463,28 @@ public static class DatabaseServer
 	/// <param name="person">The person to insert.</param>
 	/// <returns>True if the person was inserted successfully, false otherwise.</returns>
 	public static bool InsertPerson(Person person)
-    {
-        var query =
-            "INSERT INTO Persons (FirstName, LastName, Email, PhoneNumber, AddressId) " +
-            "OUTPUT INSERTED.Id " +
-            $"VALUES ('{person.FirstName}', '{person.LastName}', '{person.Email}', '{person.PhoneNumber}', '{person.Address.Id}')";
+	{
+		var query =
+			"INSERT INTO Persons (FirstName, LastName, Email, PhoneNumber, AddressId) " +
+			"OUTPUT INSERTED.Id " +
+			$"VALUES ('{person.FirstName}', '{person.LastName}', '{person.Email}', '{person.PhoneNumber}', '{person.Address.Id}')";
 
-        var reader = ExecuteQuery(query);
+		var reader = ExecuteQuery(query);
 
-        // Get the ID of the inserted order.
-        while (reader.Read()) person.PersonId = reader.GetInt32(0);
+		// Get the ID of the inserted order.
+		while (reader.Read()) person.PersonId = reader.GetInt32(0);
 
-        // If the ID is DefaultId, the query must have failed.
-        if (person.PersonId == Constants.DefaultId) return false;
+		// If the ID is DefaultId, the query must have failed.
+		if (person.PersonId == Constants.DefaultId)
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Persons.Add(person);
+		// Update the local cache.
+		Database.Persons.Add(person);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Inserts a customer into the database.
@@ -471,27 +492,33 @@ public static class DatabaseServer
 	/// <param name="customer">The customer to insert.</param>
 	/// <returns>True if the customer was inserted successfully, false otherwise.</returns>
 	public static bool InsertCustomer(Customer customer)
-    {
-        if (!InsertPerson(customer.Person)) return false;
+	{
+		if (!InsertPerson(customer.Person))
+		{
+			return false;
+		}
 
-        var query =
-            "INSERT INTO Customers (PersonId, DateSinceLastPurchase) " +
-            "OUTPUT INSERTED.Id " +
-            $"VALUES ('{customer.Person.PersonId}', '{customer.DateSinceLastPurchase}')";
+		var query =
+			"INSERT INTO Customers (PersonId, DateSinceLastPurchase) " +
+			"OUTPUT INSERTED.Id " +
+			$"VALUES ('{customer.Person.PersonId}', '{customer.DateSinceLastPurchase}')";
 
-        var reader = ExecuteQuery(query);
+		var reader = ExecuteQuery(query);
 
-        // Get the ID of the inserted order.
-        while (reader.Read()) customer.CustomerId = reader.GetInt32(0);
+		// Get the ID of the inserted order.
+		while (reader.Read()) customer.CustomerId = reader.GetInt32(0);
 
-        // If the ID is DefaultId, the query must have failed.
-        if (customer.CustomerId == Constants.DefaultId) return false;
+		// If the ID is DefaultId, the query must have failed.
+		if (customer.CustomerId == Constants.DefaultId)
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Customers.Add(customer);
+		// Update the local cache.
+		Database.Customers.Add(customer);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Inserts a company into the database.
@@ -499,25 +526,28 @@ public static class DatabaseServer
 	/// <param name="company">The company to insert.</param>
 	/// <returns>True if the company was inserted successfully, false otherwise.</returns>
 	public static bool InsertCompany(Company company)
-    {
-        var query =
-            "INSERT INTO Companies (CompanyName, Currency, AddressId) " +
-            "OUTPUT INSERTED.Id " +
-            $"VALUES ('{company.CompanyName}', '{company.Currency}', '{company.Address.Id}')";
+	{
+		var query =
+			"INSERT INTO Companies (CompanyName, Currency, AddressId) " +
+			"OUTPUT INSERTED.Id " +
+			$"VALUES ('{company.CompanyName}', '{company.Currency}', '{company.Address.Id}')";
 
-        var reader = ExecuteQuery(query);
+		var reader = ExecuteQuery(query);
 
-        // Get the ID of the inserted order.
-        while (reader.Read()) company.Id = reader.GetInt32(0);
+		// Get the ID of the inserted order.
+		while (reader.Read()) company.Id = reader.GetInt32(0);
 
-        // If the ID is DefaultId, the query must have failed.
-        if (company.Id == Constants.DefaultId) return false;
+		// If the ID is DefaultId, the query must have failed.
+		if (company.Id == Constants.DefaultId)
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Companies.Add(company);
+		// Update the local cache.
+		Database.Companies.Add(company);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Inserts a product into the database.
@@ -525,25 +555,28 @@ public static class DatabaseServer
 	/// <param name="product">The product to insert.</param>
 	/// <returns>True if the product was inserted successfully, false otherwise.</returns>
 	public static bool InsertProduct(Product product)
-    {
-        var query =
-            "INSERT INTO Products (Name, Description, SalesPrice, PurchasePrice, Location, Stock, Unit) " +
-            "OUTPUT INSERTED.Id " +
-            $"VALUES ('{product.Name}', '{product.Description}', '{product.SalesPrice}', '{product.PurchasePrice}', '{product.Location}', '{product.Stock}', '{product.Unit}')";
+	{
+		var query =
+			"INSERT INTO Products (Name, Description, SalesPrice, PurchasePrice, Location, Stock, Unit) " +
+			"OUTPUT INSERTED.Id " +
+			$"VALUES ('{product.Name}', '{product.Description}', '{product.SalesPrice}', '{product.PurchasePrice}', '{product.Location}', '{product.Stock}', '{product.Unit}')";
 
-        var reader = ExecuteQuery(query);
+		var reader = ExecuteQuery(query);
 
-        // Get the ID of the inserted order.
-        while (reader.Read()) product.Id = reader.GetInt32(0);
+		// Get the ID of the inserted order.
+		while (reader.Read()) product.Id = reader.GetInt32(0);
 
-        // If the ID is DefaultId, the query must have failed.
-        if (product.Id == Constants.DefaultId) return false;
+		// If the ID is DefaultId, the query must have failed.
+		if (product.Id == Constants.DefaultId)
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Products.Add(product);
+		// Update the local cache.
+		Database.Products.Add(product);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Inserts an order line into the database.
@@ -551,25 +584,28 @@ public static class DatabaseServer
 	/// <param name="orderLine">The order line to insert.</param>
 	/// <returns>True if the order line was inserted successfully, false otherwise.</returns>
 	public static bool InsertOrderLine(OrderLine orderLine)
-    {
-        var query =
-            "INSERT INTO OrderLines (OrderId, ProductId, Quantity) " +
-            "OUTPUT INSERTED.Id " +
-            $"VALUES ('{orderLine.OrderId}', '{orderLine.Product.Id}', '{orderLine.Quantity}')";
+	{
+		var query =
+			"INSERT INTO OrderLines (OrderId, ProductId, Quantity) " +
+			"OUTPUT INSERTED.Id " +
+			$"VALUES ('{orderLine.OrderId}', '{orderLine.Product.Id}', '{orderLine.Quantity}')";
 
-        var reader = ExecuteQuery(query);
+		var reader = ExecuteQuery(query);
 
-        // Get the ID of the inserted order.
-        while (reader.Read()) orderLine.Id = reader.GetInt32(0);
+		// Get the ID of the inserted order.
+		while (reader.Read()) orderLine.Id = reader.GetInt32(0);
 
-        // If the ID is DefaultId, the query must have failed.
-        if (orderLine.Id == Constants.DefaultId) return false;
+		// If the ID is DefaultId, the query must have failed.
+		if (orderLine.Id == Constants.DefaultId)
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.OrderLines.Add(orderLine);
+		// Update the local cache.
+		Database.OrderLines.Add(orderLine);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Inserts an order into the database.
@@ -577,25 +613,28 @@ public static class DatabaseServer
 	/// <param name="order">The order to insert.</param>
 	/// <returns>True if the order was inserted successfully, false otherwise.</returns>
 	public static bool InsertOrder(Order order)
-    {
-        var query =
-            "INSERT INTO Orders (CreatedAt, CompletedAt, CustomerId, OrderStatus) " +
-            "OUTPUT INSERTED.Id " +
-            $"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.CustomerId}', '{order.OrderStatus}')";
+	{
+		var query =
+			"INSERT INTO Orders (CreatedAt, CompletedAt, CustomerId, OrderStatus) " +
+			"OUTPUT INSERTED.Id " +
+			$"VALUES ('{order.CreatedAt}', '{order.CompletedAt}', '{order.Customer.CustomerId}', '{order.OrderStatus}')";
 
-        var reader = ExecuteQuery(query);
+		var reader = ExecuteQuery(query);
 
-        // Get the ID of the inserted order.
-        while (reader.Read()) order.Id = reader.GetInt32(0);
+		// Get the ID of the inserted order.
+		while (reader.Read()) order.Id = reader.GetInt32(0);
 
-        // If the ID is DefaultId, the query must have failed.
-        if (order.Id == Constants.DefaultId) return false;
+		// If the ID is DefaultId, the query must have failed.
+		if (order.Id == Constants.DefaultId)
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Orders.Add(order);
+		// Update the local cache.
+		Database.Orders.Add(order);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Updates an address in the database.
@@ -603,21 +642,24 @@ public static class DatabaseServer
 	/// <param name="address">The address to update.</param>
 	/// <returns>True if the address was updated successfully, false otherwise.</returns>
 	public static bool UpdateAddress(Address address)
-    {
-        var query =
-            "UPDATE Addresses " +
-            $"SET StreetName = '{address.StreetName}', StreetNumber = '{address.StreetNumber}', City = '{address.City}', ZipCode = '{address.ZipCode}', Country = '{address.Country}' " +
-            $"WHERE Id = '{address.Id}'";
+	{
+		var query =
+			"UPDATE Addresses " +
+			$"SET StreetName = '{address.StreetName}', StreetNumber = '{address.StreetNumber}', City = '{address.City}', ZipCode = '{address.ZipCode}', Country = '{address.Country}' " +
+			$"WHERE Id = '{address.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        var index = Database.Addresses.FindIndex(a => a.Id == address.Id);
-        Database.Addresses[index] = address;
+		// Update the local cache.
+		var index = Database.Addresses.FindIndex(a => a.Id == address.Id);
+		Database.Addresses[index] = address;
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Updates a person in the database.
@@ -626,23 +668,29 @@ public static class DatabaseServer
 	/// <returns>True if the person was updated successfully, false otherwise.</returns>
 	/// <seealso cref="UpdateAddress" />
 	public static bool UpdatePerson(Person person)
-    {
-        if (!UpdateAddress(person.Address)) return false;
+	{
+		if (!UpdateAddress(person.Address))
+		{
+			return false;
+		}
 
-        var query =
-            "UPDATE Persons " +
-            $"SET FirstName = '{person.FirstName}', LastName = '{person.LastName}', Email = '{person.Email}', PhoneNumber = '{person.PhoneNumber}', AddressId = '{person.Address.Id}' " +
-            $"WHERE Id = '{person.PersonId}'";
+		var query =
+			"UPDATE Persons " +
+			$"SET FirstName = '{person.FirstName}', LastName = '{person.LastName}', Email = '{person.Email}', PhoneNumber = '{person.PhoneNumber}', AddressId = '{person.Address.Id}' " +
+			$"WHERE Id = '{person.PersonId}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        var index = Database.Persons.FindIndex(p => p.PersonId == person.PersonId);
-        Database.Persons[index] = person;
+		// Update the local cache.
+		var index = Database.Persons.FindIndex(p => p.PersonId == person.PersonId);
+		Database.Persons[index] = person;
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Updates a customer in the database.
@@ -651,30 +699,36 @@ public static class DatabaseServer
 	/// <returns>True if the customer was updated successfully, false otherwise.</returns>
 	/// <seealso cref="UpdatePerson" />
 	public static bool UpdateCustomer(Customer customer)
-    {
-        if (!UpdatePerson(customer.Person)) return false;
+	{
+		if (!UpdatePerson(customer.Person))
+		{
+			return false;
+		}
 
-        // DateSinceLastPurchase is a string, so we need to convert it to a DateTime, it's possible it's null.
-        var dateSinceLastPurchase =
-            customer.DateSinceLastPurchase.Trim() == "N/A"
-                ? DateTime.MinValue
-                : DateTime.Parse(customer.DateSinceLastPurchase);
+		// DateSinceLastPurchase is a string, so we need to convert it to a DateTime, it's possible it's null.
+		var dateSinceLastPurchase =
+			customer.DateSinceLastPurchase.Trim() == "N/A"
+				? DateTime.MinValue
+				: DateTime.Parse(customer.DateSinceLastPurchase);
 
-        // Query to update the customer.
-        var query =
-            "UPDATE Customers " +
-            $"SET PersonId = '{customer.Person.PersonId}', DateSinceLastPurchase = '{dateSinceLastPurchase}' " +
-            $"WHERE Id = '{customer.CustomerId}'";
+		// Query to update the customer.
+		var query =
+			"UPDATE Customers " +
+			$"SET PersonId = '{customer.Person.PersonId}', DateSinceLastPurchase = '{dateSinceLastPurchase}' " +
+			$"WHERE Id = '{customer.CustomerId}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        var index = Database.Customers.FindIndex(c => c.CustomerId == customer.CustomerId);
-        Database.Customers[index] = customer;
+		// Update the local cache.
+		var index = Database.Customers.FindIndex(c => c.CustomerId == customer.CustomerId);
+		Database.Customers[index] = customer;
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Updates a company in the database.
@@ -683,23 +737,29 @@ public static class DatabaseServer
 	/// <returns>True if the company was updated successfully, false otherwise.</returns>
 	/// <seealso cref="UpdateAddress" />
 	public static bool UpdateCompany(Company company)
-    {
-        if (!UpdateAddress(company.Address)) return false;
+	{
+		if (!UpdateAddress(company.Address))
+		{
+			return false;
+		}
 
-        var query =
-            "UPDATE Companies " +
-            $"SET CompanyName = '{company.CompanyName}', Currency = '{company.Currency}', AddressId = '{company.Address.Id}' " +
-            $"WHERE Id = '{company.Id}'";
+		var query =
+			"UPDATE Companies " +
+			$"SET CompanyName = '{company.CompanyName}', Currency = '{company.Currency}', AddressId = '{company.Address.Id}' " +
+			$"WHERE Id = '{company.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        var index = Database.Companies.FindIndex(c => c.Id == company.Id);
-        Database.Companies[index] = company;
+		// Update the local cache.
+		var index = Database.Companies.FindIndex(c => c.Id == company.Id);
+		Database.Companies[index] = company;
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Updates a product in the database.
@@ -707,21 +767,24 @@ public static class DatabaseServer
 	/// <param name="product">The product to update.</param>
 	/// <returns>True if the product was updated successfully, false otherwise.</returns>
 	public static bool UpdateProduct(Product product)
-    {
-        var query =
-            "UPDATE Products " +
-            $"SET Name = '{product.Name}', Description = '{product.Description}', SalesPrice = '{product.SalesPrice}', PurchasePrice = '{product.PurchasePrice}', Location = '{product.Location}', Stock = '{product.Stock}', Unit = '{product.Unit}' " +
-            $"WHERE Id = '{product.Id}'";
+	{
+		var query =
+			"UPDATE Products " +
+			$"SET Name = '{product.Name}', Description = '{product.Description}', SalesPrice = '{product.SalesPrice}', PurchasePrice = '{product.PurchasePrice}', Location = '{product.Location}', Stock = '{product.Stock}', Unit = '{product.Unit}' " +
+			$"WHERE Id = '{product.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        var index = Database.Products.FindIndex(p => p.Id == product.Id);
-        Database.Products[index] = product;
+		// Update the local cache.
+		var index = Database.Products.FindIndex(p => p.Id == product.Id);
+		Database.Products[index] = product;
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Updates an order line in the database.
@@ -729,21 +792,24 @@ public static class DatabaseServer
 	/// <param name="orderLine">The order line to update.</param>
 	/// <returns>True if the order line was updated successfully, false otherwise.</returns>
 	public static bool UpdateOrderLine(OrderLine orderLine)
-    {
-        var query =
-            "UPDATE OrderLines " +
-            $"SET ProductId = '{orderLine.Product.Id}', Quantity = '{orderLine.Quantity}' " +
-            $"WHERE Id = '{orderLine.Id}'";
+	{
+		var query =
+			"UPDATE OrderLines " +
+			$"SET ProductId = '{orderLine.Product.Id}', Quantity = '{orderLine.Quantity}' " +
+			$"WHERE Id = '{orderLine.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        var index = Database.OrderLines.FindIndex(o => o.Id == orderLine.Id);
-        Database.OrderLines[index] = orderLine;
+		// Update the local cache.
+		var index = Database.OrderLines.FindIndex(o => o.Id == orderLine.Id);
+		Database.OrderLines[index] = orderLine;
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Updates an order in the database.
@@ -751,21 +817,24 @@ public static class DatabaseServer
 	/// <param name="order">The order to update.</param>
 	/// <returns>True if the order was updated successfully, false otherwise.</returns>
 	public static bool UpdateOrder(Order order)
-    {
-        var query =
-            "UPDATE Orders " +
-            $"SET CreatedAt = '{order.CreatedAt}', CompletedAt = '{order.CompletedAt}', CustomerId = '{order.Customer.CustomerId}', OrderStatus = '{order.OrderStatus}' " +
-            $"WHERE Id = '{order.Id}'";
+	{
+		var query =
+			"UPDATE Orders " +
+			$"SET CreatedAt = '{order.CreatedAt}', CompletedAt = '{order.CompletedAt}', CustomerId = '{order.Customer.CustomerId}', OrderStatus = '{order.OrderStatus}' " +
+			$"WHERE Id = '{order.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        var index = Database.Orders.FindIndex(o => o.Id == order.Id);
-        Database.Orders[index] = order;
+		// Update the local cache.
+		var index = Database.Orders.FindIndex(o => o.Id == order.Id);
+		Database.Orders[index] = order;
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Delete an address from the database.
@@ -773,19 +842,22 @@ public static class DatabaseServer
 	/// <param name="address">The address to delete.</param>
 	/// <returns>True if the address was deleted successfully, false otherwise.</returns>
 	public static bool DeleteAddress(Address address)
-    {
-        var query =
-            "DELETE FROM Addresses " +
-            $"WHERE Id = '{address.Id}'";
+	{
+		var query =
+			"DELETE FROM Addresses " +
+			$"WHERE Id = '{address.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Addresses.Remove(address);
+		// Update the local cache.
+		Database.Addresses.Remove(address);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Delete a person from the database.
@@ -793,19 +865,22 @@ public static class DatabaseServer
 	/// <param name="person">The person to delete.</param>
 	/// <returns>True if the person was deleted successfully, false otherwise.</returns>
 	public static bool DeletePerson(Person person)
-    {
-        var query =
-            "DELETE FROM Persons " +
-            $"WHERE Id = '{person.PersonId}'";
+	{
+		var query =
+			"DELETE FROM Persons " +
+			$"WHERE Id = '{person.PersonId}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Persons.Remove(person);
+		// Update the local cache.
+		Database.Persons.Remove(person);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Delete a customer from the database.
@@ -813,19 +888,22 @@ public static class DatabaseServer
 	/// <param name="customer">The customer to delete.</param>
 	/// <returns>True if the customer was deleted successfully, false otherwise.</returns>
 	public static bool DeleteCustomer(Customer customer)
-    {
-        var query =
-            "DELETE FROM Customers " +
-            $"WHERE Id = '{customer.CustomerId}'";
+	{
+		var query =
+			"DELETE FROM Customers " +
+			$"WHERE Id = '{customer.CustomerId}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Customers.Remove(customer);
+		// Update the local cache.
+		Database.Customers.Remove(customer);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Delete a company from the database.
@@ -833,19 +911,22 @@ public static class DatabaseServer
 	/// <param name="company">The company to delete.</param>
 	/// <returns>True if the company was deleted successfully, false otherwise.</returns>
 	public static bool DeleteCompany(Company company)
-    {
-        var query =
-            "DELETE FROM Companies " +
-            $"WHERE Id = '{company.Id}'";
+	{
+		var query =
+			"DELETE FROM Companies " +
+			$"WHERE Id = '{company.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Companies.Remove(company);
+		// Update the local cache.
+		Database.Companies.Remove(company);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Delete a product from the database.
@@ -853,19 +934,22 @@ public static class DatabaseServer
 	/// <param name="product">The product to delete.</param>
 	/// <returns>True if the product was deleted successfully, false otherwise.</returns>
 	public static bool DeleteProduct(Product product)
-    {
-        var query =
-            "DELETE FROM Products " +
-            $"WHERE Id = '{product.Id}'";
+	{
+		var query =
+			"DELETE FROM Products " +
+			$"WHERE Id = '{product.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Products.Remove(product);
+		// Update the local cache.
+		Database.Products.Remove(product);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Delete an order line from the database.
@@ -873,19 +957,22 @@ public static class DatabaseServer
 	/// <param name="orderLine">The order line to delete.</param>
 	/// <returns>True if the order line was deleted successfully, false otherwise.</returns>
 	public static bool DeleteOrderLine(OrderLine orderLine)
-    {
-        var query =
-            "DELETE FROM OrderLines " +
-            $"WHERE Id = '{orderLine.Id}'";
+	{
+		var query =
+			"DELETE FROM OrderLines " +
+			$"WHERE Id = '{orderLine.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.OrderLines.Remove(orderLine);
+		// Update the local cache.
+		Database.OrderLines.Remove(orderLine);
 
-        return true;
-    }
+		return true;
+	}
 
 	/// <summary>
 	///     Delete an order from the database.
@@ -893,17 +980,20 @@ public static class DatabaseServer
 	/// <param name="order">The order to delete.</param>
 	/// <returns>True if the order was deleted successfully, false otherwise.</returns>
 	public static bool DeleteOrder(Order order)
-    {
-        var query =
-            "DELETE FROM Orders " +
-            $"WHERE Id = '{order.Id}'";
+	{
+		var query =
+			"DELETE FROM Orders " +
+			$"WHERE Id = '{order.Id}'";
 
-        // If the query fails, return false.
-        if (!ExecuteNonQuery(query)) return false;
+		// If the query fails, return false.
+		if (!ExecuteNonQuery(query))
+		{
+			return false;
+		}
 
-        // Update the local cache.
-        Database.Orders.Remove(order);
+		// Update the local cache.
+		Database.Orders.Remove(order);
 
-        return true;
-    }
+		return true;
+	}
 }
