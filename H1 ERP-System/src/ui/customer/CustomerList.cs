@@ -5,36 +5,35 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerList
 {
-    public CustomerList(int id, string firstName, string lastName, string phone, string email, Order? lastOrder,
-        Address address)
-    {
-        Id = id;
+	public CustomerList(int id, string firstName, string lastName, string phone, string email, Order? lastOrder,
+		Address address)
+	{
+		Id = id;
 
-        FirstName = firstName;
-        LastName = lastName;
+		FirstName = firstName;
+		LastName = lastName;
 
-        Phone = phone;
-        Email = email;
+		Phone = phone;
+		Email = email;
 
-        LastOrder = lastOrder;
-        Address = address;
-    }
+		LastOrder = lastOrder;
+		Address = address;
+	}
 
-    public int Id { get; init; }
+	public int Id { get; init; }
 
-    public string FirstName { get; init; }
-    public string LastName { get; init; }
+	public string FirstName { get; init; }
+	public string LastName { get; init; }
 
-    public string Phone { get; init; }
-    public string Email { get; init; }
+	public string Phone { get; init; }
+	public string Email { get; init; }
 
-    public Order? LastOrder { get; init; }
-
-    public Address Address { get; init; }
-
-    public string FormattedName => $"{FirstName} {LastName}";
-    public string FormattedLastOrderDate => LastOrder == null ? "N/A" : LastOrder.CreatedAt;
-
-    public string FormattedAddress =>
-        $"{Address.StreetName} {Address.StreetNumber}, {Address.ZipCode} {Address.City} {Address.Country}";
+	public Order? LastOrder { get; set; }
+	public Address Address { get; set; }
+	
+	public string FormattedName => $"{FirstName} {LastName}";
+	public string FormattedLastOrderDate => LastOrder?.CreatedAt?.ToShortDateString() ?? "No orders";
+	
+	public string FormattedAddress =>
+		$"{Address.StreetName} {Address.StreetNumber}, {Address.ZipCode} {Address.City} {Address.Country}";
 }

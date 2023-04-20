@@ -5,25 +5,25 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerScreen : Screen
 {
-    public override string Title { get; set; } = "Customer";
+	public override string Title { get; set; } = "Customer";
 
-    protected override void Draw()
-    {
-        TechCoolUtils.Clear(this);
+	protected override void Draw()
+	{
+		TechCoolUtils.Clear(this);
 
-        var listPage = CustomerScreenList.GetPageListFromId(CustomerSetupScreen.SelectedCustomerId);
+		var listPage = CustomerScreenList.GetPageListFromId(CustomerSetupScreen.SelectedCustomerId);
 
-        listPage.AddColumn("Name", "FormattedName");
+		listPage.AddColumn("Name", "FormattedName");
 
-        listPage.AddColumn("Address", "FormattedAddress");
+		listPage.AddColumn("Address", "FormattedAddress");
 
-        listPage.AddColumn("Last Order", "FormattedLastOrderDate");
+		listPage.AddColumn("Last Order", "FormattedLastOrderDate");
 
 
-        listPage.Select();
+		listPage.Select();
 
-        TechCoolUtils.Clear(this);
+		TechCoolUtils.Clear(this);
 
-        Display(new Menu.MenuScreen());
-    }
+		Display(new Menu.MenuScreen());
+	}
 }

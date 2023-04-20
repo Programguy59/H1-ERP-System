@@ -8,23 +8,23 @@ namespace H1_ERP_System.ui;
 
 public class Menu
 {
-    public class MenuScreen : Screen
-    {
-        public override string Title { get; set; } = "LNE Security A/S";
+	public class MenuScreen : Screen
+	{
+		public override string Title { get; set; } = "LNE Security A/S";
 
-        protected override void Draw()
-        {
-            TechCoolUtils.Clear(this);
+		protected override void Draw()
+		{
+			TechCoolUtils.Clear(this);
 
-            var menu = new TECHCOOL.UI.Menu();
+			var menu = new TECHCOOL.UI.Menu();
 
-            menu.Add(new CompanySetupScreen());
-            menu.Add(new CustomerSetupScreen());
-            menu.Add(new ProductSetupScreen());
-            menu.Add(new SalesScreen());
-            menu.Start(this);
+			menu.Add(new CompanySetupScreen());
+			menu.Add(new CustomerSetupScreen());
+			menu.Add(new ProductSetupScreen());
+			menu.Add(new SalesScreen());
+			menu.Start(this);
 
-            TechCoolUtils.Clear(this);
-        }
-    }
+			TechCoolUtils.Clear(this);
+		}
+	}
 }
