@@ -996,38 +996,4 @@ public static class DatabaseServer
 
 		return true;
 	}
-	
-	public static bool DeleteAllData(bool iConfirmThatIWantToDeleteEverythingInTheDatabase)
-	{
-		// If you actually run this function, you are silly.
-		if (!iConfirmThatIWantToDeleteEverythingInTheDatabase)
-		{
-			return false;
-		}
-		
-		const string query = "DELETE FROM Addresses;" +
-		                     "DELETE FROM Persons;" +
-		                     "DELETE FROM Customers;" +
-		                     "DELETE FROM Companies;" +
-		                     "DELETE FROM Products;" +
-		                     "DELETE FROM OrderLines;" +
-		                     "DELETE FROM Orders;";
-		
-		// If the query fails, return false.
-		if (!ExecuteNonQuery(query))
-		{
-			return false;
-		}
-		
-		// Update the local cache.
-		Database.Addresses.Clear();
-		Database.Persons.Clear();
-		Database.Customers.Clear();
-		Database.Companies.Clear();
-		Database.Products.Clear();
-		Database.OrderLines.Clear();
-		Database.Orders.Clear();
-
-		return true;
-	}
 }
