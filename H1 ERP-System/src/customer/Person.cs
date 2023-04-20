@@ -4,9 +4,9 @@ namespace H1_ERP_System.customer;
 
 public class Person
 {
-	public Person(int id, string firstName, string lastName, string email, string phoneNumber, Address address)
+	public Person(int personId, string firstName, string lastName, string email, string phoneNumber, Address address)
 	{
-		Id = id;
+		PersonId = personId;
 		
 		FirstName = firstName;
 		LastName = lastName;
@@ -21,7 +21,7 @@ public class Person
 	public Person(string firstName, string lastName, string email, string phoneNumber, Address address) 
 		: this(Constants.DefaultId, firstName, lastName, email, phoneNumber, address) { }
 	
-	public int Id { get; set; }
+	public int PersonId { get; set; }
 
 	public string FirstName { get; set; }
 	public string LastName { get; set; }
@@ -34,6 +34,6 @@ public class Person
 
 	public override string ToString()
 	{
-		return $"Id={Id}, FirstName={FirstName}, LastName={LastName}, Email={Email}, PhoneNumber={PhoneNumber}, Address={Address}";
+		return $"PersonId={PersonId}, FirstName={FirstName}, LastName={LastName}, Email={Email}, PhoneNumber={PhoneNumber}, Address={Address}";
 	}
 }

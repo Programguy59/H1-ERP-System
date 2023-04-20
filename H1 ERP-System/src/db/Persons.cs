@@ -8,7 +8,7 @@ public partial class Database
 	
 	public static Person? GetPersonById(int id)
 	{
-		return Persons.FirstOrDefault(person => person.Id == id);
+		return Persons.FirstOrDefault(person => person.PersonId == id);
 	}
 
 	public static List<Person> GetAllPersons()
@@ -29,7 +29,7 @@ public partial class Database
 			return false;
 		}
 
-		existingPerson.Id = person.Id;
+		existingPerson.PersonId = person.PersonId;
 		
 		existingPerson.FirstName = person.FirstName;
 		existingPerson.LastName = person.LastName;

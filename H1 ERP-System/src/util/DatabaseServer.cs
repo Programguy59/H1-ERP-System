@@ -116,14 +116,13 @@ public static class DatabaseServer
 	{
 		SqlConnectionStringBuilder sb = new()
 		{
-			DataSource = "192.168.1.70", /* "docker.data.techcollege.dk", */
-			InitialCatalog = "H1PD021123_Gruppe3",
-			UserID = "H1PD021123_Gruppe3",
-			Password = "H1PD021123_Gruppe3",
-			TrustServerCertificate = true,
-			ConnectTimeout = 30
+			DataSource = Constants.Sql.Host,
+			
+			InitialCatalog = Constants.Sql.Database,
+			UserID = Constants.Sql.User,
+			Password = Constants.Sql.Password
 		};
-
+		
 		var connectionString = sb.ToString();
 
 		_connection = new SqlConnection(connectionString);
