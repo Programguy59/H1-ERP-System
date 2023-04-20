@@ -4,10 +4,10 @@ namespace ErpTests.UnitTests;
 
 public class Tests
 {
-	[Fact]
-	public void TestOrder()
-	{
-		var order = new Order("2021-01-0", "2", null, OrderStatus.Completed);
-		Assert.NotNull(order);
-	}
+    [Fact]
+    public void TestOrder()
+    {
+        var order = new Order("2021-01-0", "2", null, OrderStatus.Completed);
+        Assert.NotNull(order);
+    }
 }

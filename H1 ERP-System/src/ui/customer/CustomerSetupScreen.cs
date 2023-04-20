@@ -5,27 +5,26 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerSetupScreen : Screen
 {
-	public static int SelectedCustomerId;
-	public override string Title { get; set; } = "Customer";
+    public static int SelectedCustomerId;
+    public override string Title { get; set; } = "Customer";
 
-	protected override void Draw()
-	{
-		TechCoolUtils.Clear(this);
+    protected override void Draw()
+    {
+        TechCoolUtils.Clear(this);
 
-		var listPage = CustomerScreenList.GetPageList();
+        var listPage = CustomerScreenList.GetPageList();
 
-		listPage.AddColumn("ID", "Id");
 
-		listPage.AddColumn("Name", "FormattedName");
+        listPage.AddColumn("ID", "Id");
 
-		listPage.AddColumn("Email", "Email");
-		listPage.AddColumn("Phone Number", "PhoneNumber");
+        listPage.AddColumn("First Name", "FirstName");
+        listPage.AddColumn("Last Name", "LastName");
 
-		listPage.AddColumn("Last Order", "FormattedLastOrderDate");
+        listPage.AddColumn("Phone Number", "PhoneNumber");
+        listPage.AddColumn("Email", "Email");
+        SelectedCustomerId = listPage.Select().Id;
 
-		SelectedCustomerId = listPage.Select().Id;
-
-		TechCoolUtils.Clear(this);
-		Display(new CustomerScreen());
-	}
+        TechCoolUtils.Clear(this);
+        Display(new CustomerScreen());
+    }
 }

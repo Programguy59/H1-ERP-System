@@ -7,135 +7,131 @@ namespace H1_ERP_System.src.ui.Company;
 
 public class CompanyScreenList
 {
-	public enum CompanyScreen
-	{
-		Todo,
-		Started,
-		Done
-	}
+    public enum CompanyScreen
+    {
+        Todo,
+        Started,
+        Done
+    }
 
-	public CompanyScreenList(int id, string companyName, Address? address, string companyCurrency, int addressId, int priority)
-	{
-		CompanyId = id;
-		CompanyName = companyName;
-		CompanyCurrency = companyCurrency;
+    public CompanyScreenList(int id, string companyName, Address? address, string companyCurrency, int addressId,
+        int priority)
+    {
+        CompanyId = id;
+        CompanyName = companyName;
+        CompanyCurrency = companyCurrency;
 
-		AddressId = id;
-		CompanyAddress = address;
-		CompanyCountry = address.Country;
-		CompanyStreetName = address.StreetName;
-		CompanyStreetNumber = address.StreetNumber;
-		CompanyZipCode = address.ZipCode;
-		CompanyCity = address.City;
-		CompanyCurrency = companyCurrency;
-		Priority = priority;
+        AddressId = id;
+        CompanyAddress = address;
+        CompanyCountry = address.Country;
+        CompanyStreetName = address.StreetName;
+        CompanyStreetNumber = address.StreetNumber;
+        CompanyZipCode = address.ZipCode;
+        CompanyCity = address.City;
+        CompanyCurrency = companyCurrency;
+        Priority = priority;
+    }
 
-	}
+    public int CompanyId { get; set; }
 
-	public int CompanyId { get; set; }
+    public string CompanyName { get; set; }
+    public string CompanyCurrency { get; set; }
 
-	public string CompanyName { get; set; }
-	public string CompanyCurrency { get; set; }
+    public int AddressId { get; set; }
+    public Address CompanyAddress { get; set; }
+    public string CompanyCountry { get; set; } = "";
 
-	public int AddressId { get; set; }
-	public Address CompanyAddress { get; set; }
-	public string CompanyCountry { get; set; } = "";
+    public string CompanyStreetName { get; set; } = "";
 
-	public string CompanyStreetName { get; set; } = "";
+    public string CompanyStreetNumber { get; set; }
 
-	public string CompanyStreetNumber { get; set; }
+    public string CompanyZipCode { get; set; }
 
-	public string CompanyZipCode { get; set; }
+    public string CompanyCity { get; set; } = "";
+    public int Priority { get; set; }
 
-	public string CompanyCity { get; set; } = "";
-	public int Priority { get; set; }
-
-	public CompanyScreen State { get; set; }
-
-
-	public static ListPage<CompanyScreenList> GetPageListFromId(int CompanyId)
-	{
-		var listPage = new ListPage<CompanyScreenList>();
+    public CompanyScreen State { get; set; }
 
 
-		var companies = Database.GetAllCompanies();
+    public static ListPage<CompanyScreenList> GetPageListFromId(int CompanyId)
+    {
+        var listPage = new ListPage<CompanyScreenList>();
 
-		for (var i = 0; i < companies.Count; i++)
-			if (companies[i].Id == CompanyId)
-			{
-				listPage.Add(new CompanyScreenList(companies[i].Id, companies[i].CompanyName, companies[i].Address, companies[i].Currency,
-					companies[i].Address.Id, 1));
-			}
 
-		return listPage;
-	}
+        var companies = Database.GetAllCompanies();
 
-	public static CompanyScreenList GetCompanyScreenListFromId(int CompanyId)
-	{
-		var tempAddress = new Address("", "", "", "", "");
-		CompanyScreenList companyScreenList = new(0, "", tempAddress, "", 0, 0);
+        for (var i = 0; i < companies.Count; i++)
+            if (companies[i].Id == CompanyId)
+                listPage.Add(new CompanyScreenList(companies[i].Id, companies[i].CompanyName, companies[i].Address,
+                    companies[i].Currency,
+                    companies[i].Address.Id, 1));
 
-		var companies = Database.GetAllCompanies();
+        return listPage;
+    }
 
-		for (var i = 0; i < companies.Count; i++)
-			if (companies[i].Id == CompanyId)
-			{
-				companyScreenList = new CompanyScreenList(
-					companies[i].Id,
-					companies[i].CompanyName,
-					companies[i].Address,
-					companies[i].Currency,
-					companies[i].Address.Id,
-					1);
-			}
+    public static CompanyScreenList GetCompanyScreenListFromId(int CompanyId)
+    {
+        var tempAddress = new Address("", "", "", "", "");
+        CompanyScreenList companyScreenList = new(0, "", tempAddress, "", 0, 0);
 
-		return companyScreenList;
-	}
+        var companies = Database.GetAllCompanies();
 
-	public static void MakeCompanyButton(CompanyScreenList company)
-	{
-		var Addresses = Database.GetAllAddresses();
-		var Companies = Database.GetAllCompanies();
+        for (var i = 0; i < companies.Count; i++)
+            if (companies[i].Id == CompanyId)
+                companyScreenList = new CompanyScreenList(
+                    companies[i].Id,
+                    companies[i].CompanyName,
+                    companies[i].Address,
+                    companies[i].Currency,
+                    companies[i].Address.Id,
+                    1);
 
-		var tempAddress = new Address("", "", "", "", "");
-		DatabaseServer.InsertAddress(tempAddress);
+        return companyScreenList;
+    }
 
-		company.Company TempCompany = new("newCompany", tempAddress, "USD");
-		DatabaseServer.InsertCompany(TempCompany);
+    public static void MakeCompanyButton(CompanyScreenList company)
+    {
+        var Addresses = Database.GetAllAddresses();
+        var Companies = Database.GetAllCompanies();
 
-		Screen.Display(new CompanyEditDataScreen(TempCompany.Id));
-	}
+        var tempAddress = new Address("", "", "", "", "");
+        DatabaseServer.InsertAddress(tempAddress);
 
-	public static void EditCompanyButton(CompanyScreenList company)
-	{
-		Screen.Display(new CompanyEditDataScreen(company.CompanyId));
-	}
+        company.Company TempCompany = new("newCompany", tempAddress, "USD");
+        DatabaseServer.InsertCompany(TempCompany);
 
-	public static void DeleteCompany(CompanyScreenList companyList)
-	{
-		var company = Database.GetCompanyById(companyList.CompanyId);
-		DatabaseServer.DeleteCompany(company);
-		Screen.Display(new CompanySetupScreen());
+        Screen.Display(new CompanyEditDataScreen(TempCompany.Id));
+    }
 
-	}
+    public static void EditCompanyButton(CompanyScreenList company)
+    {
+        Screen.Display(new CompanyEditDataScreen(company.CompanyId));
+    }
 
-	public static ListPage<CompanyScreenList> GetPageList()
-	{
-		var listPage = new ListPage<CompanyScreenList>();
-		listPage.AddKey(ConsoleKey.F1, MakeCompanyButton);
-		listPage.AddKey(ConsoleKey.F2, EditCompanyButton);
-		listPage.AddKey(ConsoleKey.F5, DeleteCompany);
+    public static void DeleteCompany(CompanyScreenList companyList)
+    {
+        var company = Database.GetCompanyById(companyList.CompanyId);
+        DatabaseServer.DeleteCompany(company);
+        Screen.Display(new CompanySetupScreen());
+    }
 
-		var Companies = Database.GetAllCompanies();
-		for (var i = 0; i < Companies.Count; i++)
-			listPage.Add(new CompanyScreenList(
-				Companies[i].Id,
-				Companies[i].CompanyName,
-				Companies[i].Address,
-				Companies[i].Currency,
-				Companies[i].Address.Id,
-				1));
+    public static ListPage<CompanyScreenList> GetPageList()
+    {
+        var listPage = new ListPage<CompanyScreenList>();
+        listPage.AddKey(ConsoleKey.F1, MakeCompanyButton);
+        listPage.AddKey(ConsoleKey.F2, EditCompanyButton);
+        listPage.AddKey(ConsoleKey.F5, DeleteCompany);
 
-		return listPage;
-	}
+        var Companies = Database.GetAllCompanies();
+        for (var i = 0; i < Companies.Count; i++)
+            listPage.Add(new CompanyScreenList(
+                Companies[i].Id,
+                Companies[i].CompanyName,
+                Companies[i].Address,
+                Companies[i].Currency,
+                Companies[i].Address.Id,
+                1));
+
+        return listPage;
+    }
 }

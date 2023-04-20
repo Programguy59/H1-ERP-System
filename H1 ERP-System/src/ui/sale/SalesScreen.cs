@@ -5,37 +5,37 @@ namespace H1_ERP_System.ui.sale;
 
 public class SalesScreen : Screen
 {
-	public override string Title { get; set; } = "Sale";
+    public override string Title { get; set; } = "Sale";
 
-	protected override void Draw()
-	{
-		TechCoolUtils.Clear(this);
+    protected override void Draw()
+    {
+        TechCoolUtils.Clear(this);
 
-		// Display list of customers.
-		var listPage = SalesList.GetPageList();
+        // Display list of customers.
+        var listPage = SalesList.GetPageList();
 
-		listPage.AddColumn("Order ID", "Id");
-		listPage.AddColumn("Date", "Date");
-		listPage.AddColumn("Customer ID", "CustomerId");
-		listPage.AddColumn("Name", "CustomerFullName");
-		listPage.AddColumn("Total Price", "TotalPrice");
+        listPage.AddColumn("Order ID", "Id");
+        listPage.AddColumn("Date", "Date");
+        listPage.AddColumn("Customer ID", "CustomerId");
+        listPage.AddColumn("Name", "CustomerFullName");
+        listPage.AddColumn("Total Price", "TotalPrice");
 
-		var selected = listPage.Select();
+        var selected = listPage.Select();
 
-		TechCoolUtils.Clear(this);
+        TechCoolUtils.Clear(this);
 
-		// Display customer details.
-		listPage = new ListPage<SalesList>();
+        // Display customer details.
+        listPage = new ListPage<SalesList>();
 
-		listPage.Add(selected);
+        listPage.Add(selected);
 
-		listPage.AddColumn("Order ID", "Id");
-		listPage.AddColumn("Date", "Date");
-		listPage.AddColumn("Customer ID", "CustomerId");
-		listPage.AddColumn("Name", "CustomerFullName");
+        listPage.AddColumn("Order ID", "Id");
+        listPage.AddColumn("Date", "Date");
+        listPage.AddColumn("Customer ID", "CustomerId");
+        listPage.AddColumn("Name", "CustomerFullName");
 
-		listPage.Select();
+        listPage.Select();
 
-		Quit();
-	}
+        Quit();
+    }
 }

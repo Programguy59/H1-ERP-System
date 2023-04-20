@@ -4,61 +4,55 @@ namespace H1_ERP_System.db;
 
 public partial class Database
 {
-	public static List<Address> Addresses = new();
+    public static List<Address> Addresses = new();
 
-	public static Address? GetAddressById(int id)
-	{
-		return Addresses.FirstOrDefault(address => address.Id == id);
-	}
+    public static Address? GetAddressById(int id)
+    {
+        return Addresses.FirstOrDefault(address => address.Id == id);
+    }
 
-	public static List<Address> GetAllAddresses()
-	{
-		return Addresses;
-	}
+    public static List<Address> GetAllAddresses()
+    {
+        return Addresses;
+    }
 
-	public static void InsertAddress(Address address)
-	{
-		Addresses.Add(address);
-	}
+    public static void InsertAddress(Address address)
+    {
+        Addresses.Add(address);
+    }
 
-	public static bool UpdateAddress(Address address, int id)
-	{
-		var existingAddress = GetAddressById(id);
+    public static bool UpdateAddress(Address address, int id)
+    {
+        var existingAddress = GetAddressById(id);
 
-		if (existingAddress == null)
-		{
-			return false;
-		}
+        if (existingAddress == null) return false;
 
-		existingAddress.Id = address.Id;
+        existingAddress.Id = address.Id;
 
-		existingAddress.StreetName = address.StreetName;
-		existingAddress.StreetNumber = address.StreetNumber;
+        existingAddress.StreetName = address.StreetName;
+        existingAddress.StreetNumber = address.StreetNumber;
 
-		existingAddress.City = address.City;
-		existingAddress.ZipCode = address.ZipCode;
+        existingAddress.City = address.City;
+        existingAddress.ZipCode = address.ZipCode;
 
-		existingAddress.Country = address.Country;
+        existingAddress.Country = address.Country;
 
-		return true;
-	}
+        return true;
+    }
 
-	public static bool DeleteAddressById(int id)
-	{
-		var addressToDelete = GetAddressById(id);
+    public static bool DeleteAddressById(int id)
+    {
+        var addressToDelete = GetAddressById(id);
 
-		if (addressToDelete == null)
-		{
-			return false;
-		}
+        if (addressToDelete == null) return false;
 
-		Addresses.Remove(addressToDelete);
+        Addresses.Remove(addressToDelete);
 
-		return true;
-	}
+        return true;
+    }
 
-	public static void ClearAddresses()
-	{
-		Addresses.Clear();
-	}
+    public static void ClearAddresses()
+    {
+        Addresses.Clear();
+    }
 }

@@ -4,114 +4,102 @@ namespace H1_ERP_System.db;
 
 public partial class Database
 {
-	public static List<Order> Orders = new();
-	public static List<OrderLine> OrderLines = new();
+    public static List<Order> Orders = new();
+    public static List<OrderLine> OrderLines = new();
 
-	public static Order? GetOrderById(int id)
-	{
-		return Orders.FirstOrDefault(order => order.Id == id);
-	}
+    public static Order? GetOrderById(int id)
+    {
+        return Orders.FirstOrDefault(order => order.Id == id);
+    }
 
-	public static List<Order> GetAllOrders()
-	{
-		return Orders;
-	}
+    public static List<Order> GetAllOrders()
+    {
+        return Orders;
+    }
 
-	public static void InsertOrder(Order order)
-	{
-		Orders.Add(order);
-	}
+    public static void InsertOrder(Order order)
+    {
+        Orders.Add(order);
+    }
 
-	public static bool UpdateOrder(Order order, int id)
-	{
-		var existingOrder = GetOrderById(id);
+    public static bool UpdateOrder(Order order, int id)
+    {
+        var existingOrder = GetOrderById(id);
 
-		if (existingOrder == null)
-		{
-			return false;
-		}
+        if (existingOrder == null) return false;
 
-		existingOrder.Id = order.Id;
+        existingOrder.Id = order.Id;
 
-		existingOrder.CreatedAt = order.CreatedAt;
-		existingOrder.CompletedAt = order.CompletedAt;
+        existingOrder.CreatedAt = order.CreatedAt;
+        existingOrder.CompletedAt = order.CompletedAt;
 
-		existingOrder.Customer = order.Customer;
+        existingOrder.Customer = order.Customer;
 
-		existingOrder.OrderStatus = order.OrderStatus;
+        existingOrder.OrderStatus = order.OrderStatus;
 
-		existingOrder.TotalPrice = order.TotalPrice;
+        existingOrder.TotalPrice = order.TotalPrice;
 
-		return true;
-	}
+        return true;
+    }
 
-	public static bool DeleteOrderById(int id)
-	{
-		var orderToDelete = GetOrderById(id);
+    public static bool DeleteOrderById(int id)
+    {
+        var orderToDelete = GetOrderById(id);
 
-		if (orderToDelete == null)
-		{
-			return false;
-		}
+        if (orderToDelete == null) return false;
 
-		Orders.Remove(orderToDelete);
+        Orders.Remove(orderToDelete);
 
-		return true;
-	}
+        return true;
+    }
 
-	public static void ClearOrders()
-	{
-		Orders.Clear();
-	}
+    public static void ClearOrders()
+    {
+        Orders.Clear();
+    }
 
-	public static OrderLine? GetOrderLineById(int id)
-	{
-		return OrderLines.FirstOrDefault(orderLine => orderLine.Id == id);
-	}
+    public static OrderLine? GetOrderLineById(int id)
+    {
+        return OrderLines.FirstOrDefault(orderLine => orderLine.Id == id);
+    }
 
-	public static List<OrderLine> GetAllOrderLines()
-	{
-		return OrderLines;
-	}
+    public static List<OrderLine> GetAllOrderLines()
+    {
+        return OrderLines;
+    }
 
-	public static void InsertOrderLine(OrderLine orderLine)
-	{
-		OrderLines.Add(orderLine);
-	}
+    public static void InsertOrderLine(OrderLine orderLine)
+    {
+        OrderLines.Add(orderLine);
+    }
 
-	public static bool UpdateOrderLine(OrderLine orderLine, int id)
-	{
-		var existingOrderLine = GetOrderLineById(id);
+    public static bool UpdateOrderLine(OrderLine orderLine, int id)
+    {
+        var existingOrderLine = GetOrderLineById(id);
 
-		if (existingOrderLine == null)
-		{
-			return false;
-		}
+        if (existingOrderLine == null) return false;
 
-		existingOrderLine.Id = orderLine.Id;
+        existingOrderLine.Id = orderLine.Id;
 
-		existingOrderLine.Product = orderLine.Product;
-		existingOrderLine.Quantity = orderLine.Quantity;
+        existingOrderLine.Product = orderLine.Product;
+        existingOrderLine.Quantity = orderLine.Quantity;
 
-		return true;
-	}
+        return true;
+    }
 
-	public static bool DeleteOrderLineById(int id)
-	{
-		var orderLineToDelete = GetOrderLineById(id);
+    public static bool DeleteOrderLineById(int id)
+    {
+        var orderLineToDelete = GetOrderLineById(id);
 
-		if (orderLineToDelete == null)
-		{
-			return false;
-		}
+        if (orderLineToDelete == null) return false;
 
-		OrderLines.Remove(orderLineToDelete);
+        OrderLines.Remove(orderLineToDelete);
 
-		return true;
-	}
+        return true;
+    }
 
-	public static void ClearOrderLines()
-	{
-		OrderLines.Clear();
-	}
+    public static void ClearOrderLines()
+    {
+        OrderLines.Clear();
+    }
 }

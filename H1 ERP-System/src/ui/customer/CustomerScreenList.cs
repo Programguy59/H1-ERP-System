@@ -1,4 +1,5 @@
-﻿using H1_ERP_System.db;
+﻿using H1_ERP_System.customer;
+using H1_ERP_System.db;
 using H1_ERP_System.sales;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
@@ -7,150 +8,139 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerScreenList
 {
-	public CustomerScreenList(int id, string firstName, string lastName, string email, string phoneNumber, Address address, Order? lastOrder)
-	{
-		Id = id;
+    public CustomerScreenList(int id, string firstName, string lastName, string email, string phoneNumber,
+        Address address, Order? lastOrder)
+    {
+        Id = id;
 
-		FirstName = firstName;
-		LastName = lastName;
+        FirstName = firstName;
+        LastName = lastName;
 
-		Email = email;
-		PhoneNumber = phoneNumber;
+        Email = email;
+        PhoneNumber = phoneNumber;
 
-		Address = address;
-		LastOrder = lastOrder;
+        Address = address;
+        LastOrder = lastOrder;
 
-		// Define the properties that are not in the constructor.
-		StreetName = Address.StreetName;
-		StreetNumber = Address.StreetNumber;
-		ZipCode = Address.ZipCode;
-		City = Address.City;
-		Country = Address.Country;
-	}
+        // Define the properties that are not in the constructor.
+        StreetName = Address.StreetName;
+        StreetNumber = Address.StreetNumber;
+        ZipCode = Address.ZipCode;
+        City = Address.City;
+        Country = Address.Country;
+    }
 
-	public int Id { get; set; }
+    public int Id { get; set; }
 
-	public string FirstName { get; set; }
-	public string LastName { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
 
-	public string Email { get; set; }
-	public string PhoneNumber { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
 
-	public Address Address { get; set; }
-	public Order? LastOrder { get; set; }
+    public Address Address { get; set; }
+    public Order? LastOrder { get; set; }
 
-	public string StreetName { get; set; }
-	public string StreetNumber { get; set; }
-	public string ZipCode { get; set; }
-	public string City { get; set; }
-	public string Country { get; set; }
+    public string StreetName { get; set; }
+    public string StreetNumber { get; set; }
+    public string ZipCode { get; set; }
+    public string City { get; set; }
+    public string Country { get; set; }
 
-	public string FormattedName => $"{FirstName} {LastName}";
-	public string FormattedAddress => $"{Address.StreetName} {Address.StreetNumber}, {Address.ZipCode} {Address.City}, {Address.Country}";
-	public string FormattedLastOrderDate => LastOrder == null ? "N/A" : LastOrder.CreatedAt;
+    public string FormattedName => $"{FirstName} {LastName}";
 
-	public static ListPage<CustomerScreenList> GetPageListFromId(int id)
-	{
-		var listPage = new ListPage<CustomerScreenList>();
+    public string FormattedAddress =>
+        $"{Address.StreetName} {Address.StreetNumber}, {Address.ZipCode} {Address.City}, {Address.Country}";
 
-		listPage.AddKey(ConsoleKey.F1, MakeCustomerButton);
-		listPage.AddKey(ConsoleKey.F2, EditCustomerButton);
+    public string FormattedLastOrderDate => LastOrder == null ? "N/A" : LastOrder.CreatedAt;
 
-		var customer = Database.GetCustomerById(id);
+    public static ListPage<CustomerScreenList> GetPageListFromId(int id)
+    {
+        var listPage = new ListPage<CustomerScreenList>();
 
-		if (customer == null)
-		{
-			return listPage;
-		}
+        listPage.AddKey(ConsoleKey.F1, MakeCustomerButton);
+        listPage.AddKey(ConsoleKey.F2, EditCustomerButton);
 
-		var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
+        var customer = Database.GetCustomerById(id);
 
-		listPage.Add(new CustomerScreenList(
-			customer.CustomerId,
-			customer.FirstName,
-			customer.LastName,
-			customer.Email,
-			customer.PhoneNumber,
-			customer.Address,
-			lastOrder));
+        if (customer == null) return listPage;
 
-		return listPage;
-	}
+        var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
 
-	public static CustomerScreenList? GetCustomerScreenListFromId(int id)
-	{
-		var customer = Database.GetCustomerById(id);
+        listPage.Add(new CustomerScreenList(
+            customer.CustomerId,
+            customer.FirstName,
+            customer.LastName,
+            customer.Email,
+            customer.PhoneNumber,
+            customer.Address,
+            lastOrder));
 
-		if (customer == null)
-		{
-			return null;
-		}
+        return listPage;
+    }
 
-		var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
+    public static CustomerScreenList? GetCustomerScreenListFromId(int id)
+    {
+        var customer = Database.GetCustomerById(id);
 
-		return new CustomerScreenList(
-			customer.CustomerId,
-			customer.FirstName,
-			customer.LastName,
-			customer.Email,
-			customer.PhoneNumber,
-			customer.Address,
-			lastOrder);
-	}
+        if (customer == null) return null;
 
-	public static void MakeCustomerButton(CustomerScreenList customer)
-	{
-		/*
-	    var Addresses = Database.GetAllAddresses();
-	    var Companies = Database.GetAllCompanies();
+        var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
 
-	    int highestAddressId = 0;
-	    for (var i = 0; i < Addresses.Count; i++)
-	        if (Addresses[i].Id > highestAddressId){highestAddressId = Addresses[i].Id;}
-	    int highestCompanyId = 0;
-	    for (var i = 0; i < Companies.Count; i++)
-	        if (Companies[i].Id > highestCompanyId) { highestCompanyId = Companies[i].Id; }
+        return new CustomerScreenList(
+            customer.CustomerId,
+            customer.FirstName,
+            customer.LastName,
+            customer.Email,
+            customer.PhoneNumber,
+            customer.Address,
+            lastOrder);
+    }
 
-	    int newCompanyId = highestCompanyId + 1;
-	    int newAddressId = highestAddressId + 1;
-	    Address tempAddress = new Address(newAddressId, "", "", "", "", "");
-	    company.Company TempCompany = new(newCompanyId, "newCompany", tempAddress, "USD");
-	    DatabaseServer.InsertAddress(tempAddress);
-	    DatabaseServer.InsertCompany(TempCompany);
-	    CompanySetupScreen.SelectedCompanyName = TempCompany.CompanyName;
-	    Screen.Display(new CompanyEditDataScreen("newCompany"));
-	    */
-	}
+    public static void MakeCustomerButton(CustomerScreenList customer)
+    {
+        Address tempAddress = new("", "", "", "", "");
+        DatabaseServer.InsertAddress(tempAddress);
 
-	public static void EditCustomerButton(CustomerScreenList customer)
-	{
-		Screen.Display(new CustomerEditScreen(customer.Id));
-	}
+        Person tempPerson = new("", "", "", "", tempAddress);
+        DatabaseServer.InsertPerson(tempPerson);
 
-	public static ListPage<CustomerScreenList> GetPageList()
-	{
-		var listPage = new ListPage<CustomerScreenList>();
+        Customer tempCustomer = new(tempPerson, "");
+        DatabaseServer.InsertCustomer(tempCustomer);
 
-		var customers = Database.GetAllCustomers();
 
-		foreach (var customer in customers)
-		{
-			var person = customer.Person;
-			var address = person.Address;
+        Screen.Display(new CustomerEditScreen(tempCustomer.CustomerId));
+    }
 
-			var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
+    public static void EditCustomerButton(CustomerScreenList customer)
+    {
+        Screen.Display(new CustomerEditScreen(customer.Id));
+    }
 
-			listPage.Add(new CustomerScreenList(
-				customer.CustomerId,
-				person.FirstName,
-				person.LastName,
-				person.Email,
-				person.PhoneNumber,
-				address,
-				lastOrder
-			));
-		}
+    public static ListPage<CustomerScreenList> GetPageList()
+    {
+        var listPage = new ListPage<CustomerScreenList>();
 
-		return listPage;
-	}
+        var customers = Database.GetAllCustomers();
+
+        foreach (var customer in customers)
+        {
+            var person = customer.Person;
+            var address = person.Address;
+
+            var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
+
+            listPage.Add(new CustomerScreenList(
+                customer.CustomerId,
+                person.FirstName,
+                person.LastName,
+                person.Email,
+                person.PhoneNumber,
+                address,
+                lastOrder
+            ));
+        }
+
+        return listPage;
+    }
 }
