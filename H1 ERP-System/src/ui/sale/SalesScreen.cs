@@ -12,19 +12,7 @@ public class SalesScreen : Screen
 		Clear(this);
 
 		// Display list of customers.
-		var listPage = new ListPage<SalesList>();
-
-		foreach (var order in Database.GetAllOrders())
-		{
-			var customer = Database.GetCustomerById(order.Customer.Id);
-			if (customer == null)
-			{
-				continue;
-			}
-
-			var salesList = new SalesList(order.Id, order.CreatedAt, customer, order.TotalPrice);
-			listPage.Add(salesList);
-		}
+		var listPage = SalesList.GetPageList();
 
 		listPage.AddColumn("Order ID", "Id");
 		listPage.AddColumn("Date", "Date");

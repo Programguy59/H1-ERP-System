@@ -3,6 +3,7 @@ using TECHCOOL.UI;
 using H1_ERP_System.db;
 using H1_ERP_System.sales;
 using H1_ERP_System.customer;
+using H1_ERP_System.ui.customer;
 
 namespace H1_ERP_System.ui.sale;
 
@@ -66,24 +67,22 @@ public class SalesList
     public static void MakeSalesButton(SalesList sales)
     {
         Address tempAddress = new("", "", "", "", "");
+        DatabaseServer.InsertAddress(tempAddress);
+
         Person tempPerson = new("", "", "", "", tempAddress);
+        DatabaseServer.InsertPerson(tempPerson);
+
         Customer tempCustomer = new(tempPerson, "");
-
-        Order newOrder = new("", "", tempCustomer, OrderStatus.Created);
-
-        DatabaseServer.InsertOrder(newOrder);
         DatabaseServer.InsertCustomer(tempCustomer);
 
-        var AllOrders = Database.GetAllOrders();
-        //for (int i; i > AllOrders.Count; i++) 
-        //{ if (AllOrders[i].Customer.FirstName == ""); }
+        Order newOrder = new("", "", tempCustomer, OrderStatus.Created);
+        DatabaseServer.InsertOrder(newOrder);
 
-        //CompanySetupScreen.SelectedOrderId = newOrder.Id;
-        //Screen.Display(new SalesEditDataScreen(newCompanyId));
+        Screen.Display(new CustomerEditScreen(tempCustomer.CustomerId));
     }
     public static void EditSalesButton(SalesList sale)
     {
-        //Screen.Display(new SalesEditDataScreen(sale.Id));
+        Screen.Display(new CustomerEditScreen(sale.CustomerId));
     }
 
     public static ListPage<SalesList> GetPageList()
