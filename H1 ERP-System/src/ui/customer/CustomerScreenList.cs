@@ -120,12 +120,20 @@ public class CustomerScreenList
 		Screen.Display(new CustomerEditScreen(customer.Id));
 	}
 
-	public static ListPage<CustomerScreenList> GetPageList()
+    public static void DeleteCustomer(CustomerScreenList customerList)
+    {
+		var customer = Database.GetCustomerById(customerList.Id);
+		DatabaseServer.DeleteCustomer(customer);
+		Screen.Display(new CustomerSetupScreen());
+	}
+
+    public static ListPage<CustomerScreenList> GetPageList()
 	{
 		var listPage = new ListPage<CustomerScreenList>();
 
         listPage.AddKey(ConsoleKey.F1, MakeCustomerButton);
         listPage.AddKey(ConsoleKey.F2, EditCustomerButton);
+        listPage.AddKey(ConsoleKey.F5, DeleteCustomer);
 
         var customers = Database.GetAllCustomers();
 
