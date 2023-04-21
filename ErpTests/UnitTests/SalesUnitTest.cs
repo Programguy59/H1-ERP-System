@@ -7,7 +7,9 @@ public class Tests
 	[Fact]
 	public void TestOrder()
 	{
-		var order = new Order("2021-01-0", "2", null, OrderStatus.Completed);
+        DateTime createdAt = DateTime.Parse("2021-01-0");
+        DateTime completedAt = DateTime.Parse("2");
+        var order = new Order(createdAt, completedAt, null, OrderStatus.Completed);
 		Assert.NotNull(order);
 	}
 }
