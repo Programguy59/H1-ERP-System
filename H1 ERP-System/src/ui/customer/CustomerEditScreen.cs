@@ -63,8 +63,8 @@ public class CustomerEditScreen : Screen
 		person.FirstName = customerScreenList.FirstName;
 		person.LastName = customerScreenList.LastName;
 
-		customer.Email = customerScreenList.Email;
-		customer.PhoneNumber = customerScreenList.PhoneNumber;
+		person.Email = customerScreenList.Email;
+		person.PhoneNumber = customerScreenList.PhoneNumber;
 
 		address.StreetName = customerScreenList.StreetName;
 		address.StreetNumber = customerScreenList.StreetNumber;
