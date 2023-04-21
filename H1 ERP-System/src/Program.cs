@@ -8,6 +8,7 @@ public static class Program
 {
 	private static void Main()
 	{
+		Console.Title = "LNE Security A/S ERP System";
 		DatabaseServer.Initialize(0);
 
 		Screen.Display(new Menu.MenuScreen());
