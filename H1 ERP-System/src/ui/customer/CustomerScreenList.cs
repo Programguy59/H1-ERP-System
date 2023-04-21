@@ -58,9 +58,6 @@ public class CustomerScreenList
 	{
 		var listPage = new ListPage<CustomerScreenList>();
 
-		listPage.AddKey(ConsoleKey.F1, MakeCustomerButton);
-		listPage.AddKey(ConsoleKey.F2, EditCustomerButton);
-
 		var customer = Database.GetCustomerById(id);
 
 		if (customer == null)
@@ -127,7 +124,10 @@ public class CustomerScreenList
 	{
 		var listPage = new ListPage<CustomerScreenList>();
 
-		var customers = Database.GetAllCustomers();
+        listPage.AddKey(ConsoleKey.F1, MakeCustomerButton);
+        listPage.AddKey(ConsoleKey.F2, EditCustomerButton);
+
+        var customers = Database.GetAllCustomers();
 
 		foreach (var customer in customers)
 		{
