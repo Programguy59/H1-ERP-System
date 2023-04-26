@@ -11,13 +11,23 @@ public class CompanySetupScreen : Screen
 	protected override void Draw()
 	{
 		TechCoolUtils.Clear(this);
-		var ListPage = CompanyScreenList.GetPageList();
+		var listPage = CompanyScreenList.GetPageList();
 
-		ListPage.AddColumn("Company", "CompanyName");
-		ListPage.AddColumn("Country", "CompanyCountry");
-		ListPage.AddColumn("Currency", "CompanyCurrency");
-
-		SelectedOrderId = ListPage.Select().CompanyId;
+		listPage.AddColumn("Company", "CompanyName");
+		listPage.AddColumn("Country", "CompanyCountry");
+		listPage.AddColumn("Currency", "CompanyCurrency");
+		
+		var selected = listPage.Select();
+		// If the user pressed escape or the list is empty, quit the screen.
+		if (selected == null)
+		{
+			Quit();
+			
+			return;
+		}
+		
+		SelectedOrderId = selected.CompanyId;
+		
 		TechCoolUtils.Clear(this);
 
 		Quit();

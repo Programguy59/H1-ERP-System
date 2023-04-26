@@ -15,13 +15,18 @@ public class SaleSetupScreen : Screen
         listPage.AddColumn("Customer ID", "CustomerId");
         listPage.AddColumn("Name", "CustomerFullName");
         listPage.AddColumn("Total Price", "TotalPrice");
-
-
-
+        
+        var selected = listPage.Select();
+        // If the user pressed escape or the list is empty, quit the screen.
+        if (selected == null)
+        {
+            Quit();
+			
+            return;
+        }
+        
         TechCoolUtils.Clear(this);
-        try { Screen.Display(new SalesScreen(listPage.Select().Id)); }
-        catch { Quit(); TechCoolUtils.Clear(this); }
-            
-        Quit();
+        
+        Display(new SalesScreen(selected.Id));
     }
 }

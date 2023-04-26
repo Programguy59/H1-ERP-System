@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using H1_ERP_System.util;
+﻿using H1_ERP_System.util;
 
 namespace H1_ERP_System.product;
 
