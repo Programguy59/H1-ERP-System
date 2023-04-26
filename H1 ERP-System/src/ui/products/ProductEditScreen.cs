@@ -67,10 +67,10 @@ public class ProductEditScreen : Screen
 		}
 		catch (FormatException)
 		{
-			// TODO: Implement an error screen maybe?
+			new ErrorScreen("Invalid price format!");
 			
 			Quit();
-
+			
 			return;
 		}
 		
