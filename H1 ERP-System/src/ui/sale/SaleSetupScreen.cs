@@ -20,7 +20,9 @@ namespace H1_ERP_System.src.ui.sale
 
 
             TechCoolUtils.Clear(this);
-            Screen.Display(new SalesScreen(listPage.Select().Id));
+            try { Screen.Display(new SalesScreen(listPage.Select().Id)); }
+            catch { Quit(); TechCoolUtils.Clear(this); }
+            
             Quit();
         }
     }    
