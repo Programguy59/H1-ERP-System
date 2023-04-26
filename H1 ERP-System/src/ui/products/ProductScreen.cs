@@ -18,6 +18,7 @@ public class ProductScreen : Screen
 		TechCoolUtils.Clear(this);
 		
 		var listPage = new ListPage<ProductScreenList>();
+		
 		listPage.Add(CurrentProduct);
 
 		listPage.AddColumn("Product", "ProductName");
@@ -29,7 +30,8 @@ public class ProductScreen : Screen
 		listPage.AddColumn("Earnings", "FormattedEarnings");
 		listPage.AddColumn("Profit Margin", "FormattedProfitMargin");
 		
-		var selected = listPage.Select();
+		// Wait for the user to press a key, then quit the screen.
+		listPage.Select();
 		
 		TechCoolUtils.Clear(this);
 		

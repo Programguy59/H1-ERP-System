@@ -33,6 +33,13 @@ public class ProductScreenList
 		
 		Priority = priority;
 		
+		FormattedProfitMargin = $"{Math.Round(ProfitMargin, 2)}%";
+		FormattedEarnings = $"{Math.Round(Earnings, 2)}";
+		
+		FormattedSalesPrice = $"{Math.Round(SalesPrice, 2)}";
+		FormattedPurchasePrice = $"{Math.Round(PurchasePrice, 2)}";
+		
+		FormattedStock = $"{Math.Round(Stock, 2)}";
 		FormattedUnit = Unit.ToString();
 	}
 	
@@ -55,11 +62,13 @@ public class ProductScreenList
 	
 	public ProductScreen State { get; set; }
 	
-	public string FormattedProfitMargin => $"{Math.Round(ProfitMargin, 2)}%";
-	public string FormattedEarnings => $"{Math.Round(Earnings, 2)}";
-	public string FormattedSalesPrice => $"{Math.Round(SalesPrice, 2)}";
-	public string FormattedPurchasePrice => $"{Math.Round(PurchasePrice, 2)}";
-	public string FormattedStock => $"{Math.Round(Stock, 2)}";
+	public string FormattedProfitMargin { get; set; }
+	
+	public string FormattedEarnings { get; set; }
+	public string FormattedSalesPrice { get; set; }
+	public string FormattedPurchasePrice { get; set; }
+	
+	public string FormattedStock { get; set; }
 	public string FormattedUnit { get; set; }
 	
 	public static ProductScreenList? GetProductScreenListFromId(int id)

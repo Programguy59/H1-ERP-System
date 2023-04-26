@@ -60,8 +60,19 @@ public class ProductEditScreen : Screen
 		product.Name = productScreenList.ProductName;
 		product.Description = productScreenList.ProductDescription;
 
-		product.SalesPrice = productScreenList.SalesPrice;
-		product.PurchasePrice = productScreenList.PurchasePrice;
+		try
+		{
+			product.SalesPrice = Convert.ToDouble(productScreenList.FormattedSalesPrice); 
+			product.PurchasePrice = Convert.ToDouble(productScreenList.FormattedPurchasePrice);
+		}
+		catch (FormatException)
+		{
+			// TODO: Implement an error screen maybe?
+			
+			Quit();
+
+			return;
+		}
 		
 		product.Location = productScreenList.Location;
 		product.Stock = productScreenList.Stock;
