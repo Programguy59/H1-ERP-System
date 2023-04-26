@@ -1,4 +1,4 @@
-using H1_ERP_System.products;
+using H1_ERP_System.product;
 
 namespace ErpTests.UnitTests;
 
