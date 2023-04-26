@@ -1,6 +1,6 @@
 ﻿using H1_ERP_System.products;
 
-namespace H1_ERP_System.ui;
+namespace H1_ERP_System.ui.products;
 
 public class ProductSetupList
 {

@@ -1,7 +1,6 @@
 ﻿using H1_ERP_System.customer;
 using H1_ERP_System.db;
 using H1_ERP_System.sales;
-using H1_ERP_System.src.ui.sale;
 using H1_ERP_System.ui.customer;
 using H1_ERP_System.util;
 using TECHCOOL.UI;

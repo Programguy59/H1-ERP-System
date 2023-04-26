@@ -1,9 +1,8 @@
-﻿using H1_ERP_System.src.ui.Company;
+﻿using H1_ERP_System.company;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
-using Menu = H1_ERP_System.ui.Menu;
 
-namespace H1_ERP_System.src.Company;
+namespace H1_ERP_System.ui.company;
 
 public class CompanyEditDataScreen : Screen
 {
@@ -37,9 +36,10 @@ public class CompanyEditDataScreen : Screen
 		editor.Edit(companyScreenList);
 		TechCoolUtils.Clear(this);
 
-		company.Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName,
+		Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName,
 			companyScreenList.CompanyAddress,
 			companyScreenList.CompanyCurrency);
+		
 		company.Address = new Address(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName,
 			companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity,
 			companyScreenList.CompanyCountry);

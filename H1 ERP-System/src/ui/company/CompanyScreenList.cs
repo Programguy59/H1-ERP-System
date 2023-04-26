@@ -1,9 +1,9 @@
-﻿using H1_ERP_System.db;
-using H1_ERP_System.src.Company;
+﻿using H1_ERP_System.company;
+using H1_ERP_System.db;
 using H1_ERP_System.util;
 using TECHCOOL.UI;
 
-namespace H1_ERP_System.src.ui.Company;
+namespace H1_ERP_System.ui.company;
 
 public class CompanyScreenList
 {
@@ -101,7 +101,7 @@ public class CompanyScreenList
 		var tempAddress = new Address("", "", "", "", "");
 		DatabaseServer.InsertAddress(tempAddress);
 
-		company.Company TempCompany = new("newCompany", tempAddress, "USD");
+		Company TempCompany = new("newCompany", tempAddress, "USD");
 		DatabaseServer.InsertCompany(TempCompany);
 
 		Screen.Display(new CompanyEditDataScreen(TempCompany.Id));
