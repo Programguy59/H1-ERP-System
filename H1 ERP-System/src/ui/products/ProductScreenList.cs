@@ -1,5 +1,6 @@
 ﻿using H1_ERP_System.db;
 using H1_ERP_System.product;
+using H1_ERP_System.util;
 using TECHCOOL.UI;
 
 namespace H1_ERP_System.ui.products;
@@ -97,8 +98,27 @@ public class ProductScreenList
 		return listPage;
 	}
 	
+	public static void MakeProductButton(ProductScreenList product)
+	{
+		Screen.Display(new ProductMakeScreen(product));
+	}
+	
 	public static void EditProductButton(ProductScreenList product)
 	{
 		Screen.Display(new ProductEditScreen(product.ProductNumber));
+	}
+	
+	public static void DeleteProductButton(ProductScreenList productScreenList)
+	{
+		var product = Database.GetProductById(productScreenList.ProductNumber);
+		if (product == null)
+		{
+			return;
+		}
+		
+		if (!DatabaseServer.DeleteProduct(product))
+		{
+			new ErrorScreen("Failed to delete product!");
+		}
 	}
 }

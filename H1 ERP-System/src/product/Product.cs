@@ -20,7 +20,7 @@ public class Product
 		Stock = stock;
 
 		Unit = unit;
-
+		
 		Earnings = GetEarnings();
 		ProfitMargin = GetProfitMargin();
 	}
@@ -44,7 +44,7 @@ public class Product
 	public double Stock { get; set; }
 
 	public Unit Unit { get; set; }
-
+	
 	public double GetEarnings()
 	{
 		return SalesPrice - PurchasePrice;
@@ -53,6 +53,12 @@ public class Product
 	public double GetProfitMargin()
 	{
 		return (SalesPrice - PurchasePrice) / PurchasePrice * 100;
+	}
+	
+	public void Update()
+	{
+		Earnings = GetEarnings();
+		ProfitMargin = GetProfitMargin();
 	}
 }
 

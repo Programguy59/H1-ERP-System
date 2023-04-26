@@ -64,6 +64,8 @@ public class ProductEditScreen : Screen
 		{
 			product.SalesPrice = Convert.ToDouble(productScreenList.FormattedSalesPrice); 
 			product.PurchasePrice = Convert.ToDouble(productScreenList.FormattedPurchasePrice);
+			
+			product.Update();
 		}
 		catch (FormatException)
 		{
