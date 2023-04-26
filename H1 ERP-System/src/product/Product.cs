@@ -59,11 +59,8 @@ public class Product
 
 public enum Unit
 {
-	[Description("Piece")]
 	Piece,
-	[Description("Hours")]
 	Hours,
-	[Description("Meters")]
 	Meters
 }
 
