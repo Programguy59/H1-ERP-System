@@ -7,15 +7,15 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerEditScreen : Screen
 {
+	public override string Title { get; set; } = "Edit Customer";
+	
 	private static int _selectedCustomerId;
 
 	public CustomerEditScreen(int id)
 	{
 		_selectedCustomerId = id;
 	}
-
-	public override string Title { get; set; } = "Edit Customer";
-
+	
 	protected override void Draw()
 	{
 		TechCoolUtils.Clear(this);
@@ -28,9 +28,7 @@ public class CustomerEditScreen : Screen
 		}
 
 		var editor = new Form<CustomerScreenList>();
-
-		// Add a text-box.
-
+		
 		editor.TextBox("First Name", "FirstName");
 		editor.TextBox("Last Name", "LastName");
 

@@ -1,6 +1,6 @@
 ﻿using H1_ERP_System.customer;
 using H1_ERP_System.db;
-using H1_ERP_System.products;
+using H1_ERP_System.product;
 using H1_ERP_System.util;
 
 namespace H1_ERP_System.sales;

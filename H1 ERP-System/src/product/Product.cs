@@ -1,6 +1,7 @@
-﻿using H1_ERP_System.util;
+﻿using System.ComponentModel;
+using H1_ERP_System.util;
 
-namespace H1_ERP_System.products;
+namespace H1_ERP_System.product;
 
 public class Product
 {
@@ -58,8 +59,11 @@ public class Product
 
 public enum Unit
 {
+	[Description("Piece")]
 	Piece,
+	[Description("Hours")]
 	Hours,
+	[Description("Meters")]
 	Meters
 }
 
@@ -67,11 +71,11 @@ public static class UnitExtensions
 {
 	public static Unit Of(this string unit)
 	{
-		return unit switch
+		return unit.ToLower() switch
 		{
-			"Piece" => Unit.Piece,
-			"Hours" => Unit.Hours,
-			"Meters" => Unit.Meters,
+			"piece" => Unit.Piece,
+			"hours" => Unit.Hours,
+			"meters" => Unit.Meters,
 			_ => throw new ArgumentException("Invalid unit!")
 		};
 	}

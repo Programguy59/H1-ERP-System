@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using H1_ERP_System.company;
 using H1_ERP_System.customer;
 using H1_ERP_System.db;
-using H1_ERP_System.products;
+using H1_ERP_System.product;
 using H1_ERP_System.sales;
 
 namespace H1_ERP_System.util;
@@ -344,8 +344,8 @@ public static class DatabaseServer
 			var location = reader.GetString(5);
 			var stock = reader.GetSqlDecimal(6).ToDouble();
 
-			var unit = reader.GetString(7).Of();
-
+			var unit = UnitExtensions.Of(reader.GetString(7));
+			
 			var product = new Product(id, name, description, salesPrice, purchasePrice, location, stock, unit);
 
 			products.Add(product);
@@ -712,7 +712,8 @@ public static class DatabaseServer
 		// Query to update the customer.
 		var query =
 			"UPDATE Customers " +
-			$"SET PersonId = '{customer.Person.PersonId}', DateSinceLastPurchase = '{sqlDate}' " +
+			$"SET PersonId = '{customer.Person.PersonId}', " +
+			$"    DateSinceLastPurchase = '{sqlDate}' " +
 			$"WHERE Id = '{customer.CustomerId}'";
 		
 		// If the query fails, return false.
@@ -743,7 +744,9 @@ public static class DatabaseServer
 
 		var query =
 			"UPDATE Companies " +
-			$"SET CompanyName = '{company.CompanyName}', Currency = '{company.Currency}', AddressId = '{company.Address.Id}' " +
+			$"SET CompanyName = '{company.CompanyName}', " +
+			$"    Currency = '{company.Currency}', " +
+			$"    AddressId = '{company.Address.Id}' " +
 			$"WHERE Id = '{company.Id}'";
 
 		// If the query fails, return false.
@@ -768,7 +771,13 @@ public static class DatabaseServer
 	{
 		var query =
 			"UPDATE Products " +
-			$"SET Name = '{product.Name}', Description = '{product.Description}', SalesPrice = '{product.SalesPrice}', PurchasePrice = '{product.PurchasePrice}', Location = '{product.Location}', Stock = '{product.Stock}', Unit = '{product.Unit}' " +
+			$"SET Name = '{product.Name}', " +
+			$"    Description = '{product.Description}', " +
+			$"    SalesPrice = '{product.SalesPrice}', " +
+			$"    PurchasePrice = '{product.PurchasePrice}', " +
+			$"    Location = '{product.Location}', " +
+			$"    Stock = '{product.Stock}', " +
+			$"    Unit = '{product.Unit}' " +
 			$"WHERE Id = '{product.Id}'";
 
 		// If the query fails, return false.
@@ -793,7 +802,8 @@ public static class DatabaseServer
 	{
 		var query =
 			"UPDATE OrderLines " +
-			$"SET ProductId = '{orderLine.Product.Id}', Quantity = '{orderLine.Quantity}' " +
+			$"SET ProductId = '{orderLine.Product.Id}', " +
+			$"    Quantity = '{orderLine.Quantity}' " +
 			$"WHERE Id = '{orderLine.Id}'";
 
 		// If the query fails, return false.
@@ -818,7 +828,10 @@ public static class DatabaseServer
 	{
 		var query =
 			"UPDATE Orders " +
-			$"SET CreatedAt = '{order.CreatedAt}', CompletedAt = '{order.CompletedAt}', CustomerId = '{order.Customer.CustomerId}', OrderStatus = '{order.OrderStatus}' " +
+			$"SET CreatedAt = '{order.CreatedAt}', " +
+			$"    CustomerId = '{order.Customer.CustomerId}', " +
+			$"    CompletedAt = '{order.CompletedAt}', " +
+			$"    OrderStatus = '{order.OrderStatus}' " +
 			$"WHERE Id = '{order.Id}'";
 
 		// If the query fails, return false.

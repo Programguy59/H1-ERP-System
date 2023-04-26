@@ -18,8 +18,7 @@ public class CustomerScreen : Screen
 		listPage.AddColumn("Address", "FormattedAddress");
 
 		listPage.AddColumn("Last Order", "FormattedLastOrderDate");
-
-
+		
 		listPage.Select();
 
 		TechCoolUtils.Clear(this);
