@@ -21,9 +21,11 @@ public class CompanyScreenList
 		CompanyName = companyName;
 		CompanyCurrency = companyCurrency;
 
-		AddressId = id;
+		AddressId = addressId;
+		
 		CompanyAddress = address;
 		CompanyCountry = address.Country;
+		
 		CompanyStreetName = address.StreetName;
 		CompanyStreetNumber = address.StreetNumber;
 		CompanyZipCode = address.ZipCode;
@@ -31,25 +33,24 @@ public class CompanyScreenList
 		CompanyCurrency = companyCurrency;
 		Priority = priority;
 	}
-
+	
 	public int CompanyId { get; set; }
 
 	public string CompanyName { get; set; }
 	public string CompanyCurrency { get; set; }
-
+	
 	public int AddressId { get; set; }
+	
 	public Address CompanyAddress { get; set; }
-	public string CompanyCountry { get; set; } = "";
-
-	public string CompanyStreetName { get; set; } = "";
-
+	
+	public string CompanyCountry { get; set; }
+	public string CompanyStreetName { get; set; }
 	public string CompanyStreetNumber { get; set; }
-
 	public string CompanyZipCode { get; set; }
-
-	public string CompanyCity { get; set; } = "";
+	public string CompanyCity { get; set; }
+	
 	public int Priority { get; set; }
-
+	
 	public CompanyScreen State { get; set; }
 
 
@@ -95,18 +96,15 @@ public class CompanyScreenList
 
 	public static void MakeCompanyButton(CompanyScreenList company)
 	{
-		var Addresses = Database.GetAllAddresses();
-		var Companies = Database.GetAllCompanies();
-
 		var tempAddress = new Address("", "", "", "", "");
 		DatabaseServer.InsertAddress(tempAddress);
-
-		Company TempCompany = new("newCompany", tempAddress, "USD");
-		DatabaseServer.InsertCompany(TempCompany);
-
-		Screen.Display(new CompanyEditDataScreen(TempCompany.Id));
+		
+		var tempCompany = new Company("newCompany", tempAddress, "USD");
+		DatabaseServer.InsertCompany(tempCompany);
+		
+		Screen.Display(new CompanyEditDataScreen(tempCompany.Id));
 	}
-
+	
 	public static void EditCompanyButton(CompanyScreenList company)
 	{
 		Screen.Display(new CompanyEditDataScreen(company.CompanyId));
@@ -115,27 +113,44 @@ public class CompanyScreenList
 	public static void DeleteCompany(CompanyScreenList companyList)
 	{
 		var company = Database.GetCompanyById(companyList.CompanyId);
-		DatabaseServer.DeleteCompany(company);
+		// If the company is null, return.
+		if (company == null)
+		{
+			return;
+		}
+		
+		// If the delete operation fails, show an error message.
+		if (!DatabaseServer.DeleteCompany(company))
+		{
+			new ErrorScreen("Failed to delete company!");
+			
+			return;
+		}
+		
 		Screen.Display(new CompanySetupScreen());
 	}
-
+	
 	public static ListPage<CompanyScreenList> GetPageList()
 	{
 		var listPage = new ListPage<CompanyScreenList>();
+		
 		listPage.AddKey(ConsoleKey.F1, MakeCompanyButton);
 		listPage.AddKey(ConsoleKey.F2, EditCompanyButton);
 		listPage.AddKey(ConsoleKey.F5, DeleteCompany);
-
-		var Companies = Database.GetAllCompanies();
-		for (var i = 0; i < Companies.Count; i++)
+		
+		var companies = Database.GetAllCompanies();
+		
+		foreach (var company in companies)
+		{
 			listPage.Add(new CompanyScreenList(
-				Companies[i].Id,
-				Companies[i].CompanyName,
-				Companies[i].Address,
-				Companies[i].Currency,
-				Companies[i].Address.Id,
+				company.Id,
+				company.CompanyName,
+				company.Address,
+				company.Currency,
+				company.Address.Id,
 				1));
-
+		}
+		
 		return listPage;
 	}
 }

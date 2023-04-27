@@ -123,7 +123,15 @@ public class CustomerScreenList
     public static void DeleteCustomer(CustomerScreenList customerList)
     {
 		var customer = Database.GetCustomerById(customerList.Id);
+		
+		// If the customer is null, just return.
+		if (customer == null)
+		{
+			return;
+		}
+		
 		DatabaseServer.DeleteCustomer(customer);
+		
 		Screen.Display(new CustomerSetupScreen());
 	}
 

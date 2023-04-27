@@ -11,13 +11,20 @@ public class SalesScreen : Screen
     public SalesScreen(int saleId) 
 	{
 		_selectedSalesId = saleId;
-
-    }
+	}
+    
 	protected override void Draw()
 	{
 		TechCoolUtils.Clear(this);
 
 		var listPage = SalesList.GetPageListFromId(_selectedSalesId);
+		
+		// If the list page is null, return.
+		if (listPage == null)
+		{
+			return;
+		}
+		
         // Display customer details.
 		listPage.AddColumn("Order ID", "Id");
 		listPage.AddColumn("Date", "Date");
