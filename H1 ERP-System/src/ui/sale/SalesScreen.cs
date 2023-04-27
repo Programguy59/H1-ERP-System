@@ -6,18 +6,18 @@ namespace H1_ERP_System.ui.sale;
 public class SalesScreen : Screen
 {
 	public override string Title { get; set; } = "Sale";
-    private readonly int selectedSalesId;
+    private readonly int _selectedSalesId;
 
     public SalesScreen(int saleId) 
 	{
-		selectedSalesId = saleId;
+		_selectedSalesId = saleId;
 
     }
 	protected override void Draw()
 	{
 		TechCoolUtils.Clear(this);
 
-		var listPage = SalesList.GetPageListFromId(selectedSalesId);
+		var listPage = SalesList.GetPageListFromId(_selectedSalesId);
         // Display customer details.
 		listPage.AddColumn("Order ID", "Id");
 		listPage.AddColumn("Date", "Date");

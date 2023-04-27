@@ -11,8 +11,8 @@ public class ProductScreen : Screen
 	}
 	
 	public override string Title { get; set; } = "Product";
-	public ProductScreenList CurrentProduct { get; set; }
-
+	private ProductScreenList CurrentProduct { get; set; }
+	
 	protected override void Draw()
 	{
 		TechCoolUtils.Clear(this);

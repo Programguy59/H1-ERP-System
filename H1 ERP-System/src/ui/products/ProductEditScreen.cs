@@ -23,7 +23,7 @@ public class ProductEditScreen : Screen
 		{
 			return;
 		}
-
+		
 		var editor = new Form<ProductScreenList>();
 
 		editor.TextBox("Name", "ProductName");
@@ -65,7 +65,7 @@ public class ProductEditScreen : Screen
 			product.SalesPrice = Convert.ToDouble(productScreenList.FormattedSalesPrice); 
 			product.PurchasePrice = Convert.ToDouble(productScreenList.FormattedPurchasePrice);
 			
-			product.Update();
+			product.UpdateData();
 		}
 		catch (FormatException)
 		{
@@ -82,9 +82,9 @@ public class ProductEditScreen : Screen
 		
 		if (!DatabaseServer.UpdateProduct(product))
 		{
-			return;
+			new ErrorScreen("Failed to update product!");
 		}
-
+		
 		TechCoolUtils.Clear(this);
 
 		Display(new Menu.MenuScreen());

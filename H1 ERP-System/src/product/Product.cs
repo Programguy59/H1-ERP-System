@@ -55,7 +55,7 @@ public class Product
 		return (SalesPrice - PurchasePrice) / PurchasePrice * 100;
 	}
 	
-	public void Update()
+	public void UpdateData()
 	{
 		Earnings = GetEarnings();
 		ProfitMargin = GetProfitMargin();

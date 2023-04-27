@@ -22,10 +22,21 @@ public class ProductSetupScreen : Screen
 		
 		listPage.AddColumn("Profit Margin", "FormattedProfitMargin");
 		
-		var selected = listPage.Select();
-		// If the user pressed escape or the list is empty, quit the screen.
-		if (selected == null)
-		{
+		// Make sure the user selects a product, if the list is empty, quit the screen.
+		ProductScreenList selected;
+		
+		try {
+			
+			selected = listPage.Select();
+			
+			// If the user didn't select a product, throw an exception.
+			if (selected == null) {
+				
+				throw new ArgumentOutOfRangeException();
+			}
+			
+		} catch (ArgumentOutOfRangeException) {
+			
 			Quit();
 			
 			return;

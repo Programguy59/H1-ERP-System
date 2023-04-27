@@ -16,13 +16,13 @@ public class ProductSetupList
 		ProductNumber = product.Id;
 		
 		ProductName = product.Name;
-		
+
 		SalesPrice = product.SalesPrice;
 		PurchasePrice = product.PurchasePrice;
 		
 		ProfitMargin = product.ProfitMargin;
 		Stock = product.Stock;
-		
+
 		Priority = priority;
 	}
 	

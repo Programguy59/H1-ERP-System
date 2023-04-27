@@ -85,11 +85,20 @@ public class ProductScreenList
 	{
 		var listPage = new ListPage<ProductScreenList>();
 
-		// listPage.AddKey(ConsoleKey.F1, MakeProductButton);
+		listPage.AddKey(ConsoleKey.F1, MakeProductButton);
 		listPage.AddKey(ConsoleKey.F2, EditProductButton);
-		// listPage.AddKey(ConsoleKey.F5, DeleteProductButton);
+		listPage.AddKey(ConsoleKey.F5, DeleteProductButton);
 		
 		var products = Database.GetAllProducts();
+		
+		// If the products list is empty, force the user to make a product.
+		if (products.Count < 1)
+		{
+			MakeProductButton();
+			
+			return listPage;
+		}
+		
 		foreach (var product in products)
 		{
 			listPage.Add(new ProductScreenList(product));
@@ -98,9 +107,9 @@ public class ProductScreenList
 		return listPage;
 	}
 	
-	public static void MakeProductButton(ProductScreenList product)
+	public static void MakeProductButton(ProductScreenList product = null)
 	{
-		Screen.Display(new ProductMakeScreen(product));
+		Screen.Display(new ProductMakeScreen());
 	}
 	
 	public static void EditProductButton(ProductScreenList product)
@@ -119,6 +128,11 @@ public class ProductScreenList
 		if (!DatabaseServer.DeleteProduct(product))
 		{
 			new ErrorScreen("Failed to delete product!");
+			
+			return;
 		}
+		
+		// Refresh the screen.
+		Screen.Display(new ProductSetupScreen());
 	}
 }
