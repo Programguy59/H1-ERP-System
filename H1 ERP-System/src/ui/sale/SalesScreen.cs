@@ -35,6 +35,6 @@ public class SalesScreen : Screen
 
         TechCoolUtils.Clear(this);
 
-        Quit();
-	}
+        Display(new Menu.MenuScreen());
+    }
 }
