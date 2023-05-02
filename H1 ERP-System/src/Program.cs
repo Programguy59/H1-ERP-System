@@ -1,4 +1,5 @@
-﻿using H1_ERP_System.util;
+﻿using System.Media;
+using H1_ERP_System.util;
 using TECHCOOL.UI;
 using Menu = H1_ERP_System.ui.Menu;
 
@@ -12,7 +13,10 @@ public static class Program
 
         Console.Title = "LNE Security A/S ERP System";
 		DatabaseServer.Initialize(0);
-		
+		Music.playSound("../../../Millionaer.wav");
+			
 		Screen.Display(new Menu.MenuScreen());
 	}
+
+
 }
