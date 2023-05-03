@@ -16,18 +16,19 @@ public class CompanySetupScreen : Screen
 		listPage.AddColumn("Company", "CompanyName");
 		listPage.AddColumn("Country", "CompanyCountry");
 		listPage.AddColumn("Currency", "CompanyCurrency");
-		
+
 		var selected = listPage.Select();
+
 		// If the user pressed escape or the list is empty, quit the screen.
 		if (selected == null)
 		{
 			Quit();
-			
+
 			return;
 		}
-		
+
 		SelectedOrderId = selected.CompanyId;
-		
+
 		TechCoolUtils.Clear(this);
 
 		Quit();

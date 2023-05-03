@@ -53,7 +53,7 @@ public class CustomerScreenList
 		$"{Address.StreetName} {Address.StreetNumber}, {Address.ZipCode} {Address.City}, {Address.Country}";
 
 	public string FormattedLastOrderDate => LastOrder?.CreatedAt?.ToShortDateString() ?? "No orders";
-	
+
 	public static ListPage<CustomerScreenList> GetPageListFromId(int id)
 	{
 		var listPage = new ListPage<CustomerScreenList>();
@@ -120,30 +120,30 @@ public class CustomerScreenList
 		Screen.Display(new CustomerEditScreen(customer.Id));
 	}
 
-    public static void DeleteCustomer(CustomerScreenList customerList)
-    {
+	public static void DeleteCustomer(CustomerScreenList customerList)
+	{
 		var customer = Database.GetCustomerById(customerList.Id);
-		
+
 		// If the customer is null, just return.
 		if (customer == null)
 		{
 			return;
 		}
-		
+
 		DatabaseServer.DeleteCustomer(customer);
-		
+
 		Screen.Display(new CustomerSetupScreen());
 	}
 
-    public static ListPage<CustomerScreenList> GetPageList()
+	public static ListPage<CustomerScreenList> GetPageList()
 	{
 		var listPage = new ListPage<CustomerScreenList>();
 
-        listPage.AddKey(ConsoleKey.F1, MakeCustomerButton);
-        listPage.AddKey(ConsoleKey.F2, EditCustomerButton);
-        listPage.AddKey(ConsoleKey.F5, DeleteCustomer);
+		listPage.AddKey(ConsoleKey.F1, MakeCustomerButton);
+		listPage.AddKey(ConsoleKey.F2, EditCustomerButton);
+		listPage.AddKey(ConsoleKey.F5, DeleteCustomer);
 
-        var customers = Database.GetAllCustomers();
+		var customers = Database.GetAllCustomers();
 
 		foreach (var customer in customers)
 		{

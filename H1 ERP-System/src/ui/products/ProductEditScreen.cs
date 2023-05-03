@@ -19,11 +19,12 @@ public class ProductEditScreen : Screen
 	protected override void Draw()
 	{
 		var productScreenList = ProductScreenList.GetProductScreenListFromId(_selectedProductId);
+
 		if (productScreenList == null)
 		{
 			return;
 		}
-		
+
 		var editor = new Form<ProductScreenList>();
 
 		editor.TextBox("Name", "ProductName");
@@ -36,55 +37,51 @@ public class ProductEditScreen : Screen
 		editor.TextBox("Stock", "FormattedStock");
 
 		editor.SelectBox(
-			title: "Unit",
-			property: "FormattedUnit",
-			options: new Dictionary<string, object>
-			{
-				{"Piece", Unit.Piece.ToString()},
-				{"Hours", Unit.Hours.ToString()},
-				{"Meters", Unit.Meters.ToString()}
-			}
+			"Unit",
+			"FormattedUnit",
+			new Dictionary<string, object> {{"Piece", Unit.Piece.ToString()}, {"Hours", Unit.Hours.ToString()}, {"Meters", Unit.Meters.ToString()}}
 		);
-		
+
 		TechCoolUtils.Clear(this);
 
 		// Draw the editor.
 		editor.Edit(productScreenList);
-		
+
 		var product = Database.GetProductById(_selectedProductId);
+
 		if (product == null)
 		{
 			return;
 		}
-		
+
 		product.Name = productScreenList.ProductName;
 		product.Description = productScreenList.ProductDescription;
 
 		try
 		{
-			product.SalesPrice = Convert.ToDouble(productScreenList.FormattedSalesPrice); 
+			product.SalesPrice = Convert.ToDouble(productScreenList.FormattedSalesPrice);
 			product.PurchasePrice = Convert.ToDouble(productScreenList.FormattedPurchasePrice);
-			
+
 			product.UpdateData();
 		}
 		catch (FormatException)
 		{
 			new ErrorScreen("Invalid price format!");
-			
+
 			Quit();
-			
+
 			return;
 		}
-		
+
 		product.Location = productScreenList.Location;
 		product.Stock = productScreenList.Stock;
-		product.Unit = UnitExtensions.Of(productScreenList.FormattedUnit);
-		
+		product.Unit = productScreenList.FormattedUnit.Of();
+
 		if (!DatabaseServer.UpdateProduct(product))
 		{
 			new ErrorScreen("Failed to update product!");
 		}
-		
+
 		TechCoolUtils.Clear(this);
 
 		Display(new Menu.MenuScreen());

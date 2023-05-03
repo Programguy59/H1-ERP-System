@@ -7,15 +7,15 @@ namespace H1_ERP_System.ui.customer;
 
 public class CustomerEditScreen : Screen
 {
-	public override string Title { get; set; } = "Edit Customer";
-	
 	private static int _selectedCustomerId;
 
 	public CustomerEditScreen(int id)
 	{
 		_selectedCustomerId = id;
 	}
-	
+
+	public override string Title { get; set; } = "Edit Customer";
+
 	protected override void Draw()
 	{
 		TechCoolUtils.Clear(this);
@@ -28,7 +28,7 @@ public class CustomerEditScreen : Screen
 		}
 
 		var editor = new Form<CustomerScreenList>();
-		
+
 		editor.TextBox("First Name", "FirstName");
 		editor.TextBox("Last Name", "LastName");
 
@@ -72,9 +72,9 @@ public class CustomerEditScreen : Screen
 
 		var lastOrder = Database.GetAllOrders().Find(o => o.Customer.CustomerId == customer.CustomerId);
 		var dateSinceLastPurchase = lastOrder?.CreatedAt;
-		
+
 		var updatedCustomer = new Customer(customer.CustomerId, person, dateSinceLastPurchase);
-		
+
 		if (!DatabaseServer.UpdateCustomer(updatedCustomer))
 		{
 			return;

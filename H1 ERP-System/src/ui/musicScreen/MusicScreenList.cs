@@ -2,12 +2,10 @@
 
 public class MusicScreenList
 {
-    public string Song { get; set; }
-    
-    public MusicScreenList(string song)
-    {
-        Song = song;
-    }
+	public MusicScreenList(string song)
+	{
+		Song = song;
+	}
+
+	public string Song { get; set; }
 }
-       
-    

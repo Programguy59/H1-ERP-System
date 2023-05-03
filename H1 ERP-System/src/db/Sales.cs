@@ -16,7 +16,7 @@ public static partial class Database
 	{
 		return Orders;
 	}
-	
+
 	public static OrderLine? GetOrderLineById(int id)
 	{
 		return OrderLines.FirstOrDefault(orderLine => orderLine.Id == id);

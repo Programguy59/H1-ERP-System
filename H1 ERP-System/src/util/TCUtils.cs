@@ -8,7 +8,7 @@ public static class TechCoolUtils
 	{
 		Screen.Clear(screen);
 		Screen.Clear();
-		
+
 		Console.Clear();
 	}
 }

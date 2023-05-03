@@ -67,7 +67,7 @@ public static class DatabaseServer
 
 		Database.OrderLines.Clear();
 		Database.Orders.Clear();
-		
+
 		// Attempt database connection and insert data into local lists.
 		try
 		{
@@ -81,7 +81,7 @@ public static class DatabaseServer
 
 			var customers = FetchCustomers();
 			customers.ForEach(Database.Customers.Add);
-			
+
 			var companies = FetchCompanies();
 			companies.ForEach(Database.Companies.Add);
 
@@ -117,7 +117,6 @@ public static class DatabaseServer
 		SqlConnectionStringBuilder sb = new()
 		{
 			DataSource = Constants.Sql.Host,
-
 			InitialCatalog = Constants.Sql.Database,
 			UserID = Constants.Sql.User,
 			Password = Constants.Sql.Password
@@ -265,7 +264,7 @@ public static class DatabaseServer
 		{
 			var personId = reader.GetInt32(0);
 			var customerId = reader.GetInt32(1);
-			
+
 			DateTime? dateSinceLastPurchase = reader.GetDateTime(2);
 
 			var person = Database.GetPersonById(personId);
@@ -274,7 +273,7 @@ public static class DatabaseServer
 			{
 				continue;
 			}
-			
+
 			var customer = new Customer(customerId, person, dateSinceLastPurchase);
 
 			customers.Add(customer);
@@ -344,8 +343,8 @@ public static class DatabaseServer
 			var location = reader.GetString(5);
 			var stock = reader.GetSqlDecimal(6).ToDouble();
 
-			var unit = UnitExtensions.Of(reader.GetString(7));
-			
+			var unit = reader.GetString(7).Of();
+
 			var product = new Product(id, name, description, salesPrice, purchasePrice, location, stock, unit);
 
 			products.Add(product);
@@ -406,10 +405,10 @@ public static class DatabaseServer
 		while (reader.Read())
 		{
 			var id = reader.GetInt32(0);
-			
-			var createdAt = reader.IsDBNull(1) ? (DateTime?) null : reader.GetDateTime(1);
-			var completedAt = reader.IsDBNull(2) ? (DateTime?) null : reader.GetDateTime(2);
-			
+
+			var createdAt = reader.IsDBNull(1) ? (DateTime?)null : reader.GetDateTime(1);
+			var completedAt = reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2);
+
 			var customerId = reader.GetInt32(3);
 
 			var customer = Database.GetCustomerById(customerId);
@@ -443,7 +442,10 @@ public static class DatabaseServer
 		var reader = ExecuteQuery(query);
 
 		// Get the ID of the inserted order.
-		while (reader.Read()) address.Id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			address.Id = reader.GetInt32(0);
+		}
 
 		// If the ID is DefaultId, the query must have failed.
 		if (address.Id == Constants.DefaultId)
@@ -472,7 +474,10 @@ public static class DatabaseServer
 		var reader = ExecuteQuery(query);
 
 		// Get the ID of the inserted order.
-		while (reader.Read()) person.PersonId = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			person.PersonId = reader.GetInt32(0);
+		}
 
 		// If the ID is DefaultId, the query must have failed.
 		if (person.PersonId == Constants.DefaultId)
@@ -506,7 +511,10 @@ public static class DatabaseServer
 		var reader = ExecuteQuery(query);
 
 		// Get the ID of the inserted order.
-		while (reader.Read()) customer.CustomerId = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			customer.CustomerId = reader.GetInt32(0);
+		}
 
 		// If the ID is DefaultId, the query must have failed.
 		if (customer.CustomerId == Constants.DefaultId)
@@ -535,7 +543,10 @@ public static class DatabaseServer
 		var reader = ExecuteQuery(query);
 
 		// Get the ID of the inserted order.
-		while (reader.Read()) company.Id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			company.Id = reader.GetInt32(0);
+		}
 
 		// If the ID is DefaultId, the query must have failed.
 		if (company.Id == Constants.DefaultId)
@@ -564,7 +575,10 @@ public static class DatabaseServer
 		var reader = ExecuteQuery(query);
 
 		// Get the ID of the inserted order.
-		while (reader.Read()) product.Id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			product.Id = reader.GetInt32(0);
+		}
 
 		// If the ID is DefaultId, the query must have failed.
 		if (product.Id == Constants.DefaultId)
@@ -593,7 +607,10 @@ public static class DatabaseServer
 		var reader = ExecuteQuery(query);
 
 		// Get the ID of the inserted order.
-		while (reader.Read()) orderLine.Id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			orderLine.Id = reader.GetInt32(0);
+		}
 
 		// If the ID is DefaultId, the query must have failed.
 		if (orderLine.Id == Constants.DefaultId)
@@ -622,7 +639,10 @@ public static class DatabaseServer
 		var reader = ExecuteQuery(query);
 
 		// Get the ID of the inserted order.
-		while (reader.Read()) order.Id = reader.GetInt32(0);
+		while (reader.Read())
+		{
+			order.Id = reader.GetInt32(0);
+		}
 
 		// If the ID is DefaultId, the query must have failed.
 		if (order.Id == Constants.DefaultId)
@@ -708,14 +728,14 @@ public static class DatabaseServer
 		// DateSinceLastPurchase is a string, so we need to convert it to a DateTime, it's possible it's null.
 		var dateSinceLastPurchase = customer.DateSinceLastPurchase ?? null;
 		var sqlDate = dateSinceLastPurchase?.ToString("yyyy-MM-dd HH:mm:ss.fff");
-		
+
 		// Query to update the customer.
 		var query =
 			"UPDATE Customers " +
 			$"SET PersonId = '{customer.Person.PersonId}', " +
 			$"    DateSinceLastPurchase = '{sqlDate}' " +
 			$"WHERE Id = '{customer.CustomerId}'";
-		
+
 		// If the query fails, return false.
 		if (!ExecuteNonQuery(query))
 		{

@@ -22,16 +22,17 @@ public class CustomerSetupScreen : Screen
 
 		listPage.AddColumn("Phone Number", "PhoneNumber");
 		listPage.AddColumn("Email", "Email");
-		
+
 		var selected = listPage.Select();
+
 		// If the user pressed escape or the list is empty, quit the screen.
 		if (selected == null)
 		{
 			Quit();
-			
+
 			return;
 		}
-		
+
 		SelectedCustomerId = selected.Id;
 
 		TechCoolUtils.Clear(this);

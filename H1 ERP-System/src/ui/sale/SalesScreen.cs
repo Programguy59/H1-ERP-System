@@ -5,27 +5,28 @@ namespace H1_ERP_System.ui.sale;
 
 public class SalesScreen : Screen
 {
-	public override string Title { get; set; } = "Sale";
-    private readonly int _selectedSalesId;
+	private readonly int _selectedSalesId;
 
-    public SalesScreen(int saleId) 
+	public SalesScreen(int saleId)
 	{
 		_selectedSalesId = saleId;
 	}
-    
+
+	public override string Title { get; set; } = "Sale";
+
 	protected override void Draw()
 	{
 		TechCoolUtils.Clear(this);
 
 		var listPage = SalesList.GetPageListFromId(_selectedSalesId);
-		
+
 		// If the list page is null, return.
 		if (listPage == null)
 		{
 			return;
 		}
-		
-        // Display customer details.
+
+		// Display customer details.
 		listPage.AddColumn("Order ID", "Id");
 		listPage.AddColumn("Date", "Date");
 		listPage.AddColumn("Customer ID", "CustomerId");
@@ -33,8 +34,8 @@ public class SalesScreen : Screen
 
 		listPage.Select();
 
-        TechCoolUtils.Clear(this);
+		TechCoolUtils.Clear(this);
 
-        Display(new Menu.MenuScreen());
-    }
+		Display(new Menu.MenuScreen());
+	}
 }
