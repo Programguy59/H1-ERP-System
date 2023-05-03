@@ -12,7 +12,7 @@ public static class Program
 		Console.Title = "LNE Security A/S ERP System";
 		DatabaseServer.Initialize(0);
 		
-		// Music.PlaySound("/util/music/Millionaer.wav", true);
+		Music.PlaySound("../../../music/Millionaer.wav", true);
 		
 		Screen.Display(new Menu.MenuScreen());
 	}

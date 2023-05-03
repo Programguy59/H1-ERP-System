@@ -18,7 +18,8 @@ public static class Music
 		var musicPlayer = new SoundPlayer();
 
 		musicPlayer.SoundLocation = path;
-
+		
+		// Play the sound on a loop if the isLooping parameter is true.
 		if (isLooping)
 		{
 			musicPlayer.PlayLooping();
