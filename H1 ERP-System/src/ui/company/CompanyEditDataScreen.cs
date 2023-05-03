@@ -39,7 +39,7 @@ public class CompanyEditDataScreen : Screen
 		Company company = new(companyScreenList.CompanyId, companyScreenList.CompanyName,
 			companyScreenList.CompanyAddress,
 			companyScreenList.CompanyCurrency);
-		
+
 		company.Address = new Address(companyScreenList.CompanyAddress.Id, companyScreenList.CompanyStreetName,
 			companyScreenList.CompanyStreetNumber, companyScreenList.CompanyZipCode, companyScreenList.CompanyCity,
 			companyScreenList.CompanyCountry);

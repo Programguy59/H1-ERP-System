@@ -1,6 +1,6 @@
-﻿using H1_ERP_System.ui.customer;
-using H1_ERP_System.util;
+﻿using H1_ERP_System.util;
 using TECHCOOL.UI;
+
 namespace H1_ERP_System.ui;
 
 
