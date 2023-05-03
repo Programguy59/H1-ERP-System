@@ -19,12 +19,13 @@ namespace H1_ERP_System.ui;
 
             foreach (var song in songArray)
             {
-                listPage.Add(new MusicScreenList(song));
+                listPage.Add(new MusicScreenList(song.Substring(15).Split(".", 2)[0]));
             }
 
-             var selected =listPage.Select();
+        var idk = listPage.Select().Song;
+        string selected = $@"../../../music/{idk}.wav";
              
-             Music.PlaySound(selected.Song, true);
+             Music.PlaySound(selected, true);
             
             Display(new Menu.MenuScreen());
             
