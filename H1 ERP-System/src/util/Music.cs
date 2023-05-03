@@ -1,4 +1,5 @@
 ﻿using System.Media;
+using H1_ERP_System.ui;
 
 namespace H1_ERP_System.util;
 
@@ -15,6 +16,14 @@ public static class Music
 	/// <param name="isLooping">Whether or not the sound should loop.</param>
 	public static void PlaySound(string path, bool isLooping = false)
 	{
+		// Check if the file exists.
+		if (!File.Exists(path))
+		{
+			new ErrorScreen("The music file does not exist!");
+			
+			return;
+		}
+		
 		var musicPlayer = new SoundPlayer();
 
 		musicPlayer.SoundLocation = path;
