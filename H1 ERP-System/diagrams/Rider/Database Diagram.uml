@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Addresses</OriginalElement>
+  <nodes>
+    <node x="121.0" y="150.0">ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Companies</node>
+    <node x="-102.0" y="122.0">ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Persons</node>
+    <node x="-114.0" y="372.0">ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Customers</node>
+    <node x="-95.5" y="580.0">ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Orders</node>
+    <node x="12.25" y="-128.0">ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Addresses</node>
+    <node x="114.5" y="538.0">ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Products</node>
+    <node x="22.0" y="844.0">ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.OrderLines</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Persons" target="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Addresses" relationship="REFERENCES">
+      <point x="0.0" y="-100.0" />
+      <point x="-0.5" y="97.0" />
+      <point x="113.25" y="97.0" />
+      <point x="0.0" y="100.0" />
+    </edge>
+    <edge source="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Orders" target="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Customers" relationship="REFERENCES">
+      <point x="0.0" y="-86.0" />
+      <point x="0.0" y="58.0" />
+    </edge>
+    <edge source="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Customers" target="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Persons" relationship="REFERENCES">
+      <point x="0.0" y="-58.0" />
+      <point x="0.0" y="100.0" />
+    </edge>
+    <edge source="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.OrderLines" target="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Products" relationship="REFERENCES">
+      <point x="44.75" y="-72.0" />
+      <point x="156.25" y="819.0" />
+      <point x="223.5" y="819.0" />
+      <point x="0.0" y="128.0" />
+    </edge>
+    <edge source="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.OrderLines" target="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Orders" relationship="REFERENCES">
+      <point x="-44.75" y="-72.0" />
+      <point x="66.75" y="819.0" />
+      <point x="-0.5" y="819.0" />
+      <point x="0.0" y="86.0" />
+    </edge>
+    <edge source="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Companies" target="ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Addresses" relationship="REFERENCES">
+      <point x="0.0" y="-72.0" />
+      <point x="227.0" y="97.0" />
+      <point x="113.25" y="97.0" />
+      <point x="0.0" y="100.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7135095730633803" showDependencies="false" x="137.4578891566265" y="834.816" />
+  <SelectedNodes>
+    <node>ff98233f-e5f5-4b27-8f9f-243515e03e79.TABLE:H1PD021123_Gruppe3.dbo.Addresses</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
