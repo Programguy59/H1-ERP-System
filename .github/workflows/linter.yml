@@ -8,7 +8,7 @@ name: Lint Code Base
 #############################
 # Start the job on all push #
 #############################
-on: [push, commit]
+on: push
 
 ###############
 # Set the Job #
