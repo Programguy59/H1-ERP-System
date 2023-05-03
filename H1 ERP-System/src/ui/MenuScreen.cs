@@ -23,9 +23,10 @@ public class Menu
 			menu.Add(new CustomerSetupScreen());
 			menu.Add(new ProductSetupScreen());
 			menu.Add(new SaleSetupScreen());
+			menu.Add(new MusicScreen());
 			
 			menu.Start(this);
-
+			
 			TechCoolUtils.Clear(this);
 		}
 	}
