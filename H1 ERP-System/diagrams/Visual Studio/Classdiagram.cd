@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="H1_ERP_System.company.Company">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQAAAAAAAAAAEAAAAAAAACAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>src\company\Company.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Address" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="H1_ERP_System.customer.Customer">
+    <Position X="2" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\customer\Customer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="H1_ERP_System.customer.Person">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAIAEAAAAQAAAAAAAAAACAAAAAAAAAAg=</HashCode>
+      <FileName>src\customer\Person.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Address" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="H1_ERP_System.product.Product">
+    <Position X="7.25" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAEABgAAAAIAJAAgQAoAAAAAAAAAAAAAIAACA=</HashCode>
+      <FileName>src\product\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="H1_ERP_System.sales.Order">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIECAAAAEAACAAAEACAAAAAAAAAAQAACAAQAAAAAAAA=</HashCode>
+      <FileName>src\sales\Order.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Customer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="H1_ERP_System.util.Address">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAACMAAAIAAAAAAIAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>src\util\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="H1_ERP_System.product.Unit">
+    <Position X="3" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAIAAAAAA=</HashCode>
+      <FileName>src\product\Product.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="H1_ERP_System.sales.OrderStatus">
+    <Position X="1.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAABAAQAAAAgAAEAAAA=</HashCode>
+      <FileName>src\sales\Order.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
