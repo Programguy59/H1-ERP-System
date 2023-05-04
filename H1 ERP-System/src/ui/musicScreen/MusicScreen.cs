@@ -22,8 +22,8 @@ namespace H1_ERP_System.ui;
                 listPage.Add(new MusicScreenList(song.Substring(15).Split(".", 2)[0]));
             }
 
-        var idk = listPage.Select().Song;
-        string selected = $@"../../../music/{idk}.wav";
+        string fileName = listPage.Select().Song;
+        string selected = $@"../../../music/{fileName}.wav";
              
              Music.PlaySound(selected, true);
             
