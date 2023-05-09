@@ -48,7 +48,7 @@ public static class DatabaseServer
 	/// <summary>
 	///     The connection to the database.
 	/// </summary>
-	private static SqlConnection? _connection;
+	private static SqlConnection? s_connection;
 
 	/// <summary>
 	///     Load all data from the database and insert it into local lists.
@@ -119,15 +119,16 @@ public static class DatabaseServer
 			DataSource = Constants.Sql.Host,
 			InitialCatalog = Constants.Sql.Database,
 			UserID = Constants.Sql.User,
-			Password = Constants.Sql.Password
+			Password = Constants.Sql.Password,
+			ConnectTimeout = Constants.Sql.Timeout
 		};
 
 		var connectionString = sb.ToString();
 
-		_connection = new SqlConnection(connectionString);
-		_connection.Open();
+		s_connection = new SqlConnection(connectionString);
+		s_connection.Open();
 
-		return _connection;
+		return s_connection;
 	}
 
 	/// <summary>
@@ -137,8 +138,7 @@ public static class DatabaseServer
 	/// <returns>The results of the query.</returns>
 	private static SqlDataReader ExecuteQuery(string query)
 	{
-		var connection = GetConnection();
-		var command = new SqlCommand(query, connection);
+		var command = new SqlCommand(query, GetConnection());
 
 		try
 		{
@@ -148,9 +148,9 @@ public static class DatabaseServer
 		catch
 		{
 			// Dispose of the connection and command objects before re-throwing the exception.
-			connection.Dispose();
+			s_connection?.Dispose();
 			command.Dispose();
-
+			
 			throw;
 		}
 	}
@@ -162,9 +162,8 @@ public static class DatabaseServer
 	/// <returns>True if the query effected any rows, false otherwise.</returns>
 	private static bool ExecuteNonQuery(string query)
 	{
-		using var connection = GetConnection();
-		using var command = new SqlCommand(query, connection);
-
+		using var command = new SqlCommand(query, GetConnection());
+		
 		// Return true if the query effected any rows.
 		return command.ExecuteNonQuery() > 0;
 	}
@@ -177,9 +176,9 @@ public static class DatabaseServer
 	{
 		var addresses = new List<Address>();
 
-		const string query = "SELECT * FROM Addresses";
+		const string Query = "SELECT * FROM Addresses";
 
-		using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(Query);
 
 		while (reader.Read())
 		{
@@ -211,9 +210,9 @@ public static class DatabaseServer
 	{
 		var persons = new List<Person>();
 
-		const string query = "SELECT * FROM Persons";
+		const string Query = "SELECT * FROM Persons";
 
-		using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(Query);
 
 		while (reader.Read())
 		{
@@ -251,14 +250,14 @@ public static class DatabaseServer
 	{
 		var customers = new List<Customer>();
 
-		const string query =
+		const string Query =
 			"SELECT p.Id, " +
 			"       c.Id, " +
 			"       c.DateSinceLastPurchase " +
 			"FROM Persons p " +
 			"         JOIN Customers c ON p.Id = c.PersonId";
 
-		using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(Query);
 
 		while (reader.Read())
 		{
@@ -290,9 +289,9 @@ public static class DatabaseServer
 	{
 		var companies = new List<Company>();
 
-		const string query = "SELECT * FROM Companies";
+		const string Query = "SELECT * FROM Companies";
 
-		using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(Query);
 
 		while (reader.Read())
 		{
@@ -326,9 +325,9 @@ public static class DatabaseServer
 	{
 		var products = new List<Product>();
 
-		const string query = "SELECT * FROM Products";
+		const string Query = "SELECT * FROM Products";
 
-		using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(Query);
 
 		while (reader.Read())
 		{
@@ -361,9 +360,9 @@ public static class DatabaseServer
 	{
 		var orderLines = new List<OrderLine>();
 
-		const string query = "SELECT * FROM OrderLines";
+		const string Query = "SELECT * FROM OrderLines";
 
-		using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(Query);
 
 		while (reader.Read())
 		{
@@ -397,10 +396,10 @@ public static class DatabaseServer
 	{
 		var orders = new List<Order>();
 
-		const string query =
+		const string Query =
 			"SELECT * FROM Orders o";
 
-		using var reader = ExecuteQuery(query);
+		using var reader = ExecuteQuery(Query);
 
 		while (reader.Read())
 		{
@@ -676,6 +675,7 @@ public static class DatabaseServer
 
 		// Update the local cache.
 		var index = Database.Addresses.FindIndex(a => a.Id == address.Id);
+
 		Database.Addresses[index] = address;
 
 		return true;

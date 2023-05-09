@@ -14,5 +14,7 @@ public static class Constants
 		public const string Database = "H1PD021123_Gruppe3";
 		public const string User = "H1PD021123_Gruppe3";
 		public const string Password = "H1PD021123_Gruppe3";
+
+		public const int Timeout = 10; // seconds
 	}
 }
