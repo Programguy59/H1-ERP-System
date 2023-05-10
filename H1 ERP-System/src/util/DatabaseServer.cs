@@ -48,7 +48,7 @@ public static class DatabaseServer
 	/// <summary>
 	///     The connection to the database.
 	/// </summary>
-	private static SqlConnection? s_connection;
+	private static SqlConnection? _connection;
 
 	/// <summary>
 	///     Load all data from the database and insert it into local lists.
@@ -125,10 +125,10 @@ public static class DatabaseServer
 
 		var connectionString = sb.ToString();
 
-		s_connection = new SqlConnection(connectionString);
-		s_connection.Open();
+		_connection = new SqlConnection(connectionString);
+		_connection.Open();
 
-		return s_connection;
+		return _connection;
 	}
 
 	/// <summary>
@@ -148,7 +148,7 @@ public static class DatabaseServer
 		catch
 		{
 			// Dispose of the connection and command objects before re-throwing the exception.
-			s_connection?.Dispose();
+			_connection?.Dispose();
 			command.Dispose();
 			
 			throw;
@@ -176,9 +176,9 @@ public static class DatabaseServer
 	{
 		var addresses = new List<Address>();
 
-		const string Query = "SELECT * FROM Addresses";
+		const string query = "SELECT * FROM Addresses";
 
-		using var reader = ExecuteQuery(Query);
+		using var reader = ExecuteQuery(query);
 
 		while (reader.Read())
 		{
@@ -210,9 +210,9 @@ public static class DatabaseServer
 	{
 		var persons = new List<Person>();
 
-		const string Query = "SELECT * FROM Persons";
+		const string query = "SELECT * FROM Persons";
 
-		using var reader = ExecuteQuery(Query);
+		using var reader = ExecuteQuery(query);
 
 		while (reader.Read())
 		{
@@ -250,14 +250,14 @@ public static class DatabaseServer
 	{
 		var customers = new List<Customer>();
 
-		const string Query =
+		const string query =
 			"SELECT p.Id, " +
 			"       c.Id, " +
 			"       c.DateSinceLastPurchase " +
 			"FROM Persons p " +
 			"         JOIN Customers c ON p.Id = c.PersonId";
 
-		using var reader = ExecuteQuery(Query);
+		using var reader = ExecuteQuery(query);
 
 		while (reader.Read())
 		{
@@ -289,9 +289,9 @@ public static class DatabaseServer
 	{
 		var companies = new List<Company>();
 
-		const string Query = "SELECT * FROM Companies";
+		const string query = "SELECT * FROM Companies";
 
-		using var reader = ExecuteQuery(Query);
+		using var reader = ExecuteQuery(query);
 
 		while (reader.Read())
 		{
@@ -325,9 +325,9 @@ public static class DatabaseServer
 	{
 		var products = new List<Product>();
 
-		const string Query = "SELECT * FROM Products";
+		const string query = "SELECT * FROM Products";
 
-		using var reader = ExecuteQuery(Query);
+		using var reader = ExecuteQuery(query);
 
 		while (reader.Read())
 		{
@@ -360,9 +360,9 @@ public static class DatabaseServer
 	{
 		var orderLines = new List<OrderLine>();
 
-		const string Query = "SELECT * FROM OrderLines";
+		const string query = "SELECT * FROM OrderLines";
 
-		using var reader = ExecuteQuery(Query);
+		using var reader = ExecuteQuery(query);
 
 		while (reader.Read())
 		{
@@ -396,10 +396,10 @@ public static class DatabaseServer
 	{
 		var orders = new List<Order>();
 
-		const string Query =
+		const string query =
 			"SELECT * FROM Orders o";
 
-		using var reader = ExecuteQuery(Query);
+		using var reader = ExecuteQuery(query);
 
 		while (reader.Read())
 		{
